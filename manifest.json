@@ -5,7 +5,12 @@
   "version": "0.1",
   "permissions": [
     "management",
-    "history"
+    "bookmarks",
+    "history",
+    "downloads",
+    "system.cpu",
+    "system.memory",
+    "system.storage"
   ],
   "chrome_url_overrides" : {
     "newtab": "tab.html"

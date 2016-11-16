@@ -8,6 +8,10 @@
   .collection .collection-item {
     background-color: transparent !important; }
 
-.history .card {
+.bookmarks .card,
+.history .card,
+.downloads .card,
+.system .card {
   max-height: 300px;
-  overflow: auto; }
+  overflow-y: auto;
+  overflow-x: hidden; }
