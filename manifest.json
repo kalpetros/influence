@@ -1,0 +1,13 @@
+{
+  "manifest_version": 2,
+  "name": "Influence",
+  "description": "Replace your new tab page",
+  "version": "0.1",
+  "permissions": [
+    "management",
+    "history"
+  ],
+  "chrome_url_overrides" : {
+    "newtab": "tab.html"
+  }
+}

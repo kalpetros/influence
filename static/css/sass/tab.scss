@@ -1,0 +1,24 @@
+.card {
+	.card-content {
+		padding: 0 !important;
+	}
+}
+
+.collection {
+	a {
+		&.collection-item {
+			color: #fff !important;
+		}
+	}
+	border: none !important;
+	.collection-item {
+		background-color: transparent !important;
+	}
+}
+
+.history {
+	.card {
+		max-height: 300px;
+		overflow: auto;
+	}
+}
