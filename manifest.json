@@ -5,6 +5,7 @@
   "version": "0.1",
   "permissions": [
     "management",
+    "topSites",
     "bookmarks",
     "history",
     "downloads",

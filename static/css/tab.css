@@ -1,3 +1,7 @@
+body {
+  background-image: url("/static/img/sierra2.jpg");
+  background-size: cover; }
+
 .card .card-content {
   padding: 0 !important; }
 
@@ -8,6 +12,7 @@
   .collection .collection-item {
     background-color: transparent !important; }
 
+.topsites .card,
 .bookmarks .card,
 .history .card,
 .downloads .card,
@@ -15,3 +20,12 @@
   max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden; }
+
+/* Style default scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  /* adjust/remove scrollbar space */ }
+
+/* Style position indicator */
+::-webkit-scrollbar-thumb {
+  background: #fff; }
