@@ -11,7 +11,8 @@
     "downloads",
     "system.cpu",
     "system.memory",
-    "system.storage"
+    "system.storage",
+    "geolocation"
   ],
   "chrome_url_overrides" : {
     "newtab": "tab.html"

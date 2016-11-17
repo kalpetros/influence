@@ -1,14 +1,15 @@
 body {
-  background-image: url("/static/img/sierra2.jpg");
+  background-image: url("/static/img/image1.jpg");
   background-size: cover; }
+
+.card-panel {
+  padding: 10px !important; }
 
 .card .card-content {
   padding: 0 !important; }
 
 .collection {
   border: none !important; }
-  .collection a.collection-item {
-    color: #fff !important; }
   .collection .collection-item {
     background-color: transparent !important; }
 
@@ -28,4 +29,20 @@ body {
 
 /* Style position indicator */
 ::-webkit-scrollbar-thumb {
-  background: #fff; }
+  background: #424242; }
+
+.ui-progressbar-value {
+  margin-top: 3px !important; }
+
+.ui-widget-content {
+  background-color: transparent !important;
+  border: none !important; }
+
+.ui-widget-header {
+  background-color: #ccc !important;
+  border: none !important; }
+
+.ui-corner-all,
+.ui-corner-right,
+.ui-corner-left {
+  border-radius: 0 !important; }
