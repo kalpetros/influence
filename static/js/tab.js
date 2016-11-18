@@ -3,7 +3,7 @@ function getTopSites() {
   chrome.topSites.get(
     function(topSites) {
       topSites.forEach(function(topsite) {
-        var title = truncateString(topsite.title);
+        var title = truncateString(topsite.title, false);
         $('.topsites .collection').append('<a href="'+topsite.url+'" target="_blank"\
                                            class="collection-item">'+title+'\
                                            <span class="secondary-content">\
@@ -20,12 +20,12 @@ function getBookmarksTree() {
       bookmarkTreeNodes.forEach(function(treenode) {
         treenode.children.forEach(function(children) {
           var id = children.id;
-          var title = truncateString(children.title);
-          $('.bookmarks .collection').append('<a href="#" id="'+id+'"\
-                                              class="collection-item bookmark-node">'+title+'\
-                                              <span class="secondary-content">\
-                                              <i class="fa fa-caret-right" aria-hidden="true"></i>\
-                                              </span></a>');
+          var title = truncateString(children.title, false);
+          $('.bookmarks .old .collection').append('<a href="#" id="'+id+'"\
+                                                   class="collection-item bookmark-node">'+title+'\
+                                                   <span class="secondary-content">\
+                                                   <i class="fa fa-caret-right" aria-hidden="true"></i>\
+                                                   </span></a>');
         });
       });
     }
@@ -37,8 +37,8 @@ function getBookmarksSubTree(id) {
   chrome.bookmarks.getSubTree(
     id,
     function(bookmarkSubTreeNodes) {
+      $('.bookmarks .old .collection').empty();
       bookmarkSubTreeNodes.forEach(function(subtreenode) {
-        $('.bookmarks .collection').empty();
         var header = $('.bookmarks').children().first();
         var parentId = subtreenode.parentId;
         $(header).children().first().html('<a href="#" id="'+parentId+'" class="bookmark-node"\
@@ -46,20 +46,34 @@ function getBookmarksSubTree(id) {
                                            </i> Bookmarks</a>');
         subtreenode.children.forEach(function(children) {
           var id = children.id;
-          var title = truncateString(children.title);
+          var title = truncateString(children.title, false);
           if (children.children) {
-            $('.bookmarks .collection').append('<a href="#" id="'+id+'"\
-                                                class="collection-item bookmark-node">'+title+'\
-                                                <span class="secondary-content">\
-                                                <i class="fa fa-caret-right" aria-hidden="true"></i>\
-                                                </span></a>');
+            $('.bookmarks .old .collection').append('<a href="#" id="'+id+'"\
+                                                     class="collection-item bookmark-node">'+title+'\
+                                                     <span class="secondary-content">\
+                                                     <i class="fa fa-caret-right" aria-hidden="true"></i>\
+                                                     </span></a>');
           } else {
-            $('.bookmarks .collection').append('<a href="'+children.url+'" target="_blank"\
-                                                id="'+id+'"\ class="collection-item bookmark-node">'+title+'\
-                                                <span class="secondary-content">\
-                                                </span></a>');
+            $('.bookmarks .old .collection').append('<a href="'+children.url+'" target="_blank"\
+                                                     id="'+id+'"\ class="collection-item bookmark-node">'+title+'\
+                                                     <span class="secondary-content">\
+                                                     </span></a>');
           }
         });
+      });
+    }
+  )
+}
+
+// Get recently added bookmarks
+function getRecentBookmarks() {
+  chrome.bookmarks.getRecent(
+    10,
+    function(recentBookmarks) {
+      recentBookmarks.forEach(function(bookmark) {
+        var title = truncateString(bookmark.title, false);
+        $('.bookmarks .recent .collection').append('<a href="'+bookmark.url+'" target="_blank"\
+                                                    class="collection-item">'+title+'</a>');
       });
     }
   )
@@ -72,26 +86,47 @@ function getHistory() {
     'maxResults': 20 //The maximum number of results to retrieve. Defaults to 100.
   },
   function(historyItems) {
-    for (var i = 0; i < historyItems.length; ++i) {
-      var url = historyItems[i].url;
-      var visit_count = historyItems[i].visitCount;
-      if (historyItems[i].title != ''){
-        var title = truncateString(historyItems[i].title);
-        $('.history .collection').append('<a href="'+url+'" target="_blank" \
-                                          class="collection-item">'+title+'\
-                                          <span class="secondary-content">\
-                                          <i class="fa fa-eye" aria-hidden="true"></i>\
-                                          '+visit_count+'</span></a>');
-      } else {
-        var title = truncateString(historyItems[i].url);
-        $('.history .collection').append('<a href="'+url+'" target="_blank"\
-                                          class="collection-item">'+title+'\
-                                          <span class="secondary-content">\
-                                          <i class="fa fa-eye" aria-hidden="true"></i>\
-                                          '+visit_count+'</span></a>');
+    if (historyItems == 0) {
+      $('.history .collection').empty().hide();
+      $('.history .obliterate').hide();
+      $('.history .card-content').append('<h6 class="center-align">No history entries found.</h6>');
+    } else {
+      var header = $('.history').children().first();
+      $(header).children().first().html('History <span class="secondary-content tooltipped obliterate"\
+                                         data-position="right"\
+                                         data-delay="50"\
+                                         data-tooltip="Clear your history">\
+                                         <i class="fa fa-trash-o" aria-hidden="true"></i></span>');
+      // Initialize dynamically added tooltips
+      $('.tooltipped').tooltip({delay: 50});
+      for (var i = 0; i < historyItems.length; ++i) {
+        var url = historyItems[i].url;
+        var visit_count = historyItems[i].visitCount;
+        if (historyItems[i].title != ''){
+          var title = truncateString(historyItems[i].title, false);
+          $('.history .collection').append('<a href="'+url+'" target="_blank" \
+                                            class="collection-item">'+title+'\
+                                            <span class="secondary-content">\
+                                            <i class="fa fa-eye" aria-hidden="true"></i>\
+                                            '+visit_count+'</span></a>');
+        } else {
+          var title = truncateString(historyItems[i].url, false);
+          $('.history .collection').append('<a href="'+url+'" target="_blank"\
+                                            class="collection-item">'+title+'\
+                                            <span class="secondary-content">\
+                                            <i class="fa fa-eye" aria-hidden="true"></i>\
+                                            '+visit_count+'</span></a>');
+        }
       }
     }
   });
+}
+
+function deleteHistory() {
+  chrome.history.deleteAll(function(deleteall) {
+    getHistory();
+    Materialize.toast('History cleared!', 4000)
+  })
 }
 
 // All things download
@@ -101,13 +136,20 @@ function getDownloads() {
       "state": "in_progress"
     },
     function(DownloadItems) {
+      $('.downloads .in-progress').empty();
       DownloadItems.forEach(function(item) {
-        $('.downloads .in-progress').empty();
         var totalSize = formatBytes(item.totalBytes);
         var received = formatBytes(item.bytesReceived);
-        var title = truncateString(item.filename);
-        $('.downloads .in-progress').append('<li class="collection-item">'+title+'\
-                                             <span class="secondary-content">'+received+' / '+totalSize+'</span></li>');
+        var fullurl = item.finalUrl;
+        var title = truncateString(fullurl.substring(fullurl.lastIndexOf("/") + 1, fullurl.length), false);
+        var server = fullurl.substring(0, fullurl.lastIndexOf("/"));
+        $('.downloads .in-progress').append('<li class="collection-item avatar">\
+                                            <i class="fa fa-file" aria-hidden="true"></i>\
+                                            <span class="title">'+title+'</span>\
+                                            <p>'+server+'</p>\
+                                            <span class="secondary-content">\
+                                            '+received+' / '+totalSize+'</span>\
+                                            </li>');
       });
     }
   )
@@ -118,8 +160,10 @@ function getDownloads() {
     function(DownloadItems) {
       $('.downloads .complete').empty();
       DownloadItems.forEach(function(item) {
-        var title = truncateString(item.filename);
-        $('.downloads .complete').append('<li class="collection-item">'+title+'\
+        var filename = item.filename;
+        var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
+        $('.downloads .complete').append('<li class="collection-item"><i class="fa fa-file"\
+                                          aria-hidden="true"></i> '+title+'\
                                           <span class="secondary-content"></span></li>');
       });
     }
@@ -129,13 +173,15 @@ function getDownloads() {
 // Get CPU info
 function getCPU() {
   chrome.system.cpu.getInfo(function(cpu) {
-    $('.system .cpu').html('<div class="center-align">'+cpu.modelName+'\
-                            </div>');
+    $('.system .cpu').html('<div class="center-align">'+cpu.modelName+'</div>');
     cpu.processors.forEach(function(processor, i) {
-      var capacity = 1500000
-      var available = processor.usage.total
-      var percentage = (available / capacity) * 100
-      $('.system .cpu').append('<div class="cpu'+i+'"></div>');
+      var kernel = processor.usage.kernel;
+      var user = processor.usage.user;
+      var total = kernel + user;
+      var idle = processor.usage.idle;
+      var percentage = Math.round(((total / idle) * 100),1);
+      console.log(total, idle);
+      $('.system .cpu').append('<div class="cpu'+i+'"><span class="secondary-content">'+percentage+'%</span></div>');
       $(".system .cpu"+i).progressbar({
         value: percentage
       });
@@ -151,9 +197,9 @@ function getMemory() {
     $('.system .memory').html('<div class="center-align">\
                                '+formatBytes(memory.availableCapacity)+'\
                                available of '+formatBytes(memory.capacity)+'</div>');
-    var capacity = memory.capacity
-    var available = memory.availableCapacity
-    var percentage = (available / capacity) * 100
+    var capacity = memory.capacity;
+    var available = memory.availableCapacity;
+    var percentage = (available / capacity) * 100;
     $('.system .memory').append('<div class="memorybar"></div>')
     $(".system .memorybar").progressbar({
       value: percentage
@@ -184,7 +230,11 @@ function formatBytes(bytes, decimals) {
 }
 
 // Truncate a long string
-function truncateString(title) {
+function truncateString(title, full) {
+  if (full) {
+    var truncated = title.substring(0,100)+'...';
+    return title;
+  }
   if (title.length > 40) {
     var truncated = title.substring(0,40)+'...';
     return truncated;
@@ -208,11 +258,20 @@ function getDate() {
 function openWeather() {
   // Use your openweathermap API key here
   var apiKey = "";
+
+  // getCurrentPosition options
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 600000
+  };
   // Get user's location
-  var position = navigator.geolocation.getCurrentPosition(function(position) {
+  navigator.geolocation.getCurrentPosition(success, error, options);
+
+  function success(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-
+    console.log('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&APPID='+apiKey);
     $.ajax({
       type: "POST",
       dataType: 'json',
@@ -255,18 +314,31 @@ function openWeather() {
       console.log(xhr.responseText);
       console.log(textStatus);
     });
-  });
+  };
+
+  function error(err) {
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  };
 }
 
-$(document).ready(function() {
+$(window).on('load', function() {
+  // Random backgrounds
   var min = 1;
   var max = 9;
   var image = Math.floor(Math.random()*(max-min+1)+min);
-  $('body').css('background-image', 'url("static/img/image'+image+'.jpg")');
-  $('.bookmark-node').click(function() {
+  $('html').css('background', 'url(static/img/image'+image+'.jpg) no-repeat center center fixed');
+  $('html').css('background-size', 'cover');
+
+  // Bookmarks navigation
+  $(document).on('click', '.bookmark-node', function() {
     var id = $(this).attr('id');
     getBookmarksSubTree(id);
   });
+
+  // Delete all items from history
+  $(document).on('click', '.obliterate', function() {
+    deleteHistory();
+  })
 });
 
 // Call everything
@@ -274,13 +346,16 @@ $(document).ready(function() {
 var timeinterval = setInterval(function(){
   getDate();
   getDownloads();
-  getCPU();
 },0);
 
+var timeinterval = setInterval(function(){
+  getCPU();
+},1000);
+
 getTopSites();
+getRecentBookmarks();
 getBookmarksTree();
 getHistory();
-getDownloads();
 getMemory();
 getStorage();
 openWeather();

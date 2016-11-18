@@ -1,6 +1,5 @@
-body {
-	background-image: url('/static/img/image1.jpg');
-	background-size: cover;
+.tabs {
+	overflow-x: hidden !important;
 }
 
 .card-panel {
@@ -17,6 +16,9 @@ body {
 	border: none !important;
 	.collection-item {
 		background-color: transparent !important;
+		&.avatar {
+			padding-left: 20px !important;
+		}
 	}
 }
 
@@ -30,15 +32,17 @@ body {
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
-}
-
-/* Style default scrollbar */
-::-webkit-scrollbar {
-    width: 5px;  /* adjust/remove scrollbar space */
-}
-/* Style position indicator */
-::-webkit-scrollbar-thumb {
-    background: #424242;
+	div {
+		&:first-child {
+			span {
+				&:first-child {
+					a {
+						color: #26a69a !important;
+					}
+				}
+			}
+		}
+	}
 }
 
 .ui-progressbar-value {
@@ -59,4 +63,17 @@ body {
 .ui-corner-right,
 .ui-corner-left {
 	border-radius: 0 !important;
+}
+
+.obliterate {
+	cursor: pointer;
+}
+
+/* Style default scrollbar */
+::-webkit-scrollbar {
+    width: 5px;  /* adjust/remove scrollbar space */
+}
+/* Style position indicator */
+::-webkit-scrollbar-thumb {
+    background: #424242;
 }

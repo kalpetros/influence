@@ -32,14 +32,26 @@
         	</div>
       		<div class="card grey lighten-5">
         		<div class="card-content teal-text text-lighten-1">
-        			<ul class="collection">
-					    </ul>
+        			<div class="row">
+						    <div class="col s12">
+						      <ul class="tabs">
+						        <li class="tab col s12 m6 l6"><a href="#recent">Recent</a></li>
+						        <li class="tab col s12 m6 l6"><a class="active" href="#old">Bookmarks</a></li>
+						      </ul>
+						    </div>
+						    <div id="recent" class="col s12 recent">
+		        			<ul class="collection"></ul>
+						    </div>
+						    <div id="old" class="col s12 old">
+						    	<ul class="collection"></ul>
+						    </div>
+						  </div>
       			</div>
       		</div>
     		</div>
   			<div class="col s12 m4 l4 history">
       		<div class="card-panel grey lighten-5">
-	          <span class="teal-text text-lighten-1">History</span>
+	          <span class="teal-text text-lighten-1">History
         	</div>
       		<div class="card grey lighten-5">
         		<div class="card-content teal-text text-lighten-1">
@@ -56,17 +68,19 @@
             	<div class="row">
 						    <div class="col s12">
 						      <ul class="tabs">
-						        <li class="tab col s6"><a class="active" href="#active">Active Downloads</a></li>
-						        <li class="tab col s6"><a href="#past">Past Downloads</a></li>
+						        <li class="tab col s6">
+						        	<a class="active" href="#active">Active Downloads</a>
+					        	</li>
+						        <li class="tab col s6">
+						        	<a href="#past">Past Downloads</a>
+					        	</li>
 						      </ul>
 						    </div>
 						    <div id="active" class="col s12">
-						    	<ul class="collection in-progress">
-							    </ul>
+						    	<ul class="collection in-progress"></ul>
 					    	</div>
 						    <div id="past" class="col s12">
-		            	<ul class="collection complete">
-							    </ul>
+		            	<ul class="collection complete"></ul>
 					    	</div>
 						  </div>
             </div>
@@ -78,9 +92,9 @@
           		<div class="row">
 						    <div class="col s12">
 						      <ul class="tabs">
-						        <li class="tab col s4"><a class="active" href="#cpu">CPU</a></li>
-						        <li class="tab col s4"><a href="#memory">Memory</a></li>
-						        <li class="tab col s4"><a href="#storage">Storage</a></li>
+						        <li class="tab col s4"><a class="active" href="#cpu"><i class="fa fa-microchip" aria-hidden="true"></i> CPU</a></li>
+						        <li class="tab col s4"><a href="#memory"><i class="fa fa-server" aria-hidden="true"></i> Memory</a></li>
+						        <li class="tab col s4"><a href="#storage"><i class="fa fa-hdd-o" aria-hidden="true"></i> Storage</a></li>
 						      </ul>
 						    </div>
 						    <div id="cpu" class="col s12 cpu"></div>
