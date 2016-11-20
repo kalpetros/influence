@@ -46,8 +46,12 @@
 .ui-corner-left {
   border-radius: 0 !important; }
 
-.obliterate {
+.obliterate,
+.download-event {
   cursor: pointer; }
+
+.download-event {
+  font-size: 1rem; }
 
 /* Style default scrollbar */
 ::-webkit-scrollbar {

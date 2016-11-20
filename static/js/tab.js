@@ -4,8 +4,8 @@ function getTopSites() {
     function(topSites) {
       topSites.forEach(function(topsite) {
         var title = truncateString(topsite.title, false);
-        $('.topsites .collection').append('<a href="'+topsite.url+'" target="_blank"\
-                                           class="collection-item">'+title+'\
+        $('.topsites .collection').append('<a href="'+topsite.url+'" target="_blank" class="collection-item">\
+                                           <img src="https://plus.google.com/_/favicon?domain_url='+topsite.url+'"/>'+' '+title+'\
                                            <span class="secondary-content">\
                                            </span></a>');
       });
@@ -21,11 +21,9 @@ function getBookmarksTree() {
         treenode.children.forEach(function(children) {
           var id = children.id;
           var title = truncateString(children.title, false);
-          $('.bookmarks .old .collection').append('<a href="#" id="'+id+'"\
-                                                   class="collection-item bookmark-node">'+title+'\
+          $('.bookmarks .old .collection').append('<a href="#" id="'+id+'" class="collection-item bookmark-node">'+title+'\
                                                    <span class="secondary-content">\
-                                                   <i class="fa fa-caret-right" aria-hidden="true"></i>\
-                                                   </span></a>');
+                                                   <i class="fa fa-caret-right" aria-hidden="true"></i></span></a>');
         });
       });
     }
@@ -41,23 +39,25 @@ function getBookmarksSubTree(id) {
       bookmarkSubTreeNodes.forEach(function(subtreenode) {
         var header = $('.bookmarks').children().first();
         var parentId = subtreenode.parentId;
-        $(header).children().first().html('<a href="#" id="'+parentId+'" class="bookmark-node"\
-                                           ><i class="fa fa-caret-left" aria-hidden="true">\
-                                           </i> Bookmarks</a>');
+        if (parentId) {
+          $(header).children().first().html('<a href="#" id="'+parentId+'" class="bookmark-node"\
+                                             ><i class="fa fa-caret-left" aria-hidden="true">\
+                                             </i> Bookmarks</a>');
+        } else {
+          $(header).children().first().html('Bookmarks');
+        }
         subtreenode.children.forEach(function(children) {
           var id = children.id;
           var title = truncateString(children.title, false);
           if (children.children) {
-            $('.bookmarks .old .collection').append('<a href="#" id="'+id+'"\
-                                                     class="collection-item bookmark-node">'+title+'\
+            $('.bookmarks .old .collection').append('<a href="#" id="'+id+'" class="collection-item bookmark-node">'+title+'\
                                                      <span class="secondary-content">\
-                                                     <i class="fa fa-caret-right" aria-hidden="true"></i>\
-                                                     </span></a>');
+                                                     <i class="fa fa-caret-right" aria-hidden="true"></i></span></a>');
           } else {
             $('.bookmarks .old .collection').append('<a href="'+children.url+'" target="_blank"\
-                                                     id="'+id+'"\ class="collection-item bookmark-node">'+title+'\
-                                                     <span class="secondary-content">\
-                                                     </span></a>');
+                                                     id="'+id+'"\ class="collection-item">\
+                                                     <img src="https://plus.google.com/_/favicon?domain_url='+children.url+'"/>'+' '+title+'\
+                                                     <span class="secondary-content"></span></a>');
           }
         });
       });
@@ -72,8 +72,8 @@ function getRecentBookmarks() {
     function(recentBookmarks) {
       recentBookmarks.forEach(function(bookmark) {
         var title = truncateString(bookmark.title, false);
-        $('.bookmarks .recent .collection').append('<a href="'+bookmark.url+'" target="_blank"\
-                                                    class="collection-item">'+title+'</a>');
+        $('.bookmarks .recent .collection').append('<a href="'+bookmark.url+'" target="_blank" class="collection-item">\
+                                                    <img src="https://plus.google.com/_/favicon?domain_url='+bookmark.url+'"/>'+' '+title+'</a>');
       });
     }
   )
@@ -92,27 +92,27 @@ function getHistory() {
       $('.history .card-content').append('<h6 class="center-align">No history entries found.</h6>');
     } else {
       var header = $('.history').children().first();
-      $(header).children().first().html('History <span class="secondary-content tooltipped obliterate"\
-                                         data-position="right"\
-                                         data-delay="50"\
+      $(header).children().first().html('History \
+                                         <span class="secondary-content tooltipped obliterate"\
+                                         data-position="right" data-delay="50"\
                                          data-tooltip="Clear your history">\
                                          <i class="fa fa-trash-o" aria-hidden="true"></i></span>');
-      // Initialize dynamically added tooltips
-      $('.tooltipped').tooltip({delay: 50});
+      // Initialize dynamically added tooltip
+      $('.tooltipped').tooltip();
       for (var i = 0; i < historyItems.length; ++i) {
         var url = historyItems[i].url;
         var visit_count = historyItems[i].visitCount;
-        if (historyItems[i].title != ''){
+        if (historyItems[i].title != '') {
           var title = truncateString(historyItems[i].title, false);
-          $('.history .collection').append('<a href="'+url+'" target="_blank" \
-                                            class="collection-item">'+title+'\
+          $('.history .collection').append('<a href="'+url+'" target="_blank" class="collection-item">\
+                                            <img src="https://plus.google.com/_/favicon?domain_url='+url+'"/>'+' '+title+'\
                                             <span class="secondary-content">\
                                             <i class="fa fa-eye" aria-hidden="true"></i>\
                                             '+visit_count+'</span></a>');
         } else {
           var title = truncateString(historyItems[i].url, false);
-          $('.history .collection').append('<a href="'+url+'" target="_blank"\
-                                            class="collection-item">'+title+'\
+          $('.history .collection').append('<a href="'+url+'" target="_blank" class="collection-item">\
+                                            <img src="https://plus.google.com/_/favicon?domain_url='+url+'"/>'+' '+title+'\
                                             <span class="secondary-content">\
                                             <i class="fa fa-eye" aria-hidden="true"></i>\
                                             '+visit_count+'</span></a>');
@@ -129,27 +129,69 @@ function deleteHistory() {
   })
 }
 
+// Check for new downloads
+function checkDownloads() {
+  setInterval(function() {
+    chrome.downloads.search({
+      "state": "in_progress"
+      },
+      function(items) {
+        var downloading = [];
+        // Add all active downloads in an array
+        items.forEach(function(item) {
+          downloading.push(item.id);
+        });
+        var elements = $('.downloads .in-progress').children();
+        items.forEach(function(item) {
+          elements.each(function(i, child) {
+            var id = $(child).attr('id');
+            var itemid = 'download'+item.id;
+            // If true remove id from the array
+            if (id == itemid) {
+              var found = [item.id];
+              downloading = downloading.filter(item => found.indexOf(item) === -1);
+            }
+          });
+        });
+        // Add new download to the active downloads list
+        if (downloading.length > 0) {
+          getDownloads();
+        }
+      }
+    );
+  },2000);
+}
+
 // All things download
 function getDownloads() {
-  // Downloads in progress
+  // Check for active downloads
   chrome.downloads.search({
       "state": "in_progress"
     },
     function(DownloadItems) {
       $('.downloads .in-progress').empty();
       DownloadItems.forEach(function(item) {
-        var totalSize = formatBytes(item.totalBytes);
-        var received = formatBytes(item.bytesReceived);
         var fullurl = item.finalUrl;
         var title = truncateString(fullurl.substring(fullurl.lastIndexOf("/") + 1, fullurl.length), false);
         var server = fullurl.substring(0, fullurl.lastIndexOf("/"));
-        $('.downloads .in-progress').append('<li class="collection-item avatar">\
-                                            <i class="fa fa-file" aria-hidden="true"></i>\
+        // Check item's state
+        if (item.canResume) {
+          var event = '<span id="'+item.id+'" class="download-event tooltipped" data-event="resume"\
+                       data-position="left" data-delay="50" data-tooltip="Resume download">\
+                       <i class="fa fa-play" aria-hidden="true"></i></span>';
+        } else {
+          var event = '<span id="'+item.id+'" class="download-event tooltipped" data-event="pause"\
+                       data-position="left" data-delay="50" data-tooltip="Pause download">\
+                       <i class="fa fa-pause" aria-hidden="true"></i></span>';
+        }
+        $('.downloads .in-progress').append('<li id="download'+item.id+'" class="collection-item avatar">\
+                                            '+event+'\
                                             <span class="title">'+title+'</span>\
                                             <p>'+server+'</p>\
-                                            <span class="secondary-content">\
-                                            '+received+' / '+totalSize+'</span>\
+                                            <span class="secondary-content"></span>\
                                             </li>');
+        // Check status of download
+        downloadStatus();
       });
     }
   )
@@ -170,6 +212,56 @@ function getDownloads() {
   )
 }
 
+function downloadStatus() {
+  // Handle received bytes
+  setInterval(function() {
+    chrome.downloads.search({
+        "state": "in_progress"
+      },
+      function(DownloadItems) {
+        // Handle newly added download by examining how many divs are active
+        // and then append the new download
+        DownloadItems.forEach(function(item) {
+          var totalSize = formatBytes(Math.round(item.totalBytes),1);
+          var received = formatBytes(Math.round(item.bytesReceived),1);
+          // status(received, totalSize, item);
+          $('#download'+item.id+' .secondary-content').html(received+' / '+totalSize);
+        });
+      }
+    )
+  },1000);
+}
+
+function downloadEvents(event, id) {
+  console.log(event);
+  // Pause download
+  if (event == "pause") {
+    chrome.downloads.pause(
+      id,
+      function(callback) {
+        var element = $('.download-event#'+id);
+        $(element).attr('data-event', 'resume');
+        $(element).attr('data-tooltip', "Resume download");
+        $('.tooltipped').tooltip();
+        $(element).html('<i class="fa fa-play" aria-hidden="true"></i>');
+      }
+    )
+  }
+  // Resume download
+  else if (event == "resume") {
+    chrome.downloads.resume(
+      id,
+      function(callback) {
+        var element = $('.download-event#'+id);
+        $(element).attr('data-event', 'pause');
+        $(element).attr('data-tooltip', "Pause download");
+        $('.tooltipped').tooltip();
+        $(element).html('<i class="fa fa-pause" aria-hidden="true"></i>');
+      }
+    )
+  }
+}
+
 // Get CPU info
 function getCPU() {
   chrome.system.cpu.getInfo(function(cpu) {
@@ -180,7 +272,7 @@ function getCPU() {
       var total = kernel + user;
       var idle = processor.usage.idle;
       var percentage = Math.round(((total / idle) * 100),1);
-      console.log(total, idle);
+      // console.log(total, idle);
       $('.system .cpu').append('<div class="cpu'+i+'"><span class="secondary-content">'+percentage+'%</span></div>');
       $(".system .cpu"+i).progressbar({
         value: percentage
@@ -230,6 +322,8 @@ function formatBytes(bytes, decimals) {
 }
 
 // Truncate a long string
+// Make string longer by passing
+// true as the second parameter
 function truncateString(title, full) {
   if (full) {
     var truncated = title.substring(0,100)+'...';
@@ -338,17 +432,23 @@ $(window).on('load', function() {
   // Delete all items from history
   $(document).on('click', '.obliterate', function() {
     deleteHistory();
-  })
+  });
+
+  // Pause download handler
+  $(document).on('click', '.download-event', function() {
+    var event = $(this).attr('data-event');
+    var id = parseInt($(this).attr('id'));
+    downloadEvents(event, id);
+  });
 });
 
 // Call everything
 // Functions to run in an interval
-var timeinterval = setInterval(function(){
+var timeinterval = setInterval(function() {
   getDate();
-  getDownloads();
 },0);
 
-var timeinterval = setInterval(function(){
+var timeinterval = setInterval(function() {
   getCPU();
 },1000);
 
@@ -356,6 +456,7 @@ getTopSites();
 getRecentBookmarks();
 getBookmarksTree();
 getHistory();
+checkDownloads();
 getMemory();
 getStorage();
 openWeather();
