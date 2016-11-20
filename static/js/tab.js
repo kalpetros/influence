@@ -133,7 +133,7 @@ function deleteHistory() {
 function checkDownloads() {
   setInterval(function() {
     chrome.downloads.search({
-      "state": "in_progress"
+        "state": "in_progress"
       },
       function(items) {
         var downloading = [];
@@ -142,6 +142,7 @@ function checkDownloads() {
           downloading.push(item.id);
         });
         var elements = $('.downloads .in-progress').children();
+        // Check if all active downloads appear on the list
         items.forEach(function(item) {
           elements.each(function(i, child) {
             var id = $(child).attr('id');
@@ -155,15 +156,34 @@ function checkDownloads() {
         });
         // Add new download to the active downloads list
         if (downloading.length > 0) {
-          getDownloads();
+          getActiveDownloads();
         }
       }
     );
   },2000);
 }
 
+// Get completed downloads
+function getCompletedDownloads() {
+  // Completed downloads
+  chrome.downloads.search({
+      "state": "complete"
+    },
+    function(DownloadItems) {
+      $('.downloads .complete').empty();
+      DownloadItems.forEach(function(item) {
+        var filename = item.filename;
+        var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
+        $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
+                                          <i class="fa fa-file" aria-hidden="true"></i> '+title+'\
+                                          <span class="secondary-content"></span></a>');
+      });
+    }
+  )
+}
+
 // All things download
-function getDownloads() {
+function getActiveDownloads() {
   // Check for active downloads
   chrome.downloads.search({
       "state": "in_progress"
@@ -176,11 +196,11 @@ function getDownloads() {
         var server = fullurl.substring(0, fullurl.lastIndexOf("/"));
         // Check item's state
         if (item.canResume) {
-          var event = '<span id="'+item.id+'" class="download-event tooltipped" data-event="resume"\
+          var event = '<span class="download-event tooltipped" data-event="resume" data-id="'+item.id+'"\
                        data-position="left" data-delay="50" data-tooltip="Resume download">\
                        <i class="fa fa-play" aria-hidden="true"></i></span>';
         } else {
-          var event = '<span id="'+item.id+'" class="download-event tooltipped" data-event="pause"\
+          var event = '<span class="download-event tooltipped" data-event="pause" data-id="'+item.id+'"\
                        data-position="left" data-delay="50" data-tooltip="Pause download">\
                        <i class="fa fa-pause" aria-hidden="true"></i></span>';
         }
@@ -192,21 +212,6 @@ function getDownloads() {
                                             </li>');
         // Check status of download
         downloadStatus();
-      });
-    }
-  )
-  // Completed downloads
-  chrome.downloads.search({
-      "state": "complete"
-    },
-    function(DownloadItems) {
-      $('.downloads .complete').empty();
-      DownloadItems.forEach(function(item) {
-        var filename = item.filename;
-        var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
-        $('.downloads .complete').append('<li class="collection-item"><i class="fa fa-file"\
-                                          aria-hidden="true"></i> '+title+'\
-                                          <span class="secondary-content"></span></li>');
       });
     }
   )
@@ -232,6 +237,12 @@ function downloadStatus() {
   },1000);
 }
 
+// Show the downloaded file in its folder in a file manager
+function showDownload(id) {
+  chrome.downloads.show(id);
+  chrome.downloads.showDefaultFolder();
+}
+
 function downloadEvents(event, id) {
   console.log(event);
   // Pause download
@@ -239,7 +250,7 @@ function downloadEvents(event, id) {
     chrome.downloads.pause(
       id,
       function(callback) {
-        var element = $('.download-event#'+id);
+        var element = $('.download-event[data-id="'+id+'"]');
         $(element).attr('data-event', 'resume');
         $(element).attr('data-tooltip', "Resume download");
         $('.tooltipped').tooltip();
@@ -249,10 +260,9 @@ function downloadEvents(event, id) {
   }
   // Resume download
   else if (event == "resume") {
-    chrome.downloads.resume(
-      id,
+    chrome.downloads.resume(id,
       function(callback) {
-        var element = $('.download-event#'+id);
+        var element = $('.download-event[data-id="'+id+'"]');
         $(element).attr('data-event', 'pause');
         $(element).attr('data-tooltip', "Pause download");
         $('.tooltipped').tooltip();
@@ -434,10 +444,17 @@ $(window).on('load', function() {
     deleteHistory();
   });
 
+  // Show the downloaded file in its folder in a file manager
+  $(document).on('click', '.download-show', function() {
+    var id = parseInt($(this).attr('data-id'));
+    showDownload(id);
+  });
+
   // Pause download handler
   $(document).on('click', '.download-event', function() {
     var event = $(this).attr('data-event');
-    var id = parseInt($(this).attr('id'));
+    var id = parseInt($(this).attr('data-id'));
+    console.log(id, event);
     downloadEvents(event, id);
   });
 });
@@ -448,7 +465,7 @@ var timeinterval = setInterval(function() {
   getDate();
 },0);
 
-var timeinterval = setInterval(function() {
+var timeintervalNew = setInterval(function() {
   getCPU();
 },1000);
 
