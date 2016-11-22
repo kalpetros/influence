@@ -477,7 +477,9 @@ $(window).on('load', function() {
       "state": "complete"
     },
     function(items) {
+      // Set items length to session storage
       sessionStorage.setItem('downloaded', items.length);
+      getCompletedDownloads();
     }
   )
 });
