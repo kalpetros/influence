@@ -160,6 +160,19 @@ function checkDownloads() {
         }
       }
     );
+    chrome.downloads.search({
+        "state": "complete"
+      },
+      function(items) {
+        var downloaded = sessionStorage.getItem('downloaded');
+        console.log(downloaded);
+        console.log(items.length);
+        if (items.length > downloaded) {
+          sessionStorage.setItem('downloaded', items.length);
+          getActiveDownloads();
+        }
+      }
+    )
   },2000);
 }
 
@@ -215,6 +228,7 @@ function getActiveDownloads() {
       });
     }
   )
+  getCompletedDownloads();
 }
 
 function downloadStatus() {
@@ -457,6 +471,15 @@ $(window).on('load', function() {
     console.log(id, event);
     downloadEvents(event, id);
   });
+
+  // Set completed download items length to session storage
+  chrome.downloads.search({
+      "state": "complete"
+    },
+    function(items) {
+      sessionStorage.setItem('downloaded', items.length);
+    }
+  )
 });
 
 // Call everything
