@@ -45,13 +45,28 @@
 	}
 }
 
+.components {
+	margin-bottom: 0px !important;
+	.component {
+		height: 70px;
+		line-height: 70px;
+		position: relative;
+		.usage {
+			position: absolute;
+			left: 0;
+			right: 0;
+		}
+	}
+}
+
 .ui-progressbar-value {
-	margin-top: 3px !important;
+	margin-top: 0px !important;
 }
 
 .ui-widget-content {
 	background-color: transparent !important;
 	border: none !important;
+	height: 100% !important;
 }
 
 .ui-widget-header {

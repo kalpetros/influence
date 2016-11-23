@@ -292,17 +292,26 @@ function downloadEvents(event, id) {
 // Get CPU info
 function getCPU() {
   chrome.system.cpu.getInfo(function(cpu) {
-    $('.system .cpu').html('<div class="center-align">'+cpu.modelName+'</div>');
+    // $('.system .cpu').html('<div class="center-align">'+cpu.modelName+'</div>');
+    $('.system .cpu').empty();
+    var usages = [];
     cpu.processors.forEach(function(processor, i) {
       var kernel = processor.usage.kernel;
       var user = processor.usage.user;
       var total = kernel + user;
       var idle = processor.usage.idle;
       var percentage = Math.round(((total / idle) * 100),1);
-      $('.system .cpu').append('<div class="cpu'+i+'"><span class="secondary-content">'+percentage+'%</span></div>');
-      $(".system .cpu"+i).progressbar({
-        value: percentage
-      });
+      usages.push(percentage);
+    });
+    // Sum array values and divide sum by array length
+    usage = ((usages.reduce(add, 0))/usages.length);
+    function add(a,b) {
+      return a + b;
+    }
+    $('.system .cpu').html('<div class="center-align usage">'+usage+'%</div>');
+    $('.system .cpu').append('<div class="cpubar"></div>');
+    $(".system .cpubar").progressbar({
+      value: usage
     });
   });
 }
@@ -311,8 +320,8 @@ function getCPU() {
 function getMemory() {
   // Get memory info
   chrome.system.memory.getInfo(function(memory) {
-    $('.memory').empty();
-    $('.system .memory').html('<div class="center-align">\
+    $('.system .memory').empty();
+    $('.system .memory').html('<div class="center-align usage">\
                                '+formatBytes(memory.availableCapacity)+'\
                                available of '+formatBytes(memory.capacity)+'</div>');
     var capacity = memory.capacity;
@@ -330,7 +339,7 @@ function getStorage() {
   // Get storage info
   chrome.system.storage.getInfo(function(storage){
     storage.forEach(function(disk) {
-      $('.system .storage').html('<div class="center-align">\
+      $('.system .storage').html('<div class="center-align usage">\
                                   Total storage space: '+formatBytes(disk.capacity)+'\
                                   </div>');
     });
