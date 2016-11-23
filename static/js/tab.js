@@ -165,8 +165,6 @@ function checkDownloads() {
       },
       function(items) {
         var downloaded = sessionStorage.getItem('downloaded');
-        console.log(downloaded);
-        console.log(items.length);
         if (items.length > downloaded) {
           sessionStorage.setItem('downloaded', items.length);
           getActiveDownloads();
@@ -186,10 +184,16 @@ function getCompletedDownloads() {
       $('.downloads .complete').empty();
       DownloadItems.forEach(function(item) {
         var filename = item.filename;
-        var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
-        $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
-                                          <i class="fa fa-file" aria-hidden="true"></i> '+title+'\
-                                          <span class="secondary-content"></span></a>');
+        chrome.downloads.getFileIcon(
+          item.id,
+          {'size': 16},
+          function(icon) {
+            var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
+            $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
+                                              <img src="'+icon+'"/> '+title+'\
+                                              <span class="secondary-content"></span></a>');
+          }
+        );
       });
     }
   )
@@ -258,7 +262,6 @@ function showDownload(id) {
 }
 
 function downloadEvents(event, id) {
-  console.log(event);
   // Pause download
   if (event == "pause") {
     chrome.downloads.pause(
@@ -296,7 +299,6 @@ function getCPU() {
       var total = kernel + user;
       var idle = processor.usage.idle;
       var percentage = Math.round(((total / idle) * 100),1);
-      // console.log(total, idle);
       $('.system .cpu').append('<div class="cpu'+i+'"><span class="secondary-content">'+percentage+'%</span></div>');
       $(".system .cpu"+i).progressbar({
         value: percentage
@@ -389,7 +391,7 @@ function openWeather() {
   function success(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
-    console.log('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&APPID='+apiKey);
+    // console.log('http://api.openweathermap.org/data/2.5/weather?lat='+latitude+'&lon='+longitude+'&APPID='+apiKey);
     $.ajax({
       type: "POST",
       dataType: 'json',
@@ -442,7 +444,7 @@ function openWeather() {
 $(window).on('load', function() {
   // Random backgrounds
   var min = 1;
-  var max = 9;
+  var max = 10;
   var image = Math.floor(Math.random()*(max-min+1)+min);
   $('html').css('background', 'url(static/img/image'+image+'.jpg) no-repeat center center fixed');
   $('html').css('background-size', 'cover');
@@ -468,7 +470,6 @@ $(window).on('load', function() {
   $(document).on('click', '.download-event', function() {
     var event = $(this).attr('data-event');
     var id = parseInt($(this).attr('data-id'));
-    console.log(id, event);
     downloadEvents(event, id);
   });
 
