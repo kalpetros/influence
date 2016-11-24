@@ -455,7 +455,7 @@ $(window).on('load', function() {
   var min = 1;
   var max = 10;
   var image = Math.floor(Math.random()*(max-min+1)+min);
-  $('html').css('background', 'url(static/img/image'+image+'.jpg) no-repeat center center fixed');
+  $('html').css('background', 'url(src/img/image'+image+'.jpg) no-repeat center center fixed');
   $('html').css('background-size', 'cover');
 
   // Bookmarks navigation
