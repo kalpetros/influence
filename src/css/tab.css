@@ -18,6 +18,7 @@
 .bookmarks .card,
 .history .card,
 .downloads .card,
+.apps .card,
 .system .card {
   max-height: 300px;
   overflow-y: auto;
@@ -27,6 +28,7 @@
 .bookmarks div:first-child span:first-child a,
 .history div:first-child span:first-child a,
 .downloads div:first-child span:first-child a,
+.apps div:first-child span:first-child a,
 .system div:first-child span:first-child a {
   color: #26a69a !important; }
 
@@ -40,6 +42,9 @@
       position: absolute;
       left: 0;
       right: 0; }
+
+.launch-app {
+  cursor: pointer; }
 
 .ui-progressbar-value {
   margin-top: 0px !important; }

@@ -26,6 +26,7 @@
 .bookmarks,
 .history,
 .downloads,
+.apps,
 .system {
 	.card {
 		max-height: 300px;
@@ -57,6 +58,10 @@
 			right: 0;
 		}
 	}
+}
+
+.launch-app {
+	cursor: pointer;
 }
 
 .ui-progressbar-value {

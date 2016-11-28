@@ -289,6 +289,56 @@ function downloadEvents(event, id) {
   }
 }
 
+function getApps() {
+  chrome.management.getAll(
+    function(apps) {
+      apps_array = [];
+      apps.forEach(function(app) {
+        if (app.isApp) {
+          apps_array.push(app);
+        }
+      })
+      var items = 0;
+      apps.forEach(function(app) {
+        if (app.isApp) {
+          items += 1;
+        }
+      });
+      if (items % 3 == 0) {
+        var rows = items / 3;
+      } else {
+        var rows = (items - 1) / 3 + 1;
+      }
+      // Position apps in a 3xn grid
+      for (var i = 0; i <= rows; i++) {
+        $('.apps .card-content').append('<div class="row row'+i+' center-align"></div>');
+        for (var j = i*3; j <= apps_array.length; j++) {
+          // Get the biggest icon
+          var icn = "";
+          var icons = apps_array[j].icons;
+          icons.forEach(function(icon) {
+            if (icon.size > 120) {
+              icn = icon.url;
+            }
+          });
+          // Add app in a column
+          $('.apps .card-content .row'+i).append('<div class="col s4 m4 l4">\
+              <a class="launch-app" data-app-id="'+apps_array[j].id+'">\
+              <img src="'+icn+'" height="64px" width="64px"/></a></div>');
+          if (j == 2) {
+            break;
+          }
+        }
+      }
+    }
+  );
+}
+
+// Launch application
+function launchApp(id) {
+  chrome.management.launchApp(id);
+};
+
 // Get CPU info
 function getCPU() {
   chrome.system.cpu.getInfo(function(cpu) {
@@ -482,6 +532,12 @@ $(window).on('load', function() {
     downloadEvents(event, id);
   });
 
+  // Launch an application
+  $(document).on('click', '.launch-app', function() {
+    var id = $(this).attr('data-app-id');
+    launchApp(id);
+  });
+
   // Set completed download items length to session storage
   chrome.downloads.search({
       "state": "complete"
@@ -509,6 +565,7 @@ getRecentBookmarks();
 getBookmarksTree();
 getHistory();
 checkDownloads();
+getApps();
 getMemory();
 getStorage();
 openWeather();

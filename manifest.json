@@ -12,7 +12,8 @@
     "system.cpu",
     "system.memory",
     "system.storage",
-    "geolocation"
+    "geolocation",
+    "management"
   ],
   "chrome_url_overrides" : {
     "newtab": "tab.html"
