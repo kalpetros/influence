@@ -29,7 +29,7 @@
 .apps,
 .system {
 	.card {
-		max-height: 300px;
+		max-height: 280px;
 		overflow-y: auto;
 		overflow-x: hidden;
 	}
@@ -42,6 +42,14 @@
 					}
 				}
 			}
+		}
+	}
+}
+
+.apps {
+	.card {
+		.card-content {
+			margin-top: 20px !important;
 		}
 	}
 }

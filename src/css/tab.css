@@ -20,7 +20,7 @@
 .downloads .card,
 .apps .card,
 .system .card {
-  max-height: 300px;
+  max-height: 280px;
   overflow-y: auto;
   overflow-x: hidden; }
 
@@ -31,6 +31,9 @@
 .apps div:first-child span:first-child a,
 .system div:first-child span:first-child a {
   color: #26a69a !important; }
+
+.apps .card .card-content {
+  margin-top: 20px !important; }
 
 .components {
   margin-bottom: 0px !important; }
