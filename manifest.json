@@ -3,6 +3,17 @@
   "name": "Influence",
   "description": "Replace your new tab page with an elegant material design dashboard.",
   "version": "0.1",
+  "default_locale": "en",
+  "author": "kalpetros",
+  "icons": {
+    "16": "16.png",
+    "32": "32.png",
+    "48": "48.png",
+    "128": "128.png"
+  },
+  "chrome_url_overrides" : {
+    "newtab": "tab.html"
+  },
   "permissions": [
     "management",
     "topSites",
@@ -14,14 +25,5 @@
     "system.storage",
     "geolocation",
     "management"
-  ],
-  "chrome_url_overrides" : {
-    "newtab": "tab.html"
-  },
-  "icons": {
-    "16": "16.png",
-    "32": "32.png",
-    "48": "48.png",
-    "128": "128.png"
-  }
+  ]
 }
