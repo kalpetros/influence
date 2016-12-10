@@ -3,7 +3,6 @@
   "name": "Influence",
   "description": "Replace your new tab page with an elegant material design dashboard.",
   "version": "0.1",
-  "default_locale": "en",
   "author": "kalpetros",
   "icons": {
     "16": "16.png",
