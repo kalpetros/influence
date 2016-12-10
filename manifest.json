@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Influence",
-  "description": "Replace your new tab page",
+  "description": "Replace your new tab page with an elegant material design dashboard.",
   "version": "0.1",
   "permissions": [
     "management",
@@ -17,5 +17,11 @@
   ],
   "chrome_url_overrides" : {
     "newtab": "tab.html"
+  },
+  "icons": {
+    "16": "16.png",
+    "32": "32.png",
+    "48": "48.png",
+    "128": "128.png"
   }
 }

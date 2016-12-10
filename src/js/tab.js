@@ -189,9 +189,15 @@ function getCompletedDownloads() {
           {'size': 16},
           function(icon) {
             var title = truncateString(filename.substring(filename.lastIndexOf("/") + 1, filename.length), true);
-            $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
-                                              <img src="'+icon+'"/> '+title+'\
+            if (icon == null) {
+              $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
+                                              <i class="fa fa-file" aria-hidden="true"></i> '+title+'\
                                               <span class="secondary-content"></span></a>');
+            } else {
+              $('.downloads .complete').append('<a href="#" class="collection-item download-show" data-id="'+item.id+'">\
+                                                <img src="'+icon+'"/> '+title+'\
+                                                <span class="secondary-content"></span></a>');
+            }
           }
         );
       });
@@ -307,12 +313,12 @@ function getApps() {
       if (items % 3 == 0) {
         var rows = items / 3;
       } else {
-        var rows = (items - 1) / 3 + 1;
+        var rows = Math.round((items + 1) / 3, 1);
       }
       // Position apps in a 3xn grid
-      for (var i = 0; i <= rows; i++) {
+      for (var i = 0; i <= rows - 1; i++) {
         $('.apps .card-content').append('<div class="row row'+i+' center-align"></div>');
-        for (var j = i*3; j <= apps_array.length; j++) {
+        for (var j = i*3; j <= apps_array.length - 1; j++) {
           // Get the biggest icon
           var icn = "";
           var icons = apps_array[j].icons;
@@ -325,7 +331,8 @@ function getApps() {
           $('.apps .card-content .row'+i).append('<div class="col s4 m4 l4">\
               <a class="launch-app" data-app-id="'+apps_array[j].id+'">\
               <img src="'+icn+'" height="64px" width="64px"/></a></div>');
-          if (j == 2) {
+          // Break loop every third iteration
+          if ((j + 1) % 3 == 0) {
             break;
           }
         }
@@ -341,29 +348,30 @@ function launchApp(id) {
 
 // Get CPU info
 function getCPU() {
+  var ticks = [], idles = [];
   chrome.system.cpu.getInfo(function(cpu) {
-    // $('.system .cpu').html('<div class="center-align">'+cpu.modelName+'</div>');
-    $('.system .cpu').empty();
-    var usages = [];
+    var cores = cpu.processors.length;
     cpu.processors.forEach(function(processor, i) {
       var kernel = processor.usage.kernel;
       var user = processor.usage.user;
-      var total = kernel + user;
       var idle = processor.usage.idle;
-      var percentage = Math.round(((total / idle) * 100),1);
-      usages.push(percentage);
+      var tick = kernel + user + idle;
+      ticks.push(tick);
+      idles.push(idle);
     });
-    // Sum array values and divide sum by array length
-    usage = ((usages.reduce(add, 0))/usages.length);
+    totalTicks = ticks.reduce(add, 0);
+    totalIdle = idles.reduce(add, 0);
     function add(a,b) {
       return a + b;
+
     }
-    $('.system .cpu').html('<div class="center-align usage">'+usage+'%</div>');
-    $('.system .cpu').append('<div class="cpubar"></div>');
-    $(".system .cpubar").progressbar({
-      value: usage
-    });
   });
+  if (typeof(totalTicks) == 'undefined') {
+    totalTicks = 1663894.75;
+    totalIdle = 1336661.5;
+    cores = 4;
+  }
+  return {total: totalTicks / cores, idle: totalIdle / cores};
 }
 
 // Get Memory info
@@ -552,13 +560,30 @@ $(window).on('load', function() {
 
 // Call everything
 // Functions to run in an interval
-var timeinterval = setInterval(function() {
+var timeintervalDate = setInterval(function() {
   getDate();
 },0);
 
-var timeintervalNew = setInterval(function() {
-  getCPU();
-},1000);
+// Grab first CPU measurement
+var firstMeasure = getCPU();
+
+// Grab second CPU measurement
+// Get CPU usage percentage since boot time
+var timeintervalCPU = setInterval(function() {
+  $('.system .cpu').empty();
+
+  var secondMeasure = getCPU();
+
+  var idleDifference = secondMeasure.idle - firstMeasure.idle;
+  var totalDifference = secondMeasure.total - firstMeasure.total;
+  var percentage = 100 - (Math.round((idleDifference / totalDifference) * 100, 1));
+
+  $('.system .cpu').html('<div class="center-align usage">'+percentage+'%</div>');
+  $('.system .cpu').append('<div class="cpubar"></div>');
+  $(".system .cpubar").progressbar({
+    value: percentage
+  });
+},2000);
 
 getTopSites();
 getRecentBookmarks();
