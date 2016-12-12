@@ -6,6 +6,8 @@
     <!-- 3rd party styles -->
     <link rel="stylesheet" type="text/css" href="src/css/materialize.min.css">
     <link rel="stylesheet" type="text/css" href="src/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="src/css/weather-icons.min.css">
+    <link rel="stylesheet" type="text/css" href="src/css/weather-icons-wind.min.css">
     <link rel="stylesheet" type="text/css" href="src/css/jquery-ui.min.css">
   </head>
   <body>
@@ -35,8 +37,8 @@
         			<div class="row">
 						    <div class="col s12">
 						      <ul class="tabs">
-						        <li class="tab col s12 m6 l6"><a href="#recent">Recent</a></li>
-						        <li class="tab col s12 m6 l6"><a class="active" href="#old">Bookmarks</a></li>
+						        <li class="tab col s12 m6 l6"><a class="active" href="#recent">Recent</a></li>
+						        <li class="tab col s12 m6 l6"><a href="#old">Bookmarks</a></li>
 						      </ul>
 						    </div>
 						    <div id="recent" class="col s12 recent">
@@ -114,6 +116,9 @@
       		</div>
     		</div>
   		</div>
+      <div class="preferences tooltipped" data-position="left" data-delay="50" data-tooltip="Preferences">
+        <i class="fa fa-cog fa-2x" aria-hidden="true"></i>
+      </div>
   	</div>
   	<!-- Scripts -->
     <script src="src/js/lib/jquery-3.1.1.min.js"></script>

@@ -482,6 +482,7 @@ function openWeather() {
       var pressure = data.main.pressure;
       var humidity = data.main.humidity;
       var windSpeed = data.wind.speed;
+      var windDegrees = data.wind.deg;
       var clouds = data.clouds.all;
       var city = data.name;
       var countryCode = data.sys.country;
@@ -494,8 +495,11 @@ function openWeather() {
       var sunriseMinutes = sunriseDate.getMinutes();
       var sunsetHours = sunsetDate.getHours();
       var sunsetMinutes = sunsetDate.getMinutes();
-      $('.weather').append('<h1>'+temperature+'&deg; '+description+'</h1>');
-      $('.weather').append('<h5><i class="fa fa-exchange" aria-hidden="true"></i> '+windSpeed+'m/s <i class="fa fa-tint" aria-hidden="true"></i> '+humidity+'%</h5>');
+      // Map owm weather id with weathericon class
+      var weatherIcon = 'wi-owm-' + data.weather[0].id;
+      $('.weather').append('<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>');
+      $('.weather').append('<h5><i class="wi wi-wind towards-'+windDegrees+'-deg"></i>\
+                           '+windSpeed+'m/s <i class="wi wi-raindrop"></i> '+humidity+'%</h5>');
     })
     .fail( function(xhr, textStatus, errorThrown) {
       console.log(xhr.responseText);
@@ -509,11 +513,9 @@ function openWeather() {
 }
 
 $(window).on('load', function() {
-  // Random backgrounds
-  var min = 1;
-  var max = 10;
-  var image = Math.floor(Math.random()*(max-min+1)+min);
-  $('html').css('background', 'url(src/img/image'+image+'.jpg) no-repeat center center fixed');
+  // Random backgrounds from unsplash.com
+  var unsplash = 'https://source.unsplash.com/category/nature/1920x1080';
+  $('html').css('background', 'url('+unsplash+') no-repeat center center fixed');
   $('html').css('background-size', 'cover');
 
   // Bookmarks navigation
@@ -558,7 +560,6 @@ $(window).on('load', function() {
   )
 });
 
-// Call everything
 // Functions to run in an interval
 var timeintervalDate = setInterval(function() {
   getDate();
@@ -585,6 +586,7 @@ var timeintervalCPU = setInterval(function() {
   });
 },2000);
 
+// Call everything
 getTopSites();
 getRecentBookmarks();
 getBookmarksTree();

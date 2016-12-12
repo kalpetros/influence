@@ -14,6 +14,10 @@
     .collection .collection-item.avatar {
       padding-left: 20px !important; }
 
+.date,
+.weather {
+  color: #fafafa; }
+
 .topsites .card,
 .bookmarks .card,
 .history .card,
@@ -47,6 +51,12 @@
       right: 0; }
 
 .launch-app {
+  cursor: pointer; }
+
+.preferences {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
   cursor: pointer; }
 
 .ui-progressbar-value {
