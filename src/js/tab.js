@@ -441,6 +441,50 @@ function getDate() {
   $('.date').append('<h5>'+date+'</h5>');
 }
 
+function getBeaufort(wind) {
+  var beaufort = 0;
+  if (wind < 0.3) {
+    beaufort = 0;
+  }
+  else if (wind >= 0.3 && wind <= 1.5) {
+    beaufort = 1;
+  }
+  else if (wind >= 1.6 && wind <= 3.3) {
+    beaufort = 2;
+  }
+  else if (wind >= 3.4 && wind <= 5.4) {
+    beaufort = 3;
+  }
+  else if (wind >= 5.5 && wind <= 7.9) {
+    beaufort = 4;
+  }
+  else if (wind >= 8 && wind <= 10.7) {
+    beaufort = 5;
+  }
+  else if (wind >= 10.8 && wind <= 13.8) {
+    beaufort = 6;
+  }
+  else if (wind >= 13.9 && wind <= 17.1) {
+    beaufort = 7;
+  }
+  else if (wind >= 17.2 && wind <= 20.7) {
+    beaufort = 8;
+  }
+  else if (wind >= 20.8 && wind <= 24.4) {
+    beaufort = 9;
+  }
+  else if (wind >= 24.5 && wind <= 28.4) {
+    beaufort = 10;
+  }
+  else if (wind >= 28.5 && wind <= 32.6) {
+    beaufort = 11;
+  }
+  else if (wind >= 32.7) {
+    beaufort = 12;
+  }
+  return beaufort;
+}
+
 // openweathermap.org API
 function openWeather() {
   // Use your openweathermap API key here
@@ -483,6 +527,7 @@ function openWeather() {
       var humidity = data.main.humidity;
       var windSpeed = data.wind.speed;
       var windDegrees = data.wind.deg;
+      var beaufort = getBeaufort(windSpeed);
       var clouds = data.clouds.all;
       var city = data.name;
       var countryCode = data.sys.country;
@@ -497,9 +542,13 @@ function openWeather() {
       var sunsetMinutes = sunsetDate.getMinutes();
       // Map owm weather id with weathericon class
       var weatherIcon = 'wi-owm-' + data.weather[0].id;
-      $('.weather').append('<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>');
-      $('.weather').append('<h5><i class="wi wi-wind towards-'+windDegrees+'-deg"></i>\
-                           '+windSpeed+'m/s <i class="wi wi-raindrop"></i> '+humidity+'%</h5>');
+      // Strings
+      var tempStr = '<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>';
+      var windStr = windSpeed+'m/s <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
+      var beaufortStr = '<i class="wi wi-wind-beaufort-'+beaufort+'"></i>';
+      var humidityStr = humidity+' <i class="wi wi-humidity"></i>';
+      $('.weather').append(tempStr);
+      $('.weather').append('<h5>'+windStr+' '+humidityStr+'</h5>');
     })
     .fail( function(xhr, textStatus, errorThrown) {
       console.log(xhr.responseText);
