@@ -430,18 +430,19 @@ function truncateString(title, full) {
 }
 
 // Get current date and time
-function getDate() {
+function getDate(format) {
   $('.date').empty();
   var fulldate = new Date($.now());
   var date = fulldate.toDateString();
   // Time options
-  var options = {hour12: false, hour: '2-digit', minute:'2-digit'};
+  var options = {hour12: format, hour: '2-digit', minute:'2-digit'};
   var time = fulldate.toLocaleTimeString([], options);
   $('.date').append('<h1>'+time+'</h1>');
   $('.date').append('<h5>'+date+'</h5>');
 }
 
-function getBeaufort(wind) {
+// Convert wind speed from m/s to beaufort scale
+function toBeaufort(wind) {
   var beaufort = 0;
   if (wind < 0.3) {
     beaufort = 0;
@@ -510,45 +511,9 @@ function openWeather() {
       crossDomain : true
     })
     .done(function(json) {
-      var weather = JSON.stringify(json);
-      var data = JSON.parse(weather);
-      // Data
-      var icon = data.weather[0].icon;
-      var description = data.weather[0].main;
-      // Convert temperature from Kenvin to Celcius
-      var temperature = Math.round(data.main.temp - 273.15);
-      var minTemperature = Math.round(data.main.temp_min - 273.15);
-      var maxTemperature = Math.round(data.main.temp_max - 273.15);
-      // Convert temperature from Celcius to Fahreneit
-      var temperatureF = (temperature + 30) * 2;
-      var minTemperatureF = (minTemperature + 30) * 2;
-      var maxTemperatureF = (maxTemperature + 30) * 2;
-      var pressure = data.main.pressure;
-      var humidity = data.main.humidity;
-      var windSpeed = data.wind.speed;
-      var windDegrees = data.wind.deg;
-      var beaufort = getBeaufort(windSpeed);
-      var clouds = data.clouds.all;
-      var city = data.name;
-      var countryCode = data.sys.country;
-      var sunrise = data.sys.sunrise;
-      var sunset = data.sys.sunset;
-      // Convert sunrise & sunset from unix timestamp to UTC
-      var sunriseDate = new Date(sunrise*1000);
-      var sunsetDate = new Date(sunset*1000);
-      var sunriseHours = sunriseDate.getHours();
-      var sunriseMinutes = sunriseDate.getMinutes();
-      var sunsetHours = sunsetDate.getHours();
-      var sunsetMinutes = sunsetDate.getMinutes();
-      // Map owm weather id with weathericon class
-      var weatherIcon = 'wi-owm-' + data.weather[0].id;
-      // Strings
-      var tempStr = '<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>';
-      var windStr = windSpeed+'m/s <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
-      var beaufortStr = '<i class="wi wi-wind-beaufort-'+beaufort+'"></i>';
-      var humidityStr = humidity+' <i class="wi wi-humidity"></i>';
-      $('.weather').append(tempStr);
-      $('.weather').append('<h5>'+windStr+' '+humidityStr+'</h5>');
+      var data = JSON.stringify(json);
+      // Save response to local storage
+      localStorage.setItem('weatherData', data);
     })
     .fail( function(xhr, textStatus, errorThrown) {
       console.log(xhr.responseText);
@@ -559,6 +524,87 @@ function openWeather() {
   function error(err) {
     console.warn('ERROR(' + err.code + '): ' + err.message);
   };
+}
+
+function aggregateWeather(params) {
+  // Check if weather data exists in local storage
+  var weatherData = localStorage.getItem('weatherData');
+  if (weatherData == null) {
+    openWeather();
+    weatherData = localStorage.getItem('weatherData');
+  }
+  // Parse stringified object
+  var data = JSON.parse(weatherData);
+  var icon = data.weather[0].icon;
+  var description = data.weather[0].main;
+  // Convert temperature from Kenvin to Celcius
+  var temperature = Math.round(data.main.temp - 273.15);
+  var minTemperature = Math.round(data.main.temp_min - 273.15);
+  var maxTemperature = Math.round(data.main.temp_max - 273.15);
+  // Convert temperature from Celcius to Fahreneit
+  if (params == 'fahreneit') {
+    temperature = (temperature + 30) * 2;
+    minTemperature = (minTemperature + 30) * 2;
+    maxTemperature = (maxTemperature + 30) * 2;
+  } else {
+    temperature = temperature;
+  }
+  // Addition weather information
+  var pressure = data.main.pressure;
+  var humidity = data.main.humidity;
+  var windSpeed = data.wind.speed;
+  var windDegrees = data.wind.deg;
+  if (params == 'beaufort') {
+    windSpeed = toBeaufort(windSpeed);
+  } else {
+    windSpeed = windSpeed;
+  }
+  var clouds = data.clouds.all;
+  var city = data.name;
+  var countryCode = data.sys.country;
+  var sunrise = data.sys.sunrise;
+  var sunset = data.sys.sunset;
+  // Convert sunrise & sunset from unix timestamp to UTC
+  var sunriseDate = new Date(sunrise*1000);
+  var sunsetDate = new Date(sunset*1000);
+  var sunriseHours = sunriseDate.getHours();
+  var sunriseMinutes = sunriseDate.getMinutes();
+  var sunsetHours = sunsetDate.getHours();
+  var sunsetMinutes = sunsetDate.getMinutes();
+  // Map owm weather id with weathericon class
+  var weatherIcon = 'wi-owm-' + data.weather[0].id;
+  // Strings
+  var tempStr = '<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>';
+  var windStr = windSpeed+'m/s <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
+  if (params == 'beaufort') {
+    windStr = '<i class="wi wi-wind-beaufort-'+windSpeed+'"></i> <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
+  } else {
+    windStr = windStr;
+  }
+  var humidityStr = humidity+' <i class="wi wi-humidity"></i>';
+  $('.weather').html(tempStr+'<h5>'+windStr+' '+humidityStr+'</h5>');
+}
+
+// All things preferences
+var Preferences = {
+  weather: function(params) {
+    aggregateWeather(params);
+  },
+  timeFormat: function(value) {
+    if (value == '12') {
+      clearInterval(timeInterval);
+      var format = true;
+      timeInterval = setInterval(function() {
+        getDate(format);
+      },0);
+    } else {
+      clearInterval(timeInterval);
+      var format = false;
+      timeInterval = setInterval(function() {
+        getDate(format);
+      },0);
+    }
+  }
 }
 
 $(window).on('load', function() {
@@ -597,6 +643,44 @@ $(window).on('load', function() {
     launchApp(id);
   });
 
+  // Show/hide preferences
+  $(document).on('click', '.preferences-btn', function() {
+    if ($('.preferences').hasClass('active')) {
+      $('.preferences').hide();
+      $('.preferences').removeClass('active');
+    } else {
+      $('.preferences').show();
+      $('.preferences').addClass('active');
+    }
+  });
+
+  // Preferences handling
+  $(document).on('change', '.switch', function() {
+    // Get switch's id
+    var checkbox = $(this).find(':input').attr('id');
+    if (checkbox == 'w-units') {
+      if ($('#'+checkbox).prop('checked')) {
+        Preferences.weather('celcius');
+      } else {
+        Preferences.weather('fahreneit');
+      }
+    }
+    else if (checkbox == 'w-wind') {
+      if ($('#'+checkbox).prop('checked')) {
+        Preferences.weather('ms');
+      } else {
+        Preferences.weather('beaufort');
+      }
+    }
+    else if (checkbox == 't-format') {
+      if ($('#'+checkbox).prop('checked')) {
+        Preferences.timeFormat('12');
+      } else {
+        Preferences.timeFormat('24');
+      }
+    }
+  });
+
   // Set completed download items length to session storage
   chrome.downloads.search({
       "state": "complete"
@@ -610,8 +694,8 @@ $(window).on('load', function() {
 });
 
 // Functions to run in an interval
-var timeintervalDate = setInterval(function() {
-  getDate();
+var timeInterval = setInterval(function() {
+  getDate(false);
 },0);
 
 // Grab first CPU measurement
@@ -644,4 +728,4 @@ checkDownloads();
 getApps();
 getMemory();
 getStorage();
-openWeather();
+aggregateWeather();

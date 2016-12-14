@@ -77,11 +77,39 @@
 	cursor: pointer;
 }
 
-.preferences {
+.preferences-btn {
 	position: absolute;
 	bottom: 2rem;
 	right: 2rem;
 	cursor: pointer;
+}
+
+.preferences {
+	.row {
+		margin-bottom: 0 !important;
+	}
+	position: absolute;
+	bottom: 4rem;
+	right: 2rem;
+	.card-panel {
+		position: relative;
+		width: 15rem;
+		.section {
+			padding-top: 0 !important;
+		}
+	}
+	.switch {
+		margin-top: 5%;
+	}
+}
+
+.obliterate,
+.download-event {
+	cursor: pointer;
+}
+
+.download-event {
+	font-size: 1rem;
 }
 
 .ui-progressbar-value {
@@ -103,15 +131,6 @@
 .ui-corner-right,
 .ui-corner-left {
 	border-radius: 0 !important;
-}
-
-.obliterate,
-.download-event {
-	cursor: pointer;
-}
-
-.download-event {
-	font-size: 1rem;
 }
 
 /* Style default scrollbar */
