@@ -430,7 +430,13 @@ function truncateString(title, full) {
 }
 
 // Get current date and time
-function getDate(format) {
+function getDate() {
+  var format = localStorage.getItem('t-format');
+  if (format == 1) {
+    var format = false;
+  } else {
+    var format = true;
+  }
   $('.date').empty();
   var fulldate = new Date($.now());
   var date = fulldate.toDateString();
@@ -526,9 +532,11 @@ function openWeather() {
   };
 }
 
-function aggregateWeather(params) {
+function aggregateWeather() {
   // Check if weather data exists in local storage
   var weatherData = localStorage.getItem('weatherData');
+  var unit = localStorage.getItem('w-unit');
+  var wind = localStorage.getItem('w-wind');
   if (weatherData == null) {
     openWeather();
     weatherData = localStorage.getItem('weatherData');
@@ -542,7 +550,7 @@ function aggregateWeather(params) {
   var minTemperature = Math.round(data.main.temp_min - 273.15);
   var maxTemperature = Math.round(data.main.temp_max - 273.15);
   // Convert temperature from Celcius to Fahreneit
-  if (params == 'fahreneit') {
+  if (unit == 0) {
     temperature = (temperature + 30) * 2;
     minTemperature = (minTemperature + 30) * 2;
     maxTemperature = (maxTemperature + 30) * 2;
@@ -554,7 +562,7 @@ function aggregateWeather(params) {
   var humidity = data.main.humidity;
   var windSpeed = data.wind.speed;
   var windDegrees = data.wind.deg;
-  if (params == 'beaufort') {
+  if (wind == 0) {
     windSpeed = toBeaufort(windSpeed);
   } else {
     windSpeed = windSpeed;
@@ -576,7 +584,7 @@ function aggregateWeather(params) {
   // Strings
   var tempStr = '<h1>'+temperature+'<i class="wi wi-degrees"></i><i class="wi '+weatherIcon+'"></i></h1>';
   var windStr = windSpeed+'m/s <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
-  if (params == 'beaufort') {
+  if (wind == 0) {
     windStr = '<i class="wi wi-wind-beaufort-'+windSpeed+'"></i> <i class="wi wi-wind towards-'+windDegrees+'-deg"></i>';
   } else {
     windStr = windStr;
@@ -587,23 +595,32 @@ function aggregateWeather(params) {
 
 // All things preferences
 var Preferences = {
-  weather: function(params) {
-    aggregateWeather(params);
+  weather: function() {
+    aggregateWeather();
   },
   timeFormat: function(value) {
-    if (value == '12') {
-      clearInterval(timeInterval);
-      var format = true;
-      timeInterval = setInterval(function() {
-        getDate(format);
-      },0);
-    } else {
-      clearInterval(timeInterval);
-      var format = false;
-      timeInterval = setInterval(function() {
-        getDate(format);
-      },0);
-    }
+    clearInterval(timeInterval);
+    timeInterval = setInterval(function() {
+      getDate();
+    },0);
+  },
+  init: function() {
+    var switches = $('.switch');
+    switches.each(function() {
+      var id = $(this).find('label :input').attr('id');
+      var checked = localStorage.getItem(id);
+      // Runs only on first time load
+      if (checked == null) {
+        localStorage.setItem(id, 1);
+        $(this).find('label :input').attr('checked', true);
+      }
+      else if (checked == 1) {
+        $(this).find('label :input').attr('checked', true);
+      }
+      else {
+        $(this).find('label :input').attr('checked', false);
+      }
+    })
   }
 }
 
@@ -658,28 +675,37 @@ $(window).on('load', function() {
   $(document).on('change', '.switch', function() {
     // Get switch's id
     var checkbox = $(this).find(':input').attr('id');
-    if (checkbox == 'w-units') {
+    if (checkbox == 'w-unit') {
       if ($('#'+checkbox).prop('checked')) {
-        Preferences.weather('celcius');
+        localStorage.setItem('w-unit', 1);
+        Preferences.weather();
       } else {
-        Preferences.weather('fahreneit');
+        localStorage.setItem('w-unit', 0);
+        Preferences.weather();
       }
     }
     else if (checkbox == 'w-wind') {
       if ($('#'+checkbox).prop('checked')) {
-        Preferences.weather('ms');
+        localStorage.setItem('w-wind', 1);
+        Preferences.weather();
       } else {
-        Preferences.weather('beaufort');
+        localStorage.setItem('w-wind', 0);
+        Preferences.weather();
       }
     }
     else if (checkbox == 't-format') {
       if ($('#'+checkbox).prop('checked')) {
-        Preferences.timeFormat('12');
+        localStorage.setItem('t-format', 1);
+        Preferences.timeFormat();
       } else {
-        Preferences.timeFormat('24');
+        localStorage.setItem('t-format', 0);
+        Preferences.timeFormat();
       }
     }
   });
+
+  // Initialize user preferences on first time load
+  Preferences.init();
 
   // Set completed download items length to session storage
   chrome.downloads.search({
@@ -695,7 +721,7 @@ $(window).on('load', function() {
 
 // Functions to run in an interval
 var timeInterval = setInterval(function() {
-  getDate(false);
+  getDate();
 },0);
 
 // Grab first CPU measurement
