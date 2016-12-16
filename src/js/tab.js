@@ -534,9 +534,9 @@ function openWeather() {
 
 function aggregateWeather() {
   // Check if weather data exists in local storage
-  var weatherData = localStorage.getItem('weatherData');
   var unit = localStorage.getItem('w-unit');
   var wind = localStorage.getItem('w-wind');
+  var weatherData = localStorage.getItem('weatherData');
   if (weatherData == null) {
     openWeather();
     weatherData = localStorage.getItem('weatherData');
@@ -598,17 +598,30 @@ var Preferences = {
   weather: function() {
     aggregateWeather();
   },
-  timeFormat: function(value) {
+  timeFormat: function() {
     clearInterval(timeInterval);
     timeInterval = setInterval(function() {
       getDate();
     },0);
+  },
+  widget: function(widget) {
+    var visibility = localStorage.getItem(widget);
+    if (visibility == 0) {
+      $('.' + widget).hide();
+    } else {
+      $('.' + widget).show();
+    }
   },
   init: function() {
     var switches = $('.switch');
     switches.each(function() {
       var id = $(this).find('label :input').attr('id');
       var checked = localStorage.getItem(id);
+      var isWidget = $('.widgets').find('#' + id).length;
+      // Check if it is a widget
+      if (isWidget == 1) {
+        Preferences.widget(id);
+      }
       // Runs only on first time load
       if (checked == null) {
         localStorage.setItem(id, 1);
@@ -620,7 +633,7 @@ var Preferences = {
       else {
         $(this).find('label :input').attr('checked', false);
       }
-    })
+    });
   }
 }
 
@@ -674,9 +687,10 @@ $(window).on('load', function() {
   // Preferences handling
   $(document).on('change', '.switch', function() {
     // Get switch's id
-    var checkbox = $(this).find(':input').attr('id');
-    if (checkbox == 'w-unit') {
-      if ($('#'+checkbox).prop('checked')) {
+    var id = $(this).find(':input').attr('id');
+    // Set preference to 0/1 (left/right)
+    if (id == 'w-unit') {
+      if ($('#'+id).prop('checked')) {
         localStorage.setItem('w-unit', 1);
         Preferences.weather();
       } else {
@@ -684,8 +698,8 @@ $(window).on('load', function() {
         Preferences.weather();
       }
     }
-    else if (checkbox == 'w-wind') {
-      if ($('#'+checkbox).prop('checked')) {
+    else if (id == 'w-wind') {
+      if ($('#'+id).prop('checked')) {
         localStorage.setItem('w-wind', 1);
         Preferences.weather();
       } else {
@@ -693,13 +707,67 @@ $(window).on('load', function() {
         Preferences.weather();
       }
     }
-    else if (checkbox == 't-format') {
-      if ($('#'+checkbox).prop('checked')) {
+    else if (id == 't-format') {
+      if ($('#'+id).prop('checked')) {
         localStorage.setItem('t-format', 1);
         Preferences.timeFormat();
       } else {
         localStorage.setItem('t-format', 0);
         Preferences.timeFormat();
+      }
+    }
+    else if (id == 'topsites') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('topsites', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('topsites', 0);
+        Preferences.widget(id);
+      }
+    }
+    else if (id == 'bookmarks') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('bookmarks', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('bookmarks', 0);
+        Preferences.widget(id);
+      }
+    }
+    else if (id == 'history') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('history', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('history', 0);
+        Preferences.widget(id);
+      }
+    }
+    else if (id == 'apps') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('apps', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('apps', 0);
+        Preferences.widget(id);
+      }
+    }
+    else if (id == 'downloads') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('downloads', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('downloads', 0);
+        Preferences.widget(id);
+      }
+    }
+    else if (id == 'system') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('system', 1);
+        Preferences.widget(id);
+      } else {
+        localStorage.setItem('system', 0);
+        Preferences.widget(id);
       }
     }
   });
