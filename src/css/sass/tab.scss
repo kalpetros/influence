@@ -30,9 +30,10 @@
 .topsites,
 .bookmarks,
 .history,
-.downloads,
 .apps,
+.downloads,
 .system {
+	display: none;
 	.card {
 		max-height: 280px;
 		overflow-y: auto;

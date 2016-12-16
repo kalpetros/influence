@@ -18,23 +18,29 @@
 .weather {
   color: #fafafa; }
 
-.topsites .card,
-.bookmarks .card,
-.history .card,
-.downloads .card,
-.apps .card,
-.system .card {
-  max-height: 280px;
-  overflow-y: auto;
-  overflow-x: hidden; }
-
-.topsites div:first-child span:first-child a,
-.bookmarks div:first-child span:first-child a,
-.history div:first-child span:first-child a,
-.downloads div:first-child span:first-child a,
-.apps div:first-child span:first-child a,
-.system div:first-child span:first-child a {
-  color: #26a69a !important; }
+.topsites,
+.bookmarks,
+.history,
+.apps,
+.downloads,
+.system {
+  display: none; }
+  .topsites .card,
+  .bookmarks .card,
+  .history .card,
+  .apps .card,
+  .downloads .card,
+  .system .card {
+    max-height: 280px;
+    overflow-y: auto;
+    overflow-x: hidden; }
+  .topsites div:first-child span:first-child a,
+  .bookmarks div:first-child span:first-child a,
+  .history div:first-child span:first-child a,
+  .apps div:first-child span:first-child a,
+  .downloads div:first-child span:first-child a,
+  .system div:first-child span:first-child a {
+    color: #26a69a !important; }
 
 .apps .card .card-content {
   margin-top: 20px !important; }
