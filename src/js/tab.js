@@ -517,6 +517,9 @@ function openWeather() {
       crossDomain : true
     })
     .done(function(json) {
+      var current_date = new Date($.now());
+      // Add a timestamp
+      json.timestamp = current_date;
       var data = JSON.stringify(json);
       // Save response to local storage
       localStorage.setItem('weatherData', data);
@@ -533,16 +536,26 @@ function openWeather() {
 }
 
 function aggregateWeather() {
-  // Check if weather data exists in local storage
+  var current_date = new Date($.now());
   var unit = localStorage.getItem('w-unit');
   var wind = localStorage.getItem('w-wind');
+  // Check if weather data exists in local storage
   var weatherData = localStorage.getItem('weatherData');
   if (weatherData == null) {
     openWeather();
     weatherData = localStorage.getItem('weatherData');
+    // Parse stringified object
+    var data = JSON.parse(weatherData);
   }
-  // Parse stringified object
-  var data = JSON.parse(weatherData);
+  // It runs every day (update weather)
+  else {
+    var data = JSON.parse(weatherData);
+    if (data.timestamp != current_date) {
+      openWeather();
+      weatherData = localStorage.getItem('weatherData');
+      data = JSON.parse(weatherData);
+    }
+  }
   var icon = data.weather[0].icon;
   var description = data.weather[0].main;
   // Convert temperature from Kenvin to Celcius
