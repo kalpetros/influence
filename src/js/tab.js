@@ -422,8 +422,8 @@ function truncateString(title, full) {
     var truncated = title.substring(0,100)+'...';
     return title;
   }
-  if (title.length > 40) {
-    var truncated = title.substring(0,40)+'...';
+  if (title.length > 30) {
+    var truncated = title.substring(0,20)+'...';
     return truncated;
   }
   return title;
