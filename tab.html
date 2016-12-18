@@ -9,8 +9,10 @@
     <link rel="stylesheet" type="text/css" href="src/css/weather-icons.min.css">
     <link rel="stylesheet" type="text/css" href="src/css/weather-icons-wind.min.css">
     <link rel="stylesheet" type="text/css" href="src/css/jquery-ui.min.css">
+    <link rel="stylesheet" type="text/css" href="src/css/leaflet.css" />
   </head>
   <body>
+    <div id="map"></div>
   	<div class="container">
   		<div class="row">
   			<div class="col s6 date"></div>
@@ -124,6 +126,33 @@
           <div class="col s12 m5">
             <div class="card-panel grey darken-4">
               <div class="section grey-text text-darken-3">
+                <h5 class="center-align">Background</h5>
+                <div class="switch">
+                  <label>
+                    Map
+                    <input type="checkbox" id="b-type">
+                    <span class="lever"></span>
+                    Photos
+                  </label>
+                </div>
+                <div class="map-style">
+                  <h6 class="center-align">Map style</h6>
+                  <div class="col s6 m6">
+                  <p>
+                    <input type="checkbox" id="b-light" />
+                    <label for="b-light">Light</label>
+                  </p>
+                  </div>
+                  <div class="col s6 m6">
+                  <p>
+                    <input type="checkbox" id="b-dark" />
+                    <label for="b-dark">Dark</label>
+                  </p>
+                  </div>
+                </div>
+              </div>
+              <div class="divider grey darken-3"></div>
+              <div class="section grey-text text-darken-3">
                 <h5 class="center-align">Weather</h5>
                 <div class="switch">
                   <label>
@@ -209,6 +238,7 @@
     <script src="src/js/lib/jquery-3.1.1.min.js"></script>
     <script src="src/js/lib/jquery-ui.min.js"></script>
     <script src="src/js/lib/materialize.min.js"></script>
+    <script src="src/js/lib/leaflet.js"></script>
     <script src="src/js/tab.js"></script>
   </body>
 </html>

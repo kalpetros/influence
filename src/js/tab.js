@@ -606,6 +606,65 @@ function aggregateWeather() {
   $('.weather').html(tempStr+'<h5>'+windStr+' '+humidityStr+'</h5>');
 }
 
+// Display map with user's location
+function map() {
+  // Map style
+  var map_style = localStorage.getItem('b-map-style');
+  if (map_style == 0) {
+    var style = 'light-v9';
+  } else {
+    var style = 'dark-v9';
+  }
+  // getCurrentPosition options
+  var options = {
+    enableHighAccuracy: true,
+    timeout: 5000,
+    maximumAge: 600000
+  };
+  // Get user's location
+  navigator.geolocation.getCurrentPosition(success, error, options);
+
+
+  function success(position) {
+    var latitude = position.coords.latitude;
+    var longitude = position.coords.longitude;
+
+    // Initialize map and set its view to user's geo coordinates
+    var map = L.map('map', {
+        center: [latitude, longitude],
+        zoom: 13
+    });
+
+    // Add tile layer (provider-agnostic)
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/'+style+'/tiles/256/{z}/{x}/{y}?access_token={access_token}', {
+      maxZoom: 18,
+      access_token: 'pk.eyJ1Ijoia2FscGV0cm9zIiwiYSI6ImNpd3YwdGY3dzAwMTMyeXBmNGl4aHdueWgifQ.ckVjEngLau8mAcQ8GnZILA'
+    }).addTo(map);
+  }
+
+  function error(err) {
+    console.warn('ERROR(' + err.code + '): ' + err.message);
+  };
+}
+
+// Get random photos
+function photos() {
+  // Random backgrounds from unsplash.com
+  var unsplash = 'https://source.unsplash.com/category/nature/1920x1080';
+  $('html').css('background', 'url('+unsplash+') no-repeat center center fixed');
+  $('html').css('background-size', 'cover');
+}
+
+// Get type of background
+function background() {
+  var type = localStorage.getItem('b-type');
+  if (type == 1) {
+    photos();
+  } else {
+    map();
+  }
+}
+
 // All things preferences
 var Preferences = {
   weather: function() {
@@ -625,12 +684,31 @@ var Preferences = {
       $('.' + widget).show();
     }
   },
+  background: function(type) {
+    if (type == 1) {
+      $('#map').hide();
+      $('.map-style').hide();
+      photos();
+    } else {
+      $('#map').show();
+      $('.map-style').show();
+      map();
+    }
+  },
   init: function() {
     var switches = $('.switch');
     switches.each(function() {
       var id = $(this).find('label :input').attr('id');
       var checked = localStorage.getItem(id);
       var isWidget = $('.widgets').find('#' + id).length;
+      var isMap = $('.map-style').find('#' + id).length;
+      // Show map style preference
+      if (isMap == 1) {
+        var type = localStorage.getItem('b-type');
+        if (type == 0) {
+          $('.map-style').show();
+        }
+      }
       // Check if it is a widget
       if (isWidget == 1) {
         Preferences.widget(id);
@@ -651,11 +729,6 @@ var Preferences = {
 }
 
 $(window).on('load', function() {
-  // Random backgrounds from unsplash.com
-  var unsplash = 'https://source.unsplash.com/category/nature/1920x1080';
-  $('html').css('background', 'url('+unsplash+') no-repeat center center fixed');
-  $('html').css('background-size', 'cover');
-
   // Bookmarks navigation
   $(document).on('click', '.bookmark-node', function() {
     var id = $(this).attr('id');
@@ -783,10 +856,31 @@ $(window).on('load', function() {
         Preferences.widget(id);
       }
     }
+    else if (id == 'b-type') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('b-type', 1);
+        Preferences.background(1);
+      } else {
+        localStorage.setItem('b-type', 0);
+        Preferences.background(0);
+      }
+    }
+    else if (id == 'b-map-style') {
+      if ($('#'+id).prop('checked')) {
+        localStorage.setItem('b-map-style', 1);
+        Preferences.background();
+      } else {
+        localStorage.setItem('b-map-style', 0);
+        Preferences.background();
+      }
+    }
   });
 
-  // Initialize user preferences on first time load
-  Preferences.init();
+  $(document).on('change', '.map-style', function() {
+    // Get checkboxes's id
+    var id = $(this).find(':input').attr('id');
+    console.log(id);
+  });
 
   // Set completed download items length to session storage
   chrome.downloads.search({
@@ -799,11 +893,6 @@ $(window).on('load', function() {
     }
   )
 });
-
-// Functions to run in an interval
-var timeInterval = setInterval(function() {
-  getDate();
-},0);
 
 // Grab first CPU measurement
 var firstMeasure = getCPU();
@@ -826,7 +915,15 @@ var timeintervalCPU = setInterval(function() {
   });
 },2000);
 
-// Call everything
+// Display date
+var timeInterval = setInterval(function() {
+  getDate();
+},0);
+
+// Initialize user preferences
+Preferences.init();
+background();
+aggregateWeather();
 getTopSites();
 getRecentBookmarks();
 getBookmarksTree();
@@ -835,4 +932,3 @@ checkDownloads();
 getApps();
 getMemory();
 getStorage();
-aggregateWeather();

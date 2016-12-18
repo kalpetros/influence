@@ -1,3 +1,10 @@
+#map {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: -1;
+}
+
 .tabs {
 	overflow-x: hidden !important;
 }
@@ -103,6 +110,10 @@
 	.switch {
 		margin-top: 5%;
 	}
+}
+
+.map-style {
+	display: none;
 }
 
 .obliterate,
