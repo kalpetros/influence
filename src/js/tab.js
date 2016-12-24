@@ -1,3 +1,9 @@
+/*
+ * Influence chrome extension
+ * Written by Petros Kalogiannakis
+ * Copyright (c) 2016 under MIT
+ */
+
 // Get the entire bookmarks hierarchy
 function getTopSites() {
   chrome.topSites.get(
@@ -492,9 +498,8 @@ function toBeaufort(wind) {
   return beaufort;
 }
 
-// openweathermap.org API
-function openWeather() {
-  // Use your openweathermap API key here
+// Get current weather data
+function getWeather() {
   var apiKey = "";
 
   // getCurrentPosition options
@@ -517,7 +522,8 @@ function openWeather() {
       crossDomain : true
     })
     .done(function(json) {
-      var current_date = new Date($.now());
+      var current_date = new Date();
+      current_date = current_date.toDateString();
       // Add a timestamp
       json.timestamp = current_date;
       var data = JSON.stringify(json);
@@ -535,43 +541,46 @@ function openWeather() {
   };
 }
 
+// Weather data aggregation
 function aggregateWeather() {
-  var current_date = new Date($.now());
+  var current_date = new Date();
+  current_date = current_date.toDateString();
   var unit = localStorage.getItem('w-unit');
   var wind = localStorage.getItem('w-wind');
   // Check if weather data exists in local storage
   var weatherData = localStorage.getItem('weatherData');
+  // First time load/browsing data cleared
   if (weatherData == null) {
-    openWeather();
+    getWeather();
     weatherData = localStorage.getItem('weatherData');
     // Parse stringified object
     var data = JSON.parse(weatherData);
   }
-  // It runs every day (update weather)
+  // It runs every day (updates weather)
   else {
     var data = JSON.parse(weatherData);
     if (data.timestamp != current_date) {
-      openWeather();
+      getWeather();
       weatherData = localStorage.getItem('weatherData');
       data = JSON.parse(weatherData);
     }
   }
-  var icon = data.weather[0].icon;
-  var description = data.weather[0].main;
+  // var icon = data.weather[0].icon;
+  // var description = data.weather[0].main;
   // Convert temperature from Kenvin to Celcius
   var temperature = Math.round(data.main.temp - 273.15);
-  var minTemperature = Math.round(data.main.temp_min - 273.15);
-  var maxTemperature = Math.round(data.main.temp_max - 273.15);
+  // var minTemperature = Math.round(data.main.temp_min - 273.15);
+  // var maxTemperature = Math.round(data.main.temp_max - 273.15);
   // Convert temperature from Celcius to Fahreneit
   if (unit == 0) {
     temperature = (temperature + 30) * 2;
-    minTemperature = (minTemperature + 30) * 2;
-    maxTemperature = (maxTemperature + 30) * 2;
+    // minTemperature = (minTemperature + 30) * 2;
+    // maxTemperature = (maxTemperature + 30) * 2;
   } else {
     temperature = temperature;
   }
   // Addition weather information
-  var pressure = data.main.pressure;
+  // var pressure = data.main.pressure;
   var humidity = data.main.humidity;
   var windSpeed = data.wind.speed;
   var windDegrees = data.wind.deg;
@@ -580,18 +589,18 @@ function aggregateWeather() {
   } else {
     windSpeed = windSpeed;
   }
-  var clouds = data.clouds.all;
-  var city = data.name;
-  var countryCode = data.sys.country;
-  var sunrise = data.sys.sunrise;
-  var sunset = data.sys.sunset;
+  // var clouds = data.clouds.all;
+  // var city = data.name;
+  // var countryCode = data.sys.country;
+  // var sunrise = data.sys.sunrise;
+  // var sunset = data.sys.sunset;
   // Convert sunrise & sunset from unix timestamp to UTC
-  var sunriseDate = new Date(sunrise*1000);
-  var sunsetDate = new Date(sunset*1000);
-  var sunriseHours = sunriseDate.getHours();
-  var sunriseMinutes = sunriseDate.getMinutes();
-  var sunsetHours = sunsetDate.getHours();
-  var sunsetMinutes = sunsetDate.getMinutes();
+  // var sunriseDate = new Date(sunrise*1000);
+  // var sunsetDate = new Date(sunset*1000);
+  // var sunriseHours = sunriseDate.getHours();
+  // var sunriseMinutes = sunriseDate.getMinutes();
+  // var sunsetHours = sunsetDate.getHours();
+  // var sunsetMinutes = sunsetDate.getMinutes();
   // Map owm weather id with weathericon class
   var weatherIcon = 'wi-owm-' + data.weather[0].id;
   // Strings
@@ -638,7 +647,7 @@ function map() {
     // Add tile layer (provider-agnostic)
     L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/'+style+'/tiles/256/{z}/{x}/{y}?access_token={access_token}', {
       maxZoom: 18,
-      access_token: 'pk.eyJ1Ijoia2FscGV0cm9zIiwiYSI6ImNpd3YwdGY3dzAwMTMyeXBmNGl4aHdueWgifQ.ckVjEngLau8mAcQ8GnZILA'
+      access_token: ''
     }).addTo(map);
   }
 
@@ -728,6 +737,7 @@ var Preferences = {
   }
 }
 
+// All window on load functions
 $(window).on('load', function() {
   // Bookmarks navigation
   $(document).on('click', '.bookmark-node', function() {

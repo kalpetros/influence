@@ -1,8 +1,20 @@
+/*
+ * Influence chrome extension
+ * Written by Petros Kalogiannakis
+ * Copyright (c) 2016 under MIT
+ */
+
+ $light: #fafafa;
+ $widget: transparent;
+ $link: #26a69a;
+ $load-bar: #e0e0e0;
+ $scroll-bar: #424242;
+
 #map {
-	position: absolute;
-	height: 100%;
-	width: 100%;
-	z-index: -1;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
 }
 
 .tabs {
@@ -22,7 +34,7 @@
 .collection {
 	border: none !important;
 	.collection-item {
-		background-color: transparent !important;
+		background-color: $widget !important;
 		&.avatar {
 			padding-left: 20px !important;
 		}
@@ -31,7 +43,7 @@
 
 .date,
 .weather {
-	color: #fafafa;
+	color: $light;
 }
 
 .topsites,
@@ -51,7 +63,7 @@
 			span {
 				&:first-child {
 					a {
-						color: #26a69a !important;
+						color: $link !important;
 					}
 				}
 			}
@@ -136,7 +148,7 @@
 }
 
 .ui-widget-header {
-	background-color: #e0e0e0 !important;
+	background-color: $load-bar !important;
 	border: none !important;
 }
 
@@ -152,5 +164,5 @@
 }
 /* Style position indicator */
 ::-webkit-scrollbar-thumb {
-    background: #424242;
+    background: $scroll-bar;
 }
