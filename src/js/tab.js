@@ -616,14 +616,7 @@ function aggregateWeather() {
 }
 
 // Display map with user's location
-function map() {
-  // Map style
-  var map_style = localStorage.getItem('b-map-style');
-  if (map_style == 0) {
-    var style = 'light-v9';
-  } else {
-    var style = 'dark-v9';
-  }
+function displayMap() {
   // getCurrentPosition options
   var options = {
     enableHighAccuracy: true,
@@ -633,19 +626,18 @@ function map() {
   // Get user's location
   navigator.geolocation.getCurrentPosition(success, error, options);
 
-
   function success(position) {
     var latitude = position.coords.latitude;
     var longitude = position.coords.longitude;
 
     // Initialize map and set its view to user's geo coordinates
-    var map = L.map('map', {
-        center: [latitude, longitude],
-        zoom: 13
+    map = L.map('map', {
+      center: [latitude, longitude],
+      zoom: 13
     });
 
     // Add tile layer (provider-agnostic)
-    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/'+style+'/tiles/256/{z}/{x}/{y}?access_token={access_token}', {
+    L.tileLayer('https://api.mapbox.com/styles/v1/mapbox/dark-v9/tiles/256/{z}/{x}/{y}?access_token={access_token}', {
       maxZoom: 18,
       access_token: ''
     }).addTo(map);
@@ -657,7 +649,7 @@ function map() {
 }
 
 // Get random photos
-function photos() {
+function displayPhotos() {
   // Random backgrounds from unsplash.com
   var unsplash = 'https://source.unsplash.com/category/nature/1920x1080';
   $('html').css('background', 'url('+unsplash+') no-repeat center center fixed');
@@ -668,9 +660,9 @@ function photos() {
 function background() {
   var type = localStorage.getItem('b-type');
   if (type == 1) {
-    photos();
+    displayPhotos();
   } else {
-    map();
+    displayMap();
   }
 }
 
@@ -695,13 +687,12 @@ var Preferences = {
   },
   background: function(type) {
     if (type == 1) {
+      map.remove();
       $('#map').hide();
-      $('.map-style').hide();
-      photos();
+      displayPhotos();
     } else {
       $('#map').show();
-      $('.map-style').show();
-      map();
+      displayMap();
     }
   },
   init: function() {
@@ -710,14 +701,6 @@ var Preferences = {
       var id = $(this).find('label :input').attr('id');
       var checked = localStorage.getItem(id);
       var isWidget = $('.widgets').find('#' + id).length;
-      var isMap = $('.map-style').find('#' + id).length;
-      // Show map style preference
-      if (isMap == 1) {
-        var type = localStorage.getItem('b-type');
-        if (type == 0) {
-          $('.map-style').show();
-        }
-      }
       // Check if it is a widget
       if (isWidget == 1) {
         Preferences.widget(id);
@@ -873,15 +856,6 @@ $(window).on('load', function() {
       } else {
         localStorage.setItem('b-type', 0);
         Preferences.background(0);
-      }
-    }
-    else if (id == 'b-map-style') {
-      if ($('#'+id).prop('checked')) {
-        localStorage.setItem('b-map-style', 1);
-        Preferences.background();
-      } else {
-        localStorage.setItem('b-map-style', 0);
-        Preferences.background();
       }
     }
   });

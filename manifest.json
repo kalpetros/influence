@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Influence",
   "description": "Replace your new tab page with an elegant material design dashboard.",
-  "version": "0.1",
+  "version": "0.2",
   "author": "kalpetros",
   "icons": {
     "16": "src/img/icons/16.png",
