@@ -1,0 +1,29 @@
+{
+    "name": "influence",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "git@github.com:kalpetros/influence.git",
+    "author": "Petros Kalogiannakis <github@petroskal.com>",
+    "license": "MIT",
+    "scripts": {
+        "develop": "parcel src/index.html",
+        "build": "parcel build src/index.html",
+        "format": "prettier \"**/*.{js, html}\" --write",
+        "lint": "eslint \"**/*.{js,jsx}\" --quiet",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "dependencies": {
+        "react": "^16.13.1",
+        "react-dom": "^16.13.1",
+        "tailwindcss": "^1.4.6",
+        "utils": "^0.3.1",
+        "utils.js": "^1.0.1"
+    },
+    "devDependencies": {
+        "autoprefixer": "^9.8.0",
+        "eslint": "^7.2.0",
+        "eslint-config-prettier": "^6.11.0",
+        "parcel-bundler": "^1.12.4",
+        "prettier": "^2.0.5"
+    }
+}
