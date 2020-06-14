@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import '../lib/weather-icons.css';
+@import '../lib/weather-icons-wind.css';
+
+.grid-custom-flow {
+  grid-template-rows: max-content auto max-content;
+}
+
+.search-bar {
+  width: 35rem;
+}
