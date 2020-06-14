@@ -36,12 +36,18 @@ library.add(
 );
 
 const App = () => {
+  const [menuIsVisible, setMenuIsVisible] = useState(false);
+
+  const handleMenuClick = () => {
+    setMenuIsVisible((p) => (p ? false : true));
+  };
+
   return (
     <Layout>
-      <Content />
+      <Content menuIsVisible={menuIsVisible} onClose={handleMenuClick} />
       <Top />
       <Center />
-      <Bottom />
+      <Bottom onMenuClick={handleMenuClick} />
     </Layout>
   );
 };

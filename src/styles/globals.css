@@ -12,3 +12,17 @@
 .search-bar {
   width: 35rem;
 }
+
+.menu {
+  width: 35rem;
+}
+
+.menu--visible {
+  left: 0;
+  transition: left 1s ease-in;
+}
+
+.menu--hidden {
+  left: -35rem;
+  transition: left 1s ease-in;
+}

@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-export const Bottom = () => {
+export const Bottom = (props) => {
+  const onMenuClick = props.onMenuClick;
   const handleClick = () => {
     alert('asdasd');
   };
@@ -37,7 +38,7 @@ export const Bottom = () => {
           icon="bars"
           size="lg"
           className="cursor-pointer"
-          onClick={handleClick}
+          onClick={onMenuClick}
         />
       </div>
       <div className="text-right">
@@ -45,7 +46,7 @@ export const Bottom = () => {
           icon="cog"
           size="lg"
           className="cursor-pointer"
-          onClick={handleClick}
+          onClick={onMenuClick}
         />
       </div>
     </div>

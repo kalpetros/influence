@@ -65,8 +65,10 @@ const Menu = (props) => {
   );
 };
 
-export const Content = () => {
+export const Content = (props) => {
   const [view, setView] = useState('topVisited');
+  const { menuIsVisible: menuIsVisible, onClose: onClose } = props;
+  let className = 'menu--hidden';
 
   const handleClick = (e) => {
     setView(e.currentTarget.id);
@@ -89,9 +91,15 @@ export const Content = () => {
       <Downloads />
     ) : null;
 
+  if (menuIsVisible) {
+    className = 'menu--visible';
+  }
+
   return (
-    <div className="fixed top-0 w-2/3 h-screen overflow-auto bg-white">
-      <Menu view={view} onClick={handleClick} onClose={handleClose} />
+    <div
+      className={`fixed top-0 h-screen overflow-auto bg-white menu ${className}`}
+    >
+      <Menu view={view} onClick={handleClick} onClose={onClose} />
       {page}
     </div>
   );
