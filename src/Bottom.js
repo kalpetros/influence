@@ -1,12 +1,14 @@
 import React from 'react';
-import { Weather } from './Weather';
-import { Time } from './Time';
+import { TimeWidget } from './TimeWidget';
+import { WeatherWidget } from './WeatherWidget';
 
-export const Bottom = () => {
+export const Bottom = (props) => {
+  const onWeatherClick = props.onWeatherClick;
+
   return (
     <div className="grid grid-cols-2 items-end p-5">
-      <Time />
-      <Weather />
+      <TimeWidget />
+      <WeatherWidget onClick={onWeatherClick} />
     </div>
   );
 };

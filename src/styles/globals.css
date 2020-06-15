@@ -5,20 +5,52 @@
 @import '../lib/weather-icons.css';
 @import '../lib/weather-icons-wind.css';
 
-.menu {
+.browsing {
   top: 5rem;
   width: 50rem;
   height: 50rem;
 }
 
-.menu--visible {
+.browsing--visible {
   left: 5rem;
   transition: left 0.2s ease-in;
 }
 
-.menu--hidden {
+.browsing--hidden {
   left: -50rem;
   transition: left 0.2s ease-in;
+}
+
+.settings {
+  top: 5rem;
+  width: 50rem;
+  height: 50rem;
+}
+
+.settings--visible {
+  right: 5rem;
+  transition: right 0.2s ease-in;
+}
+
+.settings--hidden {
+  right: -50rem;
+  transition: right 0.2s ease-in;
+}
+
+.weather {
+  top: 5rem;
+  width: 50rem;
+  height: 50rem;
+}
+
+.weather--visible {
+  right: 5rem;
+  transition: right 0.2s ease-in;
+}
+
+.weather--hidden {
+  right: -50rem;
+  transition: right 0.2s ease-in;
 }
 
 .max-content-row {

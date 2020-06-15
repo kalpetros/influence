@@ -50,7 +50,7 @@ const Datepicker = () => {
     }
 
     panel = (
-      <div className="absolute top-0 right-0 h-64 bg-white shadow-lg rounded overflow-auto">
+      <div className="absolute top-0 right-0 h-64 bg-white shadow-lg rounded-lg overflow-auto">
         {dates}
       </div>
     );

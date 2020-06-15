@@ -2,7 +2,8 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Top = (props) => {
-  const onMenuClick = props.onMenuClick;
+  const onBrowsingClick = props.onBrowsingClick;
+  const onSettingsClick = props.onSettingsClick;
 
   return (
     <div className="grid grid-cols-2 items-end p-5">
@@ -11,7 +12,7 @@ export const Top = (props) => {
           icon="bars"
           size="2x"
           className="cursor-pointer"
-          onClick={onMenuClick}
+          onClick={onBrowsingClick}
         />
       </div>
       <div className="text-right">
@@ -19,7 +20,7 @@ export const Top = (props) => {
           icon="cog"
           size="2x"
           className="cursor-pointer"
-          onClick={onMenuClick}
+          onClick={onSettingsClick}
         />
       </div>
     </div>

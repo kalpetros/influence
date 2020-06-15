@@ -2,34 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const Menu = (props) => {
-  const { onClose: onClose } = props;
-
-  return (
-    <div className="grid grid-flow-col bg-white border-b">
-      <div className="p-5">
-        <p>Weather</p>
-      </div>
-      <div className="p-5 text-right">
-        <FontAwesomeIcon
-          icon="times"
-          size="lg"
-          className="cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
-    </div>
-  );
-};
-
-export const Weather = (props) => {
+export const WeatherWidget = (props) => {
   const [data, setData] = useState();
-  const { isVisible: isVisible, onClose: onClose } = props;
-  let className = 'weather--hidden';
-
-  if (isVisible) {
-    className = 'weather--visible';
-  }
+  const onClick = props.onClick;
 
   useEffect(() => {
     getUserPosition();
@@ -86,10 +61,23 @@ export const Weather = (props) => {
   console.log(data);
 
   return (
-    <div
-      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 weather ${className}`}
-    >
-      <Menu onClose={onClose} />
+    <div className="text-right">
+      <h1 className="text-lg">
+        <i className={`wi wi-owm-${id}`}></i>
+      </h1>
+      <h1 className="text-5xl">
+        {temperature}
+        <i className="wi wi-degrees"></i>
+      </h1>
+      <h1 className="text-xl">
+        <FontAwesomeIcon
+          icon="info-circle"
+          size="sm"
+          className="cursor-pointer"
+          onClick={onClick}
+        />{' '}
+        {data.name}
+      </h1>
     </div>
   );
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
-export const Time = () => {
+export const TimeWidget = () => {
   const [date, setDate] = useState(moment());
   const time = date.format('HH:mm');
   const dateStr = date.format('dddd, MMMM Do YYYY');

@@ -55,17 +55,15 @@ const Menu = (props) => {
   });
 
   return (
-    <div className="bg-white border-b">
-      <div className="grid grid-flow-col">
-        <ul className="flex">{tabs}</ul>
-        <div className="p-5 text-right">
-          <FontAwesomeIcon
-            icon="times"
-            size="lg"
-            className="cursor-pointer"
-            onClick={onClose}
-          />
-        </div>
+    <div className="grid grid-flow-col bg-white border-b">
+      <ul className="flex">{tabs}</ul>
+      <div className="p-5 text-right">
+        <FontAwesomeIcon
+          icon="times"
+          size="lg"
+          className="cursor-pointer"
+          onClick={onClose}
+        />
       </div>
     </div>
   );
@@ -73,8 +71,8 @@ const Menu = (props) => {
 
 export const Browsing = (props) => {
   const [view, setView] = useState('topVisited');
-  const { menuIsVisible: menuIsVisible, onClose: onClose } = props;
-  let className = 'menu--hidden';
+  const { isVisible: isVisible, onClose: onClose } = props;
+  let className = 'browsing--hidden';
 
   const handleClick = (e) => {
     setView(e.currentTarget.id);
@@ -97,13 +95,13 @@ export const Browsing = (props) => {
       <Downloads />
     ) : null;
 
-  if (menuIsVisible) {
-    className = 'menu--visible';
+  if (isVisible) {
+    className = 'browsing--visible';
   }
 
   return (
     <div
-      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden menu ${className}`}
+      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 browsing ${className}`}
     >
       <Menu view={view} onClick={handleClick} onClose={onClose} />
       {page}
