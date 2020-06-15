@@ -2,17 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Bookmarks = () => {
+  const [tree, setTree] = useState([]);
   const [data, setData] = useState([]);
 
   useEffect(() => {
+    setData(tree);
+  }, [tree]);
+
+  useEffect(() => {
     chrome.bookmarks.getTree(function (response) {
-      setData(response);
+      setTree(response);
     });
   }, []);
 
   const handleClick = (e) => {
     const id = e.currentTarget.id;
 
+    chrome.bookmarks.getSubTree(id, function (response) {
+      setData(response);
+    });
+  };
+
+  const handleBackClick = (e) => {
     chrome.bookmarks.getSubTree(id, function (response) {
       setData(response);
     });
@@ -55,5 +66,9 @@ export const Bookmarks = () => {
     });
   });
 
-  return <div className="p-5">{items}</div>;
+  return (
+    <div className="overflow-auto">
+      <div className="p-5">{items}</div>
+    </div>
+  );
 };

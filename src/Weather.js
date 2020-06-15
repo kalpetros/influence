@@ -56,14 +56,18 @@ export const Weather = () => {
 
   temperature = Math.round(temperature, 1);
   feelsLike = Math.round(feelsLike, 0);
+  console.log(data);
 
   return (
     <div className="text-right">
-      <h1 className="text-5xl text-white">
-        {temperature}
-        <i className="wi wi-degrees"></i>
+      <h1 className="text-lg">
         <i className={`wi wi-owm-${id}`}></i>
       </h1>
+      <h1 className="text-5xl">
+        {temperature}
+        <i className="wi wi-degrees"></i>
+      </h1>
+      <h1 className="text-xl">{data.name}</h1>
     </div>
   );
 };

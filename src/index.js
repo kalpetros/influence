@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import { Layout } from './Layout';
-import { Content } from './Content';
+import { Browsing } from './Browsing';
 import { Top } from './Top';
 import { Center } from './Center';
 import { Bottom } from './Bottom';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { fab, faAccusoft } from '@fortawesome/free-brands-svg-icons';
+import { fab } from '@fortawesome/free-brands-svg-icons';
 import {
   faBookmark,
   faHistory,
@@ -19,6 +19,8 @@ import {
   faFolder,
   faCheck,
   faExclamationTriangle,
+  faSearch,
+  faChevronLeft,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -32,7 +34,9 @@ library.add(
   faTimes,
   faFolder,
   faCheck,
-  faExclamationTriangle
+  faExclamationTriangle,
+  faSearch,
+  faChevronLeft
 );
 
 const App = () => {
@@ -44,10 +48,10 @@ const App = () => {
 
   return (
     <Layout>
-      <Content menuIsVisible={menuIsVisible} onClose={handleMenuClick} />
-      <Top />
+      <Browsing menuIsVisible={menuIsVisible} onClose={handleMenuClick} />
+      <Top onMenuClick={handleMenuClick} />
       <Center />
-      <Bottom onMenuClick={handleMenuClick} />
+      <Bottom />
     </Layout>
   );
 };

@@ -4,7 +4,7 @@ import moment from 'moment';
 export const Time = () => {
   const [date, setDate] = useState(moment());
   const time = date.format('HH:mm');
-  const dateS = date.format('dddd, MMMM Do YYYY');
+  const dateStr = date.format('dddd, MMMM Do YYYY');
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -19,8 +19,8 @@ export const Time = () => {
 
   return (
     <div>
-      <h1 className="text-5xl text-white">{time}</h1>
-      <h2 className="text-xl">{dateS}</h2>
+      <h1 className="text-5xl">{time}</h1>
+      <h2 className="text-lg">{dateStr}</h2>
     </div>
   );
 };

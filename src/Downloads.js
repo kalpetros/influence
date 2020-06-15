@@ -42,15 +42,13 @@ const Information = (props) => {
     statusIcon = <FontAwesomeIcon icon="check" className="text-blue-700" />;
 
     information = (
-      <div>
-        <button
-          id={id}
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          onClick={onClick}
-        >
-          Open
-        </button>
-      </div>
+      <button
+        id={id}
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        onClick={onClick}
+      >
+        Open
+      </button>
     );
   } else if (state === 'interrupted') {
     textClass = 'text-gray-500';
@@ -59,15 +57,13 @@ const Information = (props) => {
     );
 
     information = (
-      <div>
-        <button
-          id={id}
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          onClick={onClick}
-        >
-          Retry
-        </button>
-      </div>
+      <button
+        id={id}
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        onClick={onClick}
+      >
+        Retry
+      </button>
     );
   } else if (state === 'in_progress') {
     statusIcon = (
@@ -75,10 +71,10 @@ const Information = (props) => {
     );
 
     information = (
-      <div>
+      <>
         <button
           id={id}
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded mr-5"
+          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
           onClick={onClick}
         >
           Pause
@@ -90,20 +86,18 @@ const Information = (props) => {
         >
           Cancel
         </button>
-      </div>
+      </>
     );
   }
 
   return (
-    <div className="grid grid-flow-col p-5 border-b block">
-      <div className="grid grid-flow-col items-center">
-        <div>{statusIcon}</div>
-        <div className={textClass}>
-          <p className="mb-2 font-semibold">{filename}</p>
-          <p>{url}</p>
-        </div>
+    <div className="grid download-item gap-2 p-5 items-center border-b">
+      <div className="w-10">{statusIcon}</div>
+      <div className={textClass}>
+        <p className="mb-2 font-semibold">{filename}</p>
+        <p>{url}</p>
       </div>
-      <div className="grid items-center justify-end">{information}</div>
+      <div className="grid grid-flow-col gap-2 justify-end">{information}</div>
     </div>
   );
 };
@@ -181,5 +175,5 @@ export const Downloads = () => {
     );
   });
 
-  return <div className="p-5">{items}</div>;
+  return <div className="overflow-auto p-5">{items}</div>;
 };

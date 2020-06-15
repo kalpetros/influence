@@ -5,24 +5,42 @@
 @import '../lib/weather-icons.css';
 @import '../lib/weather-icons-wind.css';
 
-.grid-custom-flow {
-  grid-template-rows: max-content auto max-content;
-}
-
-.search-bar {
-  width: 35rem;
-}
-
 .menu {
-  width: 35rem;
+  top: 5rem;
+  width: 50rem;
+  height: 50rem;
 }
 
 .menu--visible {
-  left: 0;
-  transition: left 1s ease-in;
+  left: 5rem;
+  transition: left 0.2s ease-in;
 }
 
 .menu--hidden {
-  left: -35rem;
-  transition: left 1s ease-in;
+  left: -50rem;
+  transition: left 0.2s ease-in;
+}
+
+.max-content-row {
+  grid-template-rows: max-content;
+}
+
+.download-item {
+  grid-template-columns: max-content auto max-content;
+}
+
+::-webkit-scrollbar {
+  width: 3px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4299e1;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4299e1;
 }

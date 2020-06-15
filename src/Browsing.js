@@ -9,7 +9,13 @@ import { Downloads } from './Downloads';
 import { Top } from './Top';
 
 const Menu = (props) => {
-  const { view: view, onClick: onClick, onClose: onClose } = props;
+  const {
+    view: view,
+    onBackClick: onBackClick,
+    onClick: onClick,
+    onClose: onClose,
+  } = props;
+
   const items = [
     {
       id: 'topVisited',
@@ -34,11 +40,11 @@ const Menu = (props) => {
   ];
 
   const tabs = items.map((item) => {
-    let baseClass = 'mr-1 bg-white inline-block py-2 px-4 cursor-pointer';
+    let baseClass = 'mr-1 bg-white inline-block p-5 cursor-pointer';
     let className = `${baseClass} text-blue-500`;
 
     if (view === item.id) {
-      className = `${baseClass} -mb-px border-l border-t border-r rounded-t text-blue-700 font-semibold`;
+      className = `${baseClass} border-l border-r text-blue-700 font-semibold`;
     }
 
     return (
@@ -49,23 +55,23 @@ const Menu = (props) => {
   });
 
   return (
-    <div className="sticky top-0 bg-white">
-      <div className="p-5 text-right">
-        <FontAwesomeIcon
-          icon="times"
-          size="lg"
-          className="cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
-      <div>
-        <ul className="flex border-b">{tabs}</ul>
+    <div className="bg-white border-b">
+      <div className="grid grid-flow-col">
+        <ul className="flex">{tabs}</ul>
+        <div className="p-5 text-right">
+          <FontAwesomeIcon
+            icon="times"
+            size="lg"
+            className="cursor-pointer"
+            onClick={onClose}
+          />
+        </div>
       </div>
     </div>
   );
 };
 
-export const Content = (props) => {
+export const Browsing = (props) => {
   const [view, setView] = useState('topVisited');
   const { menuIsVisible: menuIsVisible, onClose: onClose } = props;
   let className = 'menu--hidden';
@@ -97,7 +103,7 @@ export const Content = (props) => {
 
   return (
     <div
-      className={`fixed top-0 h-screen overflow-auto bg-white menu ${className}`}
+      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden menu ${className}`}
     >
       <Menu view={view} onClick={handleClick} onClose={onClose} />
       {page}

@@ -26,5 +26,5 @@ export const RecentBookmarks = () => {
     );
   });
 
-  return <div className="p-5">{items}</div>;
+  return <div className="overflow-auto p-5">{items}</div>;
 };

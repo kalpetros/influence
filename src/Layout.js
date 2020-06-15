@@ -12,7 +12,10 @@ export const Layout = ({ children }) => {
   };
 
   return (
-    <div className="h-screen w-screen grid grid-flow-row" style={style}>
+    <div
+      className="grid grid-flow-row h-screen w-screen overflow-hidden"
+      style={style}
+    >
       {children}
     </div>
   );
