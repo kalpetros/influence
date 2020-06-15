@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -67,4 +68,8 @@ export const WeatherWidget = (props) => {
       </h1>
     </div>
   );
+};
+
+WeatherWidget.propTypes = {
+  onClick: PropTypes.func.isRequired,
 };

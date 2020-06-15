@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { RecentBookmarks } from './RecentBookmarks';
@@ -6,15 +7,9 @@ import { Bookmarks } from './Bookmarks';
 import { History } from './History';
 import { TopVisited } from './TopVisited';
 import { Downloads } from './Downloads';
-import { Top } from './Top';
 
 const Menu = (props) => {
-  const {
-    view: view,
-    onBackClick: onBackClick,
-    onClick: onClick,
-    onClose: onClose,
-  } = props;
+  const { view: view, onClick: onClick, onClose: onClose } = props;
 
   const items = [
     {
@@ -69,6 +64,12 @@ const Menu = (props) => {
   );
 };
 
+Menu.propTypes = {
+  view: PropTypes.string.isRequired,
+  onClick: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
 export const Browsing = (props) => {
   const [view, setView] = useState('topVisited');
   const { isVisible: isVisible, onClose: onClose } = props;
@@ -107,4 +108,9 @@ export const Browsing = (props) => {
       {page}
     </div>
   );
+};
+
+Browsing.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };

@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { TimeWidget } from './TimeWidget';
 import { WeatherWidget } from './WeatherWidget';
 
@@ -11,4 +13,8 @@ export const Bottom = (props) => {
       <WeatherWidget onClick={onWeatherClick} />
     </div>
   );
+};
+
+Bottom.propTypes = {
+  onWeatherClick: PropTypes.func.isRequired,
 };

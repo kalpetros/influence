@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 
@@ -100,6 +101,18 @@ const Information = (props) => {
       <div className="grid grid-flow-col gap-2 justify-end">{information}</div>
     </div>
   );
+};
+
+Information.propTypes = {
+  bytesReceived: PropTypes.string,
+  totalBytes: PropTypes.string,
+  estimatedEndTime: PropTypes.string,
+  id: PropTypes.string,
+  state: PropTypes.string,
+  filename: PropTypes.string,
+  url: PropTypes.string,
+  isVisible: PropTypes.bool.isRequired,
+  onClick: PropTypes.func.isRequired,
 };
 
 export const Downloads = () => {

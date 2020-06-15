@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 import { getUnits } from './utils';
+import propTypes from 'prop-types';
 
 const Menu = (props) => {
   const { onClose: onClose } = props;
 
   return (
-    <div className="grid grid-flow-col bg-white border-b">
-      <div className="p-5">
-        <p>Settings</p>
-      </div>
-      <div className="p-5 text-right">
+    <div className="grid grid-flow-col bg-white border-b p-5">
+      <div className="text-blue-500 font-semibold">Settings</div>
+      <div className="text-right">
         <FontAwesomeIcon
           icon="times"
           size="lg"
@@ -21,6 +21,10 @@ const Menu = (props) => {
       </div>
     </div>
   );
+};
+
+Menu.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export const Settings = (props) => {
@@ -73,7 +77,7 @@ export const Settings = (props) => {
                 data-setting="time"
                 onClick={handleChangeUnits}
               >
-                12
+                12hr
               </div>
               <div
                 className={
@@ -85,7 +89,7 @@ export const Settings = (props) => {
                 data-setting="time"
                 onClick={handleChangeUnits}
               >
-                24
+                24hr
               </div>
             </div>
           </div>
@@ -116,7 +120,7 @@ export const Settings = (props) => {
                 data-setting="temperature"
                 onClick={handleChangeUnits}
               >
-                fahrenheit
+                Fahrenheit
               </div>
             </div>
           </div>
@@ -182,4 +186,9 @@ export const Settings = (props) => {
       </div>
     </div>
   );
+};
+
+Settings.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };

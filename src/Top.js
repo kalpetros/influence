@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export const Top = (props) => {
@@ -25,4 +26,9 @@ export const Top = (props) => {
       </div>
     </div>
   );
+};
+
+Top.propTypes = {
+  onBrowsingClick: PropTypes.func.isRequired,
+  onSettingsClick: PropTypes.func.isRequired,
 };

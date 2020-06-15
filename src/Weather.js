@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -10,11 +11,9 @@ const Menu = (props) => {
   const { onClose: onClose } = props;
 
   return (
-    <div className="grid grid-flow-col bg-white border-b">
-      <div className="p-5">
-        <p>Weather</p>
-      </div>
-      <div className="p-5 text-right">
+    <div className="grid grid-flow-col bg-white border-b p-5">
+      <div className="text-blue-500 font-semibold">Weather</div>
+      <div className="text-right">
         <FontAwesomeIcon
           icon="times"
           size="lg"
@@ -24,6 +23,10 @@ const Menu = (props) => {
       </div>
     </div>
   );
+};
+
+Menu.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export const Weather = (props) => {
@@ -70,7 +73,7 @@ export const Weather = (props) => {
   const error = () => {};
 
   if (typeof data === 'undefined') {
-    return <div className="text-right">Getting weather...</div>;
+    return null;
   }
 
   let {
@@ -92,8 +95,6 @@ export const Weather = (props) => {
   temperatureMin = formatTemperature(temperatureMin);
   pressure = formatPressure(pressure);
   windSpeed = formatWind(windSpeed);
-
-  console.log(data);
 
   return (
     <div
@@ -117,10 +118,8 @@ export const Weather = (props) => {
             Temperatures will span from {temperatureMin} to {temperatureMax}
           </p>
           <p className="text-2xl">
-            Air pressure is at {pressure} and{' '}
-            <span className="text-green-400">
-              humidity at {humidity} <i className="wi wi-humidity"></i>
-            </span>
+            Air pressure is at {pressure} and humidity at {humidity}{' '}
+            <i className="wi wi-humidity"></i>
           </p>
           <p className="text-2xl">
             Wind is coming from{' '}
@@ -131,4 +130,9 @@ export const Weather = (props) => {
       </div>
     </div>
   );
+};
+
+Weather.propTypes = {
+  isVisible: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
 };
