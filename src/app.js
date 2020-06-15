@@ -7,6 +7,7 @@ import { Weather } from './Weather';
 import { Top } from './Top';
 import { Center } from './Center';
 import { Bottom } from './Bottom';
+import { getUnits } from './utils';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -47,6 +48,10 @@ const App = () => {
   const [browsingIsVisible, setBrowsingIsVisible] = useState(false);
   const [settingsAreVisible, setSettingsAreVisible] = useState(false);
   const [weatherIsVisible, setWeatherIsVisible] = useState(false);
+
+  useEffect(() => {
+    getUnits();
+  }, []);
 
   const handleBrowsingClick = () => {
     setBrowsingIsVisible((p) => (p ? false : true));

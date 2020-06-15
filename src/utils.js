@@ -39,3 +39,22 @@ export function formatBytes(bytes, decimals) {
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
+
+export function getUnits() {
+  const units = localStorage.getItem('units');
+
+  if (units === null) {
+    const units = {
+      time: '24',
+      temperature: 'celsius',
+      pressure: 'pascal',
+      wind: 'ms',
+    };
+
+    localStorage.setItem('units', JSON.stringify(units));
+
+    return units;
+  }
+
+  return JSON.parse(units);
+}
