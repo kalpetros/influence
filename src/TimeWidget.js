@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import moment from 'moment';
 
+import { formatTime } from './utils';
+
 export const TimeWidget = () => {
   const [date, setDate] = useState(moment());
-  const time = date.format('HH:mm');
+  const time = formatTime(date);
   const dateStr = date.format('dddd, MMMM Do YYYY');
 
   useEffect(() => {

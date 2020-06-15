@@ -1,5 +1,8 @@
+import React from 'react';
+import moment from 'moment';
+
 // Convert wind speed from m/s to beaufort scale
-export function toBeaufort(wind) {
+function toBeaufort(wind) {
   let beaufort = 0;
   if (wind < 0.3) {
     beaufort = 0;
@@ -58,3 +61,60 @@ export function getUnits() {
 
   return JSON.parse(units);
 }
+
+export function formatTime(obj) {
+  const units = getUnits();
+  let time = obj.format('HH:mm');
+
+  if (units.time === '12') {
+    time = obj.format('h:mm');
+  }
+
+  return time;
+}
+
+export const formatTemperature = (temperature) => {
+  const units = getUnits();
+  temperature = Math.round(parseFloat(temperature), 0);
+
+  if (units.temperature === 'fahrenheit') {
+    temperature = temperature * 1.8 + 32;
+    return (
+      <>
+        {temperature} <i className="wi wi-fahrenheit"></i>
+      </>
+    );
+  }
+
+  return (
+    <>
+      {temperature} <i className="wi wi-celsius"></i>
+    </>
+  );
+};
+
+/*
+ ** 1 hPa (hectopascal) = 1 millibar = 100 Pa
+ */
+export function formatPressure(pressure) {
+  const units = getUnits();
+  pressure = Math.round(parseFloat(pressure), 0);
+
+  if (units.pressure === 'pascal') {
+    pressure = pressure * 100;
+    return `${pressure} Pa`;
+  }
+
+  return `${pressure} mbar`;
+}
+
+export const formatWind = (wind) => {
+  const units = getUnits();
+
+  if (units.wind === 'beaufort') {
+    wind = toBeaufort(parseFloat);
+    return <i className={`wi wi-wind-beaufort-${wind}`}></i>;
+  }
+
+  return `${wind} m/s`;
+};

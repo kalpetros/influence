@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { formatTemperature } from './utils';
+
 export const WeatherWidget = (props) => {
   const [data, setData] = useState();
   const onClick = props.onClick;
@@ -44,31 +46,16 @@ export const WeatherWidget = (props) => {
     return <div className="text-right">Getting weather...</div>;
   }
 
-  let {
-    temp: temperature,
-    feels_like: feelsLike,
-    humidity: humidity,
-    pressure: pressure,
-    temp_max: temperatureMax,
-    temp_min: temperatureMin,
-  } = data.main;
-
-  const { deg: degrees, speed: speed } = data.wind;
   const id = data.weather[0].id;
-
-  temperature = Math.round(temperature, 1);
-  feelsLike = Math.round(feelsLike, 0);
-  console.log(data);
+  let temperature = data.main.temp;
+  temperature = formatTemperature(temperature);
 
   return (
     <div className="text-right">
       <h1 className="text-lg">
         <i className={`wi wi-owm-${id}`}></i>
       </h1>
-      <h1 className="text-5xl">
-        {temperature}
-        <i className="wi wi-degrees"></i>
-      </h1>
+      <h1 className="text-5xl">{temperature}</h1>
       <h1 className="text-xl">
         <FontAwesomeIcon
           icon="info-circle"

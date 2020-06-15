@@ -108,15 +108,15 @@ export const Settings = (props) => {
               </div>
               <div
                 className={
-                  units.temperature === 'fahreneit'
+                  units.temperature === 'fahrenheit'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
-                data-unit="fahreneit"
+                data-unit="fahrenheit"
                 data-setting="temperature"
                 onClick={handleChangeUnits}
               >
-                Fahreneit
+                fahrenheit
               </div>
             </div>
           </div>

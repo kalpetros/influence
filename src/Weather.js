@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-import { toBeaufort } from './utils';
+import { formatTemperature } from './utils';
+import { formatPressure } from './utils';
+import { formatWind } from './utils';
 
 const Menu = (props) => {
   const { onClose: onClose } = props;
@@ -80,17 +82,18 @@ export const Weather = (props) => {
     temp_min: temperatureMin,
   } = data.main;
 
-  const { deg: windDegrees, speed: windSpeed } = data.wind;
+  let { deg: windDegrees, speed: windSpeed } = data.wind;
   const id = data.weather[0].id;
-  const beaufort = toBeaufort(windSpeed);
-  let wind = `${windSpeed} m/s`;
+  const description = data.weather[0].description;
 
-  temperature = Math.round(temperature, 1);
-  feelsLike = Math.round(feelsLike, 0);
-  temperatureMax = Math.round(temperatureMax, 0);
-  temperatureMin = Math.round(temperatureMin, 0);
+  temperature = formatTemperature(temperature);
+  feelsLike = formatTemperature(feelsLike);
+  temperatureMax = formatTemperature(temperatureMax);
+  temperatureMin = formatTemperature(temperatureMin);
+  pressure = formatPressure(pressure);
+  windSpeed = formatWind(windSpeed);
 
-  wind = <i className={`wi wi-wind-beaufort-${beaufort}`}></i>;
+  console.log(data);
 
   return (
     <div
@@ -103,27 +106,18 @@ export const Weather = (props) => {
         </div>
         <div>
           <h1 className="text-5xl">
-            <i className={`wi wi-owm-${id}`}></i> {temperature}{' '}
-            <i className="wi wi-celsius"></i>
+            <i className={`wi wi-owm-${id}`}></i> {temperature}
           </h1>
         </div>
         <div>
           <p className="text-2xl">
-            Temperature in {data.name}{' '}
-            <span className="text-green-400">
-              feels like {feelsLike} <i className="wi wi-celsius"></i>
-            </span>{' '}
-            with a{' '}
-            <span className="text-green-400">
-              maximum at {temperatureMax} <i className="wi wi-celsius"></i>
-            </span>{' '}
-            and{' '}
-            <span className="text-green-400">
-              minimum at {temperatureMin} <i className="wi wi-celsius"></i>
-            </span>
+            Temperature in {data.name} feels like {feelsLike} with {description}
           </p>
           <p className="text-2xl">
-            Air pressure is at {pressure} mbar and{' '}
+            Temperatures will span from {temperatureMin} to {temperatureMax}
+          </p>
+          <p className="text-2xl">
+            Air pressure is at {pressure} and{' '}
             <span className="text-green-400">
               humidity at {humidity} <i className="wi wi-humidity"></i>
             </span>
@@ -131,7 +125,7 @@ export const Weather = (props) => {
           <p className="text-2xl">
             Wind is coming from{' '}
             <i className={`wi wi-wind towards-${windDegrees}-deg`}></i> at{' '}
-            {wind}
+            {windSpeed}
           </p>
         </div>
       </div>
