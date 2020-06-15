@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { toBeaufort } from './utils';
+
 const Menu = (props) => {
   const { onClose: onClose } = props;
 
@@ -78,18 +80,61 @@ export const Weather = (props) => {
     temp_min: temperatureMin,
   } = data.main;
 
-  const { deg: degrees, speed: speed } = data.wind;
+  const { deg: windDegrees, speed: windSpeed } = data.wind;
   const id = data.weather[0].id;
+  const beaufort = toBeaufort(windSpeed);
+  let wind = `${windSpeed} m/s`;
 
   temperature = Math.round(temperature, 1);
   feelsLike = Math.round(feelsLike, 0);
-  console.log(data);
+  temperatureMax = Math.round(temperatureMax, 0);
+  temperatureMin = Math.round(temperatureMin, 0);
+
+  wind = <i className={`wi wi-wind-beaufort-${beaufort}`}></i>;
 
   return (
     <div
       className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 weather ${className}`}
     >
       <Menu onClose={onClose} />
+      <div className="p-5">
+        <div>
+          <h1 className="text-md text-gray-700 uppercase">Current weather</h1>
+        </div>
+        <div>
+          <h1 className="text-5xl">
+            <i className={`wi wi-owm-${id}`}></i> {temperature}{' '}
+            <i className="wi wi-celsius"></i>
+          </h1>
+        </div>
+        <div>
+          <p className="text-2xl">
+            Temperature in {data.name}{' '}
+            <span className="text-green-400">
+              feels like {feelsLike} <i className="wi wi-celsius"></i>
+            </span>{' '}
+            with a{' '}
+            <span className="text-green-400">
+              maximum at {temperatureMax} <i className="wi wi-celsius"></i>
+            </span>{' '}
+            and{' '}
+            <span className="text-green-400">
+              minimum at {temperatureMin} <i className="wi wi-celsius"></i>
+            </span>
+          </p>
+          <p className="text-2xl">
+            Air pressure is at {pressure} mbar and{' '}
+            <span className="text-green-400">
+              humidity at {humidity} <i className="wi wi-humidity"></i>
+            </span>
+          </p>
+          <p className="text-2xl">
+            Wind is coming from{' '}
+            <i className={`wi wi-wind towards-${windDegrees}-deg`}></i> at{' '}
+            {wind}
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
