@@ -86,7 +86,6 @@ export const Center = () => {
   const [data, setData] = useState([]);
   const [todo, setTodo] = useState('');
   const [date, setDate] = useState(dateNow);
-  console.log(date);
 
   useEffect(() => {
     fetch();
@@ -95,7 +94,6 @@ export const Center = () => {
   const fetch = () => {
     DB.get()
       .then((response) => {
-        console.log(response);
         setData(response);
       })
       .catch((error) => {
@@ -120,6 +118,7 @@ export const Center = () => {
 
       DB.add(item)
         .then((response) => {
+          setTodo('');
           fetch();
         })
         .catch((error) => {
@@ -128,21 +127,34 @@ export const Center = () => {
     }
   };
 
-  console.log(data);
+  const todos = data
+    .sort((a, b) => {
+      const aIsBeforeB = moment(a.date).isBefore(b.date);
+      const bIsBeforeA = moment(b.date).isBefore(a.date);
 
-  const todos = data.map((todo, index) => {
-    return (
-      <li
-        key={`todo-${index}`}
-        className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
-      >
-        <div className="text-2xl text-gray-700">{todo.title}</div>
-        <div className="grid justify-end">
-          <Datepicker isData date={todo.date} onChange={handleDateChange} />
-        </div>
-      </li>
-    );
-  });
+      if (aIsBeforeB) {
+        return -1;
+      }
+
+      if (bIsBeforeA) {
+        return 1;
+      }
+
+      return 0;
+    })
+    .map((todo, index) => {
+      return (
+        <li
+          key={`todo-${index}`}
+          className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
+        >
+          <div className="text-2xl text-gray-700">{todo.title}</div>
+          <div className="grid justify-end">
+            <Datepicker isData date={todo.date} onChange={handleDateChange} />
+          </div>
+        </li>
+      );
+    });
 
   return (
     <div className="grid max-content-rows-2 h-full w-8/12 m-auto overflow-hidden">

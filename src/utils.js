@@ -94,14 +94,12 @@ export const formatTemperature = (temperature) => {
   );
 };
 
-/*
- ** 1 hPa (hectopascal) = 1 millibar = 100 Pa
- */
 export function formatPressure(pressure) {
   const units = getUnits();
   pressure = Math.round(parseFloat(pressure), 0);
 
   if (units.pressure === 'pascal') {
+    // 1 hPa (hectopascal) = 1 millibar = 100 Pa
     pressure = pressure * 100;
     return `${pressure} Pa`;
   }
@@ -113,7 +111,7 @@ export const formatWind = (wind) => {
   const units = getUnits();
 
   if (units.wind === 'beaufort') {
-    wind = toBeaufort(parseFloat);
+    wind = toBeaufort(parseFloat(wind));
     return <i className={`wi wi-wind-beaufort-${wind}`}></i>;
   }
 
