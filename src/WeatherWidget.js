@@ -58,13 +58,13 @@ export const WeatherWidget = (props) => {
       </h1>
       <h1 className="text-5xl">{temperature}</h1>
       <h1 className="text-xl">
+        {data.name}
         <FontAwesomeIcon
           icon="info-circle"
           size="sm"
-          className="cursor-pointer"
+          className="ml-2 cursor-pointer"
           onClick={onClick}
-        />{' '}
-        {data.name}
+        />
       </h1>
     </div>
   );

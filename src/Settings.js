@@ -1,31 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Modal } from './Modal';
 import { getUnits } from './utils';
-import propTypes from 'prop-types';
-
-const Menu = (props) => {
-  const { onClose: onClose } = props;
-
-  return (
-    <div className="grid grid-flow-col bg-white border-b p-5">
-      <div className="text-blue-500 font-semibold">Settings</div>
-      <div className="text-right">
-        <FontAwesomeIcon
-          icon="times"
-          size="lg"
-          className="cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
-    </div>
-  );
-};
-
-Menu.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
 
 export const Settings = (props) => {
   const { isVisible: isVisible, onClose: onClose } = props;
@@ -45,12 +22,6 @@ export const Settings = (props) => {
     setUnits(units);
   };
 
-  let className = 'settings--hidden';
-
-  if (isVisible) {
-    className = 'settings--visible';
-  }
-
   let toggleClassName =
     'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
 
@@ -58,11 +29,13 @@ export const Settings = (props) => {
     'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
 
   return (
-    <div
-      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 settings ${className}`}
+    <Modal
+      title="Settings"
+      name="settings"
+      isVisible={isVisible}
+      onClose={onClose}
     >
-      <Menu onClose={onClose} />
-      <div className="p-5">
+      <div className="overflow-auto p-5">
         <div>
           <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
             <div>Time format</div>
@@ -184,7 +157,7 @@ export const Settings = (props) => {
           </div>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 

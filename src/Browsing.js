@@ -1,17 +1,35 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Modal } from './Modal';
 import { RecentBookmarks } from './RecentBookmarks';
 import { Bookmarks } from './Bookmarks';
 import { History } from './History';
 import { TopVisited } from './TopVisited';
 import { Downloads } from './Downloads';
 
-const Menu = (props) => {
-  const { view: view, onClick: onClick, onClose: onClose } = props;
+export const Browsing = (props) => {
+  const [view, setView] = useState('topVisited');
+  const { isVisible: isVisible, onClose: onClose } = props;
 
-  const items = [
+  const handleClick = (e) => {
+    setView(e.currentTarget.id);
+  };
+
+  const page =
+    view === 'topVisited' ? (
+      <TopVisited />
+    ) : view === 'recentBookmarks' ? (
+      <RecentBookmarks />
+    ) : view === 'bookmarks' ? (
+      <Bookmarks />
+    ) : view === 'history' ? (
+      <History />
+    ) : view === 'downloads' ? (
+      <Downloads />
+    ) : null;
+
+  const menuItems = [
     {
       id: 'topVisited',
       name: 'Top Visited',
@@ -34,79 +52,17 @@ const Menu = (props) => {
     },
   ];
 
-  const tabs = items.map((item) => {
-    let baseClass = 'mr-1 bg-white inline-block p-5 cursor-pointer';
-    let className = `${baseClass} text-blue-500`;
-
-    if (view === item.id) {
-      className = `${baseClass} border-l border-r text-blue-700 font-semibold`;
-    }
-
-    return (
-      <li key={item.id} id={item.id} className={className} onClick={onClick}>
-        {item.name}
-      </li>
-    );
-  });
-
   return (
-    <div className="grid grid-flow-col bg-white border-b">
-      <ul className="flex">{tabs}</ul>
-      <div className="p-5 text-right">
-        <FontAwesomeIcon
-          icon="times"
-          size="lg"
-          className="cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
-    </div>
-  );
-};
-
-Menu.propTypes = {
-  view: PropTypes.string.isRequired,
-  onClick: PropTypes.func.isRequired,
-  onClose: PropTypes.func.isRequired,
-};
-
-export const Browsing = (props) => {
-  const [view, setView] = useState('topVisited');
-  const { isVisible: isVisible, onClose: onClose } = props;
-  let className = 'browsing--hidden';
-
-  const handleClick = (e) => {
-    setView(e.currentTarget.id);
-  };
-
-  const handleClose = () => {
-    alert('adasd');
-  };
-
-  const page =
-    view === 'topVisited' ? (
-      <TopVisited />
-    ) : view === 'recentBookmarks' ? (
-      <RecentBookmarks />
-    ) : view === 'bookmarks' ? (
-      <Bookmarks />
-    ) : view === 'history' ? (
-      <History />
-    ) : view === 'downloads' ? (
-      <Downloads />
-    ) : null;
-
-  if (isVisible) {
-    className = 'browsing--visible';
-  }
-
-  return (
-    <div
-      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 browsing ${className}`}
+    <Modal
+      name="browsing"
+      view={view}
+      menuItems={menuItems}
+      isVisible={isVisible}
+      onClick={handleClick}
+      onClose={onClose}
     >
-      <Menu view={view} onClick={handleClick} onClose={onClose} />
       {page}
-    </div>
+    </Modal>
   );
 };
 

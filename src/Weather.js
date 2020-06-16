@@ -1,42 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+import { Modal } from './Modal';
 import { formatTemperature } from './utils';
 import { formatPressure } from './utils';
 import { formatWind } from './utils';
 
-const Menu = (props) => {
-  const { onClose: onClose } = props;
-
-  return (
-    <div className="grid grid-flow-col bg-white border-b p-5">
-      <div className="text-blue-500 font-semibold">Weather</div>
-      <div className="text-right">
-        <FontAwesomeIcon
-          icon="times"
-          size="lg"
-          className="cursor-pointer"
-          onClick={onClose}
-        />
-      </div>
-    </div>
-  );
-};
-
-Menu.propTypes = {
-  onClose: PropTypes.func.isRequired,
-};
-
 export const Weather = (props) => {
   const [data, setData] = useState();
   const { isVisible: isVisible, onClose: onClose } = props;
-  let className = 'weather--hidden';
-
-  if (isVisible) {
-    className = 'weather--visible';
-  }
 
   useEffect(() => {
     getUserPosition();
@@ -97,11 +70,13 @@ export const Weather = (props) => {
   windSpeed = formatWind(windSpeed);
 
   return (
-    <div
-      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 weather ${className}`}
+    <Modal
+      title="Weather"
+      name="weather"
+      isVisible={isVisible}
+      onClose={onClose}
     >
-      <Menu onClose={onClose} />
-      <div className="p-5">
+      <div className="overflow-auto p-5">
         <div>
           <h1 className="text-md text-gray-700 uppercase">Current weather</h1>
         </div>
@@ -115,7 +90,7 @@ export const Weather = (props) => {
             Temperature in {data.name} feels like {feelsLike} with {description}
           </p>
           <p className="text-2xl">
-            Temperatures will span from {temperatureMin} to {temperatureMax}
+            Temperatures span from {temperatureMin} to {temperatureMax}
           </p>
           <p className="text-2xl">
             Air pressure is at {pressure} and humidity at {humidity}{' '}
@@ -128,7 +103,7 @@ export const Weather = (props) => {
           </p>
         </div>
       </div>
-    </div>
+    </Modal>
   );
 };
 
