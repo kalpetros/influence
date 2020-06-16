@@ -53,11 +53,19 @@
   transition: right 0.2s ease-in;
 }
 
-.max-content-row {
+.max-content-rows {
   grid-template-rows: max-content;
 }
 
-.download-item {
+.max-content-rows-2 {
+  grid-template-rows: max-content auto;
+}
+
+.max-content-rows-3 {
+  grid-template-rows: max-content auto max-content;
+}
+
+.max-content-columns-3 {
   grid-template-columns: max-content auto max-content;
 }
 

@@ -8,6 +8,7 @@ import { Top } from './Top';
 import { Center } from './Center';
 import { Bottom } from './Bottom';
 import { getUnits } from './utils';
+import { DB } from './utils';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -66,17 +67,19 @@ const App = () => {
   };
 
   return (
-    <Layout>
+    <>
       <Browsing isVisible={browsingIsVisible} onClose={handleBrowsingClick} />
       <Settings isVisible={settingsAreVisible} onClose={handleSettingsClick} />
       <Weather isVisible={weatherIsVisible} onClose={handleWeatherClick} />
-      <Top
-        onBrowsingClick={handleBrowsingClick}
-        onSettingsClick={handleSettingsClick}
-      />
-      <Center />
-      <Bottom onWeatherClick={handleWeatherClick} />
-    </Layout>
+      <Layout>
+        <Top
+          onBrowsingClick={handleBrowsingClick}
+          onSettingsClick={handleSettingsClick}
+        />
+        <Center />
+        <Bottom onWeatherClick={handleWeatherClick} />
+      </Layout>
+    </>
   );
 };
 

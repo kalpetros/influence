@@ -102,7 +102,7 @@ export const Browsing = (props) => {
 
   return (
     <div
-      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 browsing ${className}`}
+      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 browsing ${className}`}
     >
       <Menu view={view} onClick={handleClick} onClose={onClose} />
       {page}

@@ -98,7 +98,7 @@ export const Weather = (props) => {
 
   return (
     <div
-      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 weather ${className}`}
+      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 weather ${className}`}
     >
       <Menu onClose={onClose} />
       <div className="p-5">

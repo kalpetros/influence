@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
-const Datepicker = () => {
-  const dateNow = moment().toISOString();
+import { DB } from './utils';
+
+const Datepicker = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [date, setDate] = useState(dateNow);
-  const dateDiff = moment(date).diff(moment(dateNow), 'days');
+
+  const { isData: isData, date: date, onChange: onChange } = props;
+
+  const dateNow = moment().toISOString();
+  const dateDiff = moment(date).diff(dateNow, 'days');
   let dateFormatted = moment(dateNow).to(moment(date));
 
   if (dateDiff === 0) {
     dateFormatted = 'Today';
   }
-
-  useEffect(() => {
-    setIsOpen(false);
-  }, [date]);
 
   const handleClick = () => {
     setIsOpen((p) => (p ? false : true));
@@ -22,7 +23,8 @@ const Datepicker = () => {
 
   const handleSelect = (e) => {
     const date = e.currentTarget.dataset.date;
-    setDate(date);
+    setIsOpen((p) => (p ? false : true));
+    onChange(date);
   };
 
   let panel = null;
@@ -50,18 +52,22 @@ const Datepicker = () => {
     }
 
     panel = (
-      <div className="absolute top-0 right-0 h-64 bg-white shadow-lg rounded-lg overflow-auto">
+      <div className="absolute top-0 right-0 h-64 bg-white shadow-lg rounded-lg z-50 overflow-auto">
         {dates}
       </div>
     );
   }
 
+  let buttonClass =
+    'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
+
+  if (isData) {
+    buttonClass = 'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
+  }
+
   return (
     <div className="relative">
-      <button
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        onClick={handleClick}
-      >
+      <button className={buttonClass} onClick={handleClick}>
         {dateFormatted}
       </button>
       {panel}
@@ -69,56 +75,97 @@ const Datepicker = () => {
   );
 };
 
-export const Center = () => {
-  const [todo, setTodo] = useState('');
+Datepicker.propTypes = {
+  isData: PropTypes.bool,
+  date: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
 
-  const handleChange = (e) => {
+export const Center = () => {
+  const dateNow = moment().toISOString();
+  const [data, setData] = useState([]);
+  const [todo, setTodo] = useState('');
+  const [date, setDate] = useState(dateNow);
+  console.log(date);
+
+  useEffect(() => {
+    fetch();
+  }, []);
+
+  const fetch = () => {
+    DB.get()
+      .then((response) => {
+        console.log(response);
+        setData(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const handleInputChange = (e) => {
     setTodo(e.currentTarget.value);
+  };
+
+  const handleDateChange = (date) => {
+    setDate(date);
   };
 
   const handleSubmit = (e) => {
     if (e.key === 'Enter') {
-      console.log('Enter hit');
+      const item = {
+        title: todo,
+        date: date,
+      };
+
+      DB.add(item)
+        .then((response) => {
+          fetch();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
   };
 
-  const x = Array(25)
-    .fill(1)
-    .map(() => {
-      return (
-        <li className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700">
-          <div className="text-2xl text-gray-700">
-            Test of the system is down
-          </div>
-          <div className="grid justify-end">
-            <div className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-              Today
-            </div>
-          </div>
-        </li>
-      );
-    });
+  console.log(data);
+
+  const todos = data.map((todo, index) => {
+    return (
+      <li
+        key={`todo-${index}`}
+        className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
+      >
+        <div className="text-2xl text-gray-700">{todo.title}</div>
+        <div className="grid justify-end">
+          <Datepicker isData date={todo.date} onChange={handleDateChange} />
+        </div>
+      </li>
+    );
+  });
 
   return (
-    <div className="w-8/12 m-auto h-full overflow-hidden">
-      <h1 className="text-3xl">Hi Petros,</h1>
-      <div className="grid grid-flow-col items-center border-b border-gray-500">
-        <div>
-          <input
-            className="appearance-none text-2xl bg-transparent h-20 w-full text-gray-700 leading-tight focus:outline-none"
-            type="text"
-            placeholder="What do you want to do?"
-            value={todo}
-            onChange={handleChange}
-            onKeyDown={handleSubmit}
-          />
-        </div>
-        <div className="grid justify-end pr-5">
-          <Datepicker />
+    <div className="grid max-content-rows-2 h-full w-8/12 m-auto overflow-hidden">
+      <div>
+        <h1 className="text-3xl">Hi Petros,</h1>
+        <div className="grid grid-flow-col items-center border-b border-gray-500">
+          <div>
+            <input
+              className="appearance-none text-2xl bg-transparent h-20 w-full text-gray-700 leading-tight focus:outline-none"
+              type="text"
+              placeholder="What do you want to do?"
+              value={todo}
+              onChange={handleInputChange}
+              onKeyDown={handleSubmit}
+            />
+          </div>
+          <div className="grid justify-end pr-5">
+            <Datepicker date={date} onChange={handleDateChange} />
+          </div>
         </div>
       </div>
-      <div className="h-full mt-10 overflow-auto">
-        <ul>{x}</ul>
+      <div className="mt-10 overflow-auto">
+        <ul>{todos}</ul>
       </div>
     </div>
   );

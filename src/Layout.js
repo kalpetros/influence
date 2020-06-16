@@ -15,7 +15,7 @@ export const Layout = ({ children }) => {
 
   return (
     <div
-      className="grid grid-flow-row h-screen w-screen overflow-hidden"
+      className="grid max-content-rows-3 h-screen w-screen overflow-hidden"
       style={style}
     >
       {children}
@@ -24,5 +24,5 @@ export const Layout = ({ children }) => {
 };
 
 Layout.propTypes = {
-  children: PropTypes.element.isRequired,
+  children: PropTypes.array.isRequired,
 };

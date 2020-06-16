@@ -52,14 +52,14 @@ export const Settings = (props) => {
   }
 
   let toggleClassName =
-    'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded cursor-pointer';
+    'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
 
   let toggleClassNameSelected =
-    'bg-blue-500 font-semibold text-white py-2 px-4 border rounded cursor-pointer';
+    'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
 
   return (
     <div
-      className={`grid max-content-row fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 settings ${className}`}
+      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg overflow-hidden z-50 settings ${className}`}
     >
       <Menu onClose={onClose} />
       <div className="p-5">
@@ -67,7 +67,7 @@ export const Settings = (props) => {
           <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
             <div>Time format</div>
             <div className="grid grid-flow-col gap-2 justify-end">
-              <div
+              <button
                 className={
                   units.time === '12'
                     ? toggleClassNameSelected
@@ -78,8 +78,8 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 12hr
-              </div>
-              <div
+              </button>
+              <button
                 className={
                   units.time === '24'
                     ? toggleClassNameSelected
@@ -90,7 +90,7 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 24hr
-              </div>
+              </button>
             </div>
           </div>
         </div>
@@ -98,7 +98,7 @@ export const Settings = (props) => {
           <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
             <div>Temperature</div>
             <div className="grid grid-flow-col gap-2 justify-end">
-              <div
+              <button
                 className={
                   units.temperature === 'celsius'
                     ? toggleClassNameSelected
@@ -109,8 +109,8 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 Celsius
-              </div>
-              <div
+              </button>
+              <button
                 className={
                   units.temperature === 'fahrenheit'
                     ? toggleClassNameSelected
@@ -121,13 +121,13 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 Fahrenheit
-              </div>
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
             <div>Air pressure</div>
             <div className="grid grid-flow-col gap-2 justify-end">
-              <div
+              <button
                 className={
                   units.pressure === 'pascal'
                     ? toggleClassNameSelected
@@ -138,8 +138,8 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 Pascal
-              </div>
-              <div
+              </button>
+              <button
                 className={
                   units.pressure === 'mbar'
                     ? toggleClassNameSelected
@@ -150,13 +150,13 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 mbar
-              </div>
+              </button>
             </div>
           </div>
           <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
             <div>Wind speed</div>
             <div className="grid grid-flow-col gap-2 justify-end">
-              <div
+              <button
                 className={
                   units.wind === 'ms'
                     ? toggleClassNameSelected
@@ -167,8 +167,8 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 m/s
-              </div>
-              <div
+              </button>
+              <button
                 className={
                   units.wind === 'beaufort'
                     ? toggleClassNameSelected
@@ -179,7 +179,7 @@ export const Settings = (props) => {
                 onClick={handleChangeUnits}
               >
                 Beaufort
-              </div>
+              </button>
             </div>
           </div>
         </div>

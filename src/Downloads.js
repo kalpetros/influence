@@ -92,7 +92,7 @@ const Information = (props) => {
   }
 
   return (
-    <div className="grid download-item gap-2 p-5 items-center border-b">
+    <div className="grid max-content-columns-3 gap-2 p-5 items-center border-b">
       <div className="w-10">{statusIcon}</div>
       <div className={textClass}>
         <p className="mb-2 font-semibold">{filename}</p>

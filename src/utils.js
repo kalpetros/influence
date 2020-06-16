@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import moment from 'moment';
+import { faCheck } from '@fortawesome/free-solid-svg-icons';
 
 // Convert wind speed from m/s to beaufort scale
 function toBeaufort(wind) {
@@ -117,4 +118,102 @@ export const formatWind = (wind) => {
   }
 
   return `${wind} m/s`;
+};
+
+export const DB = {
+  name: 'InfluenceDB',
+  storeName: 'todos',
+  version: 1,
+  open: () => {
+    return new Promise((resolve, reject) => {
+      let db;
+
+      const request = window.indexedDB.open(DB.name, DB.version);
+
+      request.onsuccess = (e) => {
+        db = e.target.result;
+
+        db.onsuccess = (e) => {
+          resolve('success');
+        };
+
+        db.onerror = (e) => {
+          reject(e.target.errorCode);
+        };
+      };
+
+      request.onerror = (e) => {
+        reject(e.target.errorCode);
+      };
+
+      request.onupgradeneeded = (e) => {
+        const db = e.target.result;
+        const store = db.createObjectStore(DB.storeName, {
+          autoIncrement: true,
+        });
+
+        store.createIndex('date', 'date', { unique: false });
+      };
+    });
+  },
+  add: (item) => {
+    return new Promise((resolve, reject) => {
+      let db;
+
+      const request = window.indexedDB.open(DB.name, DB.version);
+
+      request.onsuccess = (e) => {
+        db = e.target.result;
+
+        db.onsuccess = (e) => {
+          resolve('success');
+        };
+
+        db.onerror = (e) => {
+          reject(e.target.errorCode);
+        };
+
+        const transaction = db.transaction(DB.storeName, 'readwrite');
+        const store = transaction.objectStore(DB.storeName);
+        store.add(item);
+        resolve('success');
+      };
+
+      request.onerror = (e) => {
+        reject(e.target.errorCode);
+      };
+    });
+  },
+  get: () => {
+    return new Promise((resolve, reject) => {
+      let db;
+      let objects = [];
+
+      const request = window.indexedDB.open(DB.name, DB.version);
+
+      request.onsuccess = (e) => {
+        db = e.target.result;
+
+        db.onsuccess = (e) => {
+          resolve('success');
+        };
+
+        db.onerror = (e) => {
+          reject(e.target.errorCode);
+        };
+
+        const transaction = db.transaction(DB.storeName, 'readonly');
+        const store = transaction.objectStore(DB.storeName);
+        const request = store.getAll();
+
+        request.onsuccess = (e) => {
+          resolve(e.target.result);
+        };
+      };
+
+      request.onerror = (e) => {
+        reject(e.target.errorCode);
+      };
+    });
+  },
 };
