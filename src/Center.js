@@ -156,7 +156,7 @@ export const Center = () => {
   return (
     <div className="grid max-content-rows-2 h-full w-8/12 m-auto overflow-hidden">
       <div>
-        <h1 className="text-3xl">{getGreeting()}</h1>
+        <h1 className="text-5xl">{getGreeting()}</h1>
         <div className="grid grid-flow-col items-center border-b border-gray-500">
           <div>
             <input

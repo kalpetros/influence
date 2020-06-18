@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+
 import { Layout } from './Layout';
 import { Browsing } from './Browsing';
 import { Settings } from './Settings';
@@ -7,8 +8,7 @@ import { Weather } from './Weather';
 import { Top } from './Top';
 import { Center } from './Center';
 import { Bottom } from './Bottom';
-import { getUnits } from './utils';
-import { DB } from './utils';
+import { SettingsStateProvider } from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -54,10 +54,6 @@ const App = () => {
   const [settingsAreVisible, setSettingsAreVisible] = useState(false);
   const [weatherIsVisible, setWeatherIsVisible] = useState(false);
 
-  useEffect(() => {
-    getUnits();
-  }, []);
-
   const handleBrowsingClick = () => {
     setBrowsingIsVisible((p) => (p ? false : true));
   };
@@ -71,7 +67,7 @@ const App = () => {
   };
 
   return (
-    <>
+    <SettingsStateProvider>
       <Browsing isVisible={browsingIsVisible} onClose={handleBrowsingClick} />
       <Settings isVisible={settingsAreVisible} onClose={handleSettingsClick} />
       <Weather isVisible={weatherIsVisible} onClose={handleWeatherClick} />
@@ -83,7 +79,7 @@ const App = () => {
         <Center />
         <Bottom onWeatherClick={handleWeatherClick} />
       </Layout>
-    </>
+    </SettingsStateProvider>
   );
 };
 

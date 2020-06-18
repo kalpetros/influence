@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import moment from 'moment';
 
 import { formatBytes } from './utils';
+import { SettingsContext } from './store';
 
 const Information = (props) => {
   let {
@@ -12,44 +13,45 @@ const Information = (props) => {
     estimatedEndTime: estimatedEndTime,
     id: id,
     state: state,
-    paused: paused,
     filename: filename,
     url: url,
+    paused: paused,
   } = props.item;
   const {
     onOpenClick: onOpenClick,
     onCancelClick: onCancelClick,
     onPauseClick: onPauseClick,
-    onRetryClick: onRetryClick,
     onResumeClick: onResumeClick,
   } = props;
+  const context = useContext(SettingsContext);
+  const { state: settings } = context;
+  const isDarkMode = settings.darkMode;
+  const theme = isDarkMode === 'true' ? null : 'border-b';
+  const buttonClassName =
+    'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
+  let textClassName = isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700';
 
   bytesReceived = formatBytes(bytesReceived, 0);
   totalBytes = formatBytes(totalBytes, 0);
   estimatedEndTime = moment(estimatedEndTime);
   const timeNow = moment();
   const minutesLeft = estimatedEndTime.diff(timeNow, 'minutes');
-  let textClass = ' text-gray-700';
   let statusIcon = null;
   let information = null;
 
   if (state === 'complete') {
-    textClass = 'text-gray-500';
-    statusIcon = <FontAwesomeIcon icon="check" className="text-blue-700" />;
+    textClassName = isDarkMode === 'true' ? 'text-blue-300' : 'text-gray-500';
+    statusIcon = <FontAwesomeIcon icon="check" className="text-blue-500" />;
 
     information = (
-      <button
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        data-id={id}
-        onClick={onOpenClick}
-      >
+      <button className={buttonClassName} data-id={id} onClick={onOpenClick}>
         Open
       </button>
     );
   } else if (state === 'interrupted') {
-    textClass = 'text-gray-500';
+    textClassName = isDarkMode === 'true' ? 'text-blue-300' : 'text-gray-500';
     statusIcon = (
-      <FontAwesomeIcon icon="exclamation-triangle" className="text-red-700" />
+      <FontAwesomeIcon icon="exclamation-triangle" className="text-red-500" />
     );
 
     information = null;
@@ -58,11 +60,7 @@ const Information = (props) => {
       <FontAwesomeIcon icon="spinner" className="text-blue-500" spin />
     );
     let button = (
-      <button
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        data-id={id}
-        onClick={onPauseClick}
-      >
+      <button className={buttonClassName} data-id={id} onClick={onPauseClick}>
         Pause
       </button>
     );
@@ -72,7 +70,7 @@ const Information = (props) => {
 
       button = (
         <button
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          className={buttonClassName}
           data-id={id}
           onClick={onResumeClick}
         >
@@ -85,7 +83,7 @@ const Information = (props) => {
       <>
         {button}
         <button
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          className={buttonClassName}
           data-id={id}
           onClick={onCancelClick}
         >
@@ -96,9 +94,11 @@ const Information = (props) => {
   }
 
   return (
-    <div className="grid max-content-columns-3 gap-2 p-5 items-center border-b">
+    <div
+      className={`grid max-content-columns-3 gap-2 p-5 items-center ${theme}`}
+    >
       <div className="w-10">{statusIcon}</div>
-      <div className={textClass}>
+      <div className={textClassName}>
         <p className="mb-2 font-semibold">{filename}</p>
         <p className="mb-2">{url}</p>
         <p className="text-blue-500">
@@ -111,15 +111,11 @@ const Information = (props) => {
 };
 
 Information.propTypes = {
-  bytesReceived: PropTypes.string,
-  totalBytes: PropTypes.string,
-  estimatedEndTime: PropTypes.string,
-  id: PropTypes.string,
-  state: PropTypes.string,
-  filename: PropTypes.string,
-  url: PropTypes.string,
-  isVisible: PropTypes.bool.isRequired,
-  onClick: PropTypes.func.isRequired,
+  item: PropTypes.object.isRequired,
+  onOpenClick: PropTypes.func.isRequired,
+  onCancelClick: PropTypes.func.isRequired,
+  onPauseClick: PropTypes.func.isRequired,
+  onResumeClick: PropTypes.func.isRequired,
 };
 
 export const Downloads = () => {

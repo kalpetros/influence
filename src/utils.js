@@ -43,33 +43,35 @@ export function formatBytes(bytes, decimals) {
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 }
 
-export function getUnits() {
-  const units = localStorage.getItem('units');
+export function getSettings() {
+  const settings = localStorage.getItem('settings');
 
-  if (units === null) {
-    const units = {
+  if (settings === null) {
+    const settings = {
       time: '24',
       temperature: 'celsius',
       pressure: 'pascal',
       wind: 'ms',
+      darkMode: 'false',
     };
 
-    localStorage.setItem('units', JSON.stringify(units));
+    localStorage.setItem('settings', JSON.stringify(settings));
 
-    return units;
+    return settings;
   }
 
-  return JSON.parse(units);
+  return JSON.parse(settings);
 }
 
 export function getGreeting() {
   const date = moment();
   const hours = date.hours();
-  if (hours >= 17 && hours < 5) {
+
+  if (hours >= 17 || hours < 5) {
     return 'Good evening,';
   }
 
-  if (hours >= 12 && hours < 17) {
+  if (hours >= 12 || hours < 17) {
     return 'Good afternoon,';
   }
 
@@ -77,10 +79,10 @@ export function getGreeting() {
 }
 
 export function formatTime(obj) {
-  const units = getUnits();
+  const settings = getSettings();
   let time = obj.format('HH:mm');
 
-  if (units.time === '12') {
+  if (settings.time === '12') {
     time = obj.format('h:mm');
   }
 
@@ -88,10 +90,10 @@ export function formatTime(obj) {
 }
 
 export const formatTemperature = (temperature) => {
-  const units = getUnits();
+  const settings = getSettings();
   temperature = Math.round(parseFloat(temperature), 0);
 
-  if (units.temperature === 'fahrenheit') {
+  if (settings.temperature === 'fahrenheit') {
     temperature = temperature * 1.8 + 32;
     return (
       <>
@@ -108,10 +110,10 @@ export const formatTemperature = (temperature) => {
 };
 
 export function formatPressure(pressure) {
-  const units = getUnits();
+  const settings = getSettings();
   pressure = Math.round(parseFloat(pressure), 0);
 
-  if (units.pressure === 'pascal') {
+  if (settings.pressure === 'pascal') {
     // 1 hPa (hectopascal) = 1 millibar = 100 Pa
     pressure = pressure * 100;
     return `${pressure} Pa`;
@@ -121,9 +123,9 @@ export function formatPressure(pressure) {
 }
 
 export const formatWind = (wind) => {
-  const units = getUnits();
+  const settings = getSettings();
 
-  if (units.wind === 'beaufort') {
+  if (settings.wind === 'beaufort') {
     wind = toBeaufort(parseFloat(wind));
     return <i className={`wi wi-wind-beaufort-${wind}`}></i>;
   }

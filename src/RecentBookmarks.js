@@ -1,7 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { SettingsContext } from './store';
 
 export const RecentBookmarks = () => {
   const [data, setData] = useState([]);
+  const context = useContext(SettingsContext);
+  const { state: settings } = context;
+  const isDarkMode = settings.darkMode;
+  const theme =
+    isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700 border-b';
+  const className = `p-5 block cursor-pointer ${theme}`;
 
   useEffect(() => {
     chrome.bookmarks.getRecent(100, function (response) {
@@ -13,7 +20,7 @@ export const RecentBookmarks = () => {
     return (
       <a
         key={`recentBookmarks-${index}`}
-        className="p-5 border-b block cursor-pointer text-gray-700"
+        className={className}
         href={item.url}
         target="__blank"
       >

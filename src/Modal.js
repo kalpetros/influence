@@ -1,40 +1,56 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { SettingsContext } from './store';
 
 const Menu = (props) => {
   const {
     title: title,
     view: view,
     items: items,
+    isDarkMode: isDarkMode,
     onClick: onClick,
     onClose: onClose,
   } = props;
+  const theme = isDarkMode === 'true' ? 'bg-black' : 'bg-white border-b';
+  const iconTheme =
+    isDarkMode === 'true' ? 'text-blue-500 cursor-pointer' : 'cursor-pointer';
+  const menuClassName = `grid grid-flow-col ${theme}`;
 
   if (typeof items !== 'undefined') {
     const tabs = items.map((item) => {
-      let baseClass = 'mr-1 bg-white inline-block p-5 cursor-pointer';
-      let className = `${baseClass} text-blue-500`;
+      const theme =
+        isDarkMode === 'true'
+          ? 'text-white'
+          : 'text-blue-500 border-l border-r';
+      const baseLiClassName = `mr-1 inline-block p-5 cursor-pointer ${theme}`;
+      let liClassName = `${baseLiClassName} text-blue-500`;
 
       if (view === item.id) {
-        className = `${baseClass} border-l border-r text-blue-700 font-semibold`;
+        liClassName = `${baseLiClassName} font-semibold`;
       }
 
       return (
-        <li key={item.id} id={item.id} className={className} onClick={onClick}>
+        <li
+          key={item.id}
+          id={item.id}
+          className={liClassName}
+          onClick={onClick}
+        >
           {item.name}
         </li>
       );
     });
 
     return (
-      <div className="grid grid-flow-col bg-white border-b">
+      <div className={menuClassName}>
         <ul>{tabs}</ul>
         <div className="p-5 text-right">
           <FontAwesomeIcon
             icon="times"
             size="lg"
-            className="cursor-pointer"
+            className={iconTheme}
             onClick={onClose}
           />
         </div>
@@ -43,13 +59,13 @@ const Menu = (props) => {
   }
 
   return (
-    <div className="grid grid-flow-col bg-white border-b p-5">
+    <div className={`${menuClassName} p-5`}>
       <div className="text-blue-500 font-semibold">{title}</div>
       <div className="text-right">
         <FontAwesomeIcon
           icon="times"
           size="lg"
-          className="cursor-pointer"
+          className={iconTheme}
           onClick={onClose}
         />
       </div>
@@ -61,6 +77,7 @@ Menu.propTypes = {
   title: PropTypes.string,
   view: PropTypes.string,
   items: PropTypes.array,
+  isDarkMode: PropTypes.string,
   onClick: PropTypes.func,
   onClose: PropTypes.func.isRequired,
 };
@@ -83,17 +100,24 @@ export const Modal = (props) => {
     onClose: onClose,
     children: children,
   } = props;
-  let className = `${name}--hidden`;
+  const context = useContext(SettingsContext);
+  const { state: settings } = context;
+  const isDarkMode = settings.darkMode;
+  const theme = isDarkMode === 'true' ? 'bg-black' : 'bg-white';
+
+  let className = `grid max-content-rows fixed rounded-lg shadow-lg z-50 overflow-hidden ${name} ${theme}`;
+  let visibilityClassName = `${name}--hidden`;
 
   if (isVisible) {
-    className = `${name}--visible`;
+    visibilityClassName = `${name}--visible`;
   }
 
+  className = `${className} ${visibilityClassName}`;
+
   return (
-    <div
-      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg z-50 overflow-hidden ${name} ${className}`}
-    >
+    <div className={className}>
       <Menu
+        isDarkMode={isDarkMode}
         title={title}
         view={view}
         items={menuItems}

@@ -1,9 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { SettingsContext } from './store';
 
 export const Bookmarks = () => {
   const [tree, setTree] = useState([]);
   const [data, setData] = useState([]);
+  const context = useContext(SettingsContext);
+  const { state: settings } = context;
+  const isDarkMode = settings.darkMode;
+  const theme =
+    isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700 border-b';
+  const className = `p-5 block cursor-pointer ${theme}`;
 
   useEffect(() => {
     setData(tree);
@@ -35,7 +42,7 @@ export const Bookmarks = () => {
         return (
           <a
             key={`bookmark-${child.id}-${index}`}
-            className="p-5 border-b block cursor-pointer text-gray-700"
+            className={className}
             href={child.url}
             target="__blank"
           >
@@ -52,7 +59,7 @@ export const Bookmarks = () => {
         <div
           key={`bookmark-${child.id}-${index}`}
           id={child.id}
-          className="p-5 border-b block cursor-pointer text-gray-700"
+          className={className}
           onClick={handleClick}
         >
           <FontAwesomeIcon

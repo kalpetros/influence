@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'axios';
 
@@ -6,10 +6,15 @@ import { Modal } from './Modal';
 import { formatTemperature } from './utils';
 import { formatPressure } from './utils';
 import { formatWind } from './utils';
+import { SettingsContext } from './store';
 
 export const Weather = (props) => {
   const [data, setData] = useState();
   const { isVisible: isVisible, onClose: onClose } = props;
+  const context = useContext(SettingsContext);
+  const { state: settings } = context;
+  const isDarkMode = settings.darkMode;
+  const className = isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700';
 
   useEffect(() => {
     getUserPosition();
@@ -80,12 +85,12 @@ export const Weather = (props) => {
         <div>
           <h1 className="text-md text-gray-700 uppercase">Current weather</h1>
         </div>
-        <div>
+        <div className={className}>
           <h1 className="text-5xl">
             <i className={`wi wi-owm-${id}`}></i> {temperature}
           </h1>
         </div>
-        <div>
+        <div className={className}>
           <p className="text-2xl">
             Temperature in {data.name} spans from {temperatureMin} to{' '}
             {temperatureMax}

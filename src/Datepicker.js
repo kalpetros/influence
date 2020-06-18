@@ -4,12 +4,12 @@ import moment from 'moment';
 
 export const Datepicker = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-
   const { isData: isData, date: date, todo: todo, onChange: onChange } = props;
-
   const dateNow = moment().toISOString();
   const dateDiff = moment(date).diff(dateNow, 'days');
   let dateFormatted = moment(dateNow).to(moment(date));
+  let buttonClassName =
+    'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
 
   if (dateDiff === 0) {
     dateFormatted = 'Today';
@@ -61,20 +61,18 @@ export const Datepicker = (props) => {
     );
   }
 
-  let buttonClass =
-    'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
-
   if (isData) {
     if (dateDiff < 0) {
-      buttonClass = 'bg-red-500 font-semibold text-white py-2 px-4 rounded';
+      buttonClassName = 'bg-red-500 font-semibold text-white py-2 px-4 rounded';
     } else {
-      buttonClass = 'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
+      buttonClassName =
+        'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
     }
   }
 
   return (
     <div className="relative">
-      <button className={buttonClass} onClick={handleClick}>
+      <button className={buttonClassName} onClick={handleClick}>
         {dateFormatted}
       </button>
       {panel}
