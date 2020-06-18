@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import moment from 'moment';
 
 // Convert wind speed from m/s to beaufort scale
 function toBeaufort(wind) {
@@ -59,6 +60,20 @@ export function getUnits() {
   }
 
   return JSON.parse(units);
+}
+
+export function getGreeting() {
+  const date = moment();
+  const hours = date.hours();
+  if (hours >= 17 && hours < 5) {
+    return 'Good evening,';
+  }
+
+  if (hours >= 12 && hours < 17) {
+    return 'Good afternoon,';
+  }
+
+  return 'Good morning,';
 }
 
 export function formatTime(obj) {
