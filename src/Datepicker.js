@@ -5,7 +5,7 @@ import moment from 'moment';
 export const Datepicker = (props) => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { isData: isData, date: date, onChange: onChange } = props;
+  const { isData: isData, date: date, todo: todo, onChange: onChange } = props;
 
   const dateNow = moment().toISOString();
   const dateDiff = moment(date).diff(dateNow, 'days');
@@ -22,7 +22,12 @@ export const Datepicker = (props) => {
   const handleSelect = (e) => {
     const date = e.currentTarget.dataset.date;
     setIsOpen((p) => (p ? false : true));
-    onChange(date);
+
+    if (typeof todo !== 'undefined') {
+      onChange(date, todo);
+    } else {
+      onChange(date);
+    }
   };
 
   let panel = null;
@@ -80,5 +85,6 @@ export const Datepicker = (props) => {
 Datepicker.propTypes = {
   isData: PropTypes.bool,
   date: PropTypes.string.isRequired,
+  todo: PropTypes.object,
   onChange: PropTypes.func.isRequired,
 };

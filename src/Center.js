@@ -7,7 +7,7 @@ import { DB } from './utils';
 export const Center = () => {
   const dateNow = moment().toISOString();
   const [data, setData] = useState([]);
-  const [todo, setTodo] = useState();
+  const [todo, setTodo] = useState('');
   const [date, setDate] = useState(dateNow);
 
   useEffect(() => {
@@ -84,6 +84,25 @@ export const Center = () => {
     }
   };
 
+  const handleTodoDateChange = (date, todo) => {
+    const key = parseInt(todo.key);
+
+    let item = data.find((d) => {
+      return parseInt(d.key) === key;
+    });
+
+    delete item['key'];
+    item['date'] = date;
+
+    DB.put(item, key)
+      .then((response) => {
+        fetchInit();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const todos = data
     .sort((a, b) => {
       const aIsBeforeB = moment(a.date).isBefore(b.date);
@@ -112,13 +131,22 @@ export const Center = () => {
       return (
         <li
           key={`todo-${index}`}
-          data-key={todo.key}
           className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
-          onClick={handleTodoClick}
         >
-          <div className={titleClass}>{todo.title}</div>
+          <div
+            className={titleClass}
+            data-key={todo.key}
+            onClick={handleTodoClick}
+          >
+            {todo.title}
+          </div>
           <div className="grid justify-end">
-            <Datepicker isData date={todo.date} onChange={handleDateChange} />
+            <Datepicker
+              isData
+              date={todo.date}
+              todo={todo}
+              onChange={handleTodoDateChange}
+            />
           </div>
         </li>
       );

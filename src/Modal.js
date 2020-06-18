@@ -91,7 +91,7 @@ export const Modal = (props) => {
 
   return (
     <div
-      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg z-50 ${name} ${className}`}
+      className={`grid max-content-rows fixed rounded-lg bg-white shadow-lg z-50 overflow-hidden ${name} ${className}`}
     >
       <Menu
         title={title}
