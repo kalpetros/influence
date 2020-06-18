@@ -87,10 +87,11 @@ export const Weather = (props) => {
         </div>
         <div>
           <p className="text-2xl">
-            Temperature in {data.name} feels like {feelsLike} with {description}
+            Temperature in {data.name} spans from {temperatureMin} to{' '}
+            {temperatureMax}
           </p>
           <p className="text-2xl">
-            Temperatures span from {temperatureMin} to {temperatureMax}
+            It currently feels like {feelsLike} with {description}
           </p>
           <p className="text-2xl">
             Air pressure is at {pressure} and humidity at {humidity}{' '}

@@ -62,7 +62,11 @@ const Datepicker = (props) => {
     'bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
 
   if (isData) {
-    buttonClass = 'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
+    if (dateDiff < 0) {
+      buttonClass = 'bg-red-500 font-semibold text-white py-2 px-4 rounded';
+    } else {
+      buttonClass = 'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
+    }
   }
 
   return (
@@ -84,15 +88,29 @@ Datepicker.propTypes = {
 export const Center = () => {
   const dateNow = moment().toISOString();
   const [data, setData] = useState([]);
-  const [todo, setTodo] = useState('');
+  const [todo, setTodo] = useState();
   const [date, setDate] = useState(dateNow);
 
   useEffect(() => {
-    fetch();
+    fetchInit();
   }, []);
 
-  const fetch = () => {
-    DB.get()
+  const fetchInit = () => {
+    DB.getKeys()
+      .then((response) => {
+        fetchData(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchData = (keys) => {
+    const promises = keys.map((key) => {
+      return DB.get(key);
+    });
+
+    Promise.all(promises)
       .then((response) => {
         setData(response);
       })
@@ -109,17 +127,37 @@ export const Center = () => {
     setDate(date);
   };
 
+  const handleTodoClick = (e) => {
+    const key = parseInt(e.currentTarget.dataset.key);
+
+    let item = data.find((d) => {
+      return parseInt(d.key) === key;
+    });
+
+    delete item['key'];
+    item['status'] = item['status'] === 'todo' ? 'done' : 'todo';
+
+    DB.put(item, key)
+      .then((response) => {
+        fetchInit();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleSubmit = (e) => {
     if (e.key === 'Enter') {
       const item = {
         title: todo,
         date: date,
+        status: 'todo',
       };
 
       DB.add(item)
         .then((response) => {
           setTodo('');
-          fetch();
+          fetchInit();
         })
         .catch((error) => {
           console.log(error);
@@ -142,13 +180,24 @@ export const Center = () => {
 
       return 0;
     })
+    .filter((todo) => {
+      return todo.status === 'todo';
+    })
     .map((todo, index) => {
+      let titleClass = 'text-2xl text-gray-700';
+
+      if (todo.status === 'done') {
+        titleClass = 'text-2xl text-gray-700 line-through';
+      }
+
       return (
         <li
           key={`todo-${index}`}
+          data-key={todo.key}
           className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
+          onClick={handleTodoClick}
         >
-          <div className="text-2xl text-gray-700">{todo.title}</div>
+          <div className={titleClass}>{todo.title}</div>
           <div className="grid justify-end">
             <Datepicker isData date={todo.date} onChange={handleDateChange} />
           </div>
@@ -159,7 +208,7 @@ export const Center = () => {
   return (
     <div className="grid max-content-rows-2 h-full w-8/12 m-auto overflow-hidden">
       <div>
-        <h1 className="text-3xl">Hi Petros,</h1>
+        <h1 className="text-3xl">Good morning,</h1>
         <div className="grid grid-flow-col items-center border-b border-gray-500">
           <div>
             <input

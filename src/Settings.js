@@ -37,8 +37,8 @@ export const Settings = (props) => {
     >
       <div className="overflow-auto p-5">
         <div>
-          <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
-            <div className="text-gray-700">Time format</div>
+          <div className="grid grid-cols-2 items-center p-5 mb-2">
+            <div className="text-lg text-gray-700">Time format</div>
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
@@ -68,8 +68,8 @@ export const Settings = (props) => {
           </div>
         </div>
         <div>
-          <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
-            <div className="text-gray-700">Temperature</div>
+          <div className="grid grid-cols-2 items-center p-5 mb-2">
+            <div className="text-lg text-gray-700">Temperature</div>
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
@@ -97,8 +97,8 @@ export const Settings = (props) => {
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
-            <div className="text-gray-700">Air pressure</div>
+          <div className="grid grid-cols-2 items-center p-5 mb-2">
+            <div className="text-lg text-gray-700">Air pressure</div>
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
@@ -126,8 +126,8 @@ export const Settings = (props) => {
               </button>
             </div>
           </div>
-          <div className="grid grid-cols-2 items-center p-5 mb-2 rounded shadow">
-            <div className="text-gray-700">Wind speed</div>
+          <div className="grid grid-cols-2 items-center p-5 mb-2">
+            <div className="text-lg text-gray-700">Wind speed</div>
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={

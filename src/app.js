@@ -26,6 +26,8 @@ import {
   faSearch,
   faChevronLeft,
   faInfoCircle,
+  faSpinner,
+  faPause,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -42,7 +44,9 @@ library.add(
   faExclamationTriangle,
   faSearch,
   faChevronLeft,
-  faInfoCircle
+  faInfoCircle,
+  faSpinner,
+  faPause
 );
 
 const App = () => {

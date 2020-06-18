@@ -12,10 +12,17 @@ const Information = (props) => {
     estimatedEndTime: estimatedEndTime,
     id: id,
     state: state,
+    paused: paused,
     filename: filename,
     url: url,
   } = props.item;
-  const onClick = props.onClick;
+  const {
+    onOpenClick: onOpenClick,
+    onCancelClick: onCancelClick,
+    onPauseClick: onPauseClick,
+    onRetryClick: onRetryClick,
+    onResumeClick: onResumeClick,
+  } = props;
 
   bytesReceived = formatBytes(bytesReceived, 0);
   totalBytes = formatBytes(totalBytes, 0);
@@ -23,20 +30,8 @@ const Information = (props) => {
   const timeNow = moment();
   const minutesLeft = estimatedEndTime.diff(timeNow, 'minutes');
   let textClass = ' text-gray-700';
-  let statusIcon = 'test';
-
-  let information = (
-    <>
-      <div>
-        <p>{minutesLeft} minutes left</p>
-      </div>
-      <div>
-        <p>
-          {bytesReceived} of {totalBytes}
-        </p>
-      </div>
-    </>
-  );
+  let statusIcon = null;
+  let information = null;
 
   if (state === 'complete') {
     textClass = 'text-gray-500';
@@ -44,9 +39,9 @@ const Information = (props) => {
 
     information = (
       <button
-        id={id}
         className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        onClick={onClick}
+        data-id={id}
+        onClick={onOpenClick}
       >
         Open
       </button>
@@ -57,33 +52,42 @@ const Information = (props) => {
       <FontAwesomeIcon icon="exclamation-triangle" className="text-red-700" />
     );
 
-    information = (
-      <button
-        id={id}
-        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        onClick={onClick}
-      >
-        Retry
-      </button>
-    );
+    information = null;
   } else if (state === 'in_progress') {
     statusIcon = (
-      <FontAwesomeIcon icon="exclamation-triangle" className="text-red-700" />
+      <FontAwesomeIcon icon="spinner" className="text-blue-500" spin />
     );
+    let button = (
+      <button
+        className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        data-id={id}
+        onClick={onPauseClick}
+      >
+        Pause
+      </button>
+    );
+
+    if (paused) {
+      statusIcon = <FontAwesomeIcon icon="pause" className="text-blue-500" />;
+
+      button = (
+        <button
+          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+          data-id={id}
+          onClick={onResumeClick}
+        >
+          Resume
+        </button>
+      );
+    }
 
     information = (
       <>
+        {button}
         <button
-          id={id}
           className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          onClick={onClick}
-        >
-          Pause
-        </button>
-        <button
-          id={id}
-          className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-          onClick={onClick}
+          data-id={id}
+          onClick={onCancelClick}
         >
           Cancel
         </button>
@@ -96,7 +100,10 @@ const Information = (props) => {
       <div className="w-10">{statusIcon}</div>
       <div className={textClass}>
         <p className="mb-2 font-semibold">{filename}</p>
-        <p>{url}</p>
+        <p className="mb-2">{url}</p>
+        <p className="text-blue-500">
+          {bytesReceived} of {totalBytes} / {minutesLeft} minutes left
+        </p>
       </div>
       <div className="grid grid-flow-col gap-2 justify-end">{information}</div>
     </div>
@@ -173,9 +180,24 @@ export const Downloads = () => {
     };
   }, []);
 
-  const handleClick = (e) => {
-    const id = parseInt(e.currentTarget.id);
+  const handleOpenClick = (e) => {
+    const id = parseInt(e.currentTarget.dataset.id);
     chrome.downloads.show(id);
+  };
+
+  const handleCancelClick = (e) => {
+    const id = parseInt(e.currentTarget.dataset.id);
+    chrome.downloads.cancel(id);
+  };
+
+  const handlePauseClick = (e) => {
+    const id = parseInt(e.currentTarget.dataset.id);
+    chrome.downloads.pause(id);
+  };
+
+  const handleResumeClick = (e) => {
+    const id = parseInt(e.currentTarget.dataset.id);
+    chrome.downloads.resume(id);
   };
 
   const items = data.map((item, index) => {
@@ -183,7 +205,10 @@ export const Downloads = () => {
       <Information
         key={`download-item-${index}`}
         item={item}
-        onClick={handleClick}
+        onOpenClick={handleOpenClick}
+        onCancelClick={handleCancelClick}
+        onPauseClick={handlePauseClick}
+        onResumeClick={handleResumeClick}
       />
     );
   });

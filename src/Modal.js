@@ -113,5 +113,5 @@ Modal.propTypes = {
   isVisible: PropTypes.bool.isRequired,
   onClick: PropTypes.func,
   onClose: PropTypes.func.isRequired,
-  children: PropTypes.array.isRequired,
+  children: PropTypes.object.isRequired,
 };

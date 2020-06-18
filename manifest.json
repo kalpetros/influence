@@ -14,15 +14,10 @@
     "newtab": "index.html"
   },
   "permissions": [
-    "management",
     "topSites",
     "bookmarks",
     "history",
     "downloads",
-    "system.cpu",
-    "system.memory",
-    "system.storage",
-    "geolocation",
-    "management"
+    "geolocation"
   ]
 }
