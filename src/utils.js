@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import moment from 'moment';
 
 // Convert wind speed from m/s to beaufort scale
