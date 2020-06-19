@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 
 import { Modal } from './Modal';
 import { RecentBookmarks } from './RecentBookmarks';
@@ -9,7 +8,7 @@ import { TopVisited } from './TopVisited';
 import { Downloads } from './Downloads';
 import { Todo } from './Todo';
 
-export const Browsing = (props) => {
+export const Browsing = () => {
   const [view, setView] = useState('topVisited');
 
   const handleClick = (e) => {

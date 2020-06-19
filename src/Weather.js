@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
 
 import { Modal } from './Modal';
@@ -8,9 +7,8 @@ import { formatPressure } from './utils';
 import { formatWind } from './utils';
 import { SettingsContext } from './store';
 
-export const Weather = (props) => {
+export const Weather = () => {
   const [data, setData] = useState();
-  const { isVisible: isVisible, onClose: onClose } = props;
   const context = useContext(SettingsContext);
   const { state: settings } = context;
   const isDarkMode = settings.darkMode;

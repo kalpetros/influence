@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
-import PropTypes from 'prop-types';
+import React, { useContext } from 'react';
 
 import { Modal } from './Modal';
 import { SettingsContext } from './store';
 
-export const Settings = (props) => {
-  const { isVisible: isVisible, onClose: onClose } = props;
+export const Settings = () => {
   const context = useContext(SettingsContext);
   const { dispatch } = context;
   const { state: settings } = context;
@@ -181,9 +179,4 @@ export const Settings = (props) => {
       </div>
     </Modal>
   );
-};
-
-Settings.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };
