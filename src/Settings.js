@@ -21,7 +21,7 @@ export const Settings = (props) => {
   const handleChangeSettings = (e) => {
     const setting = e.currentTarget.dataset.setting;
     const value = e.currentTarget.dataset.value;
-    dispatch({ type: 'UPDATE_SETTINGS', setting: setting, value: value });
+    dispatch({ type: 'update', setting: setting, value: value });
   };
 
   return (

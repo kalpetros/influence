@@ -1,21 +1,22 @@
 import React, { createContext, useReducer } from 'react';
 import { getSettings } from './utils';
 
-export let settings = getSettings();
-
 export const SettingsContext = createContext(settings);
 
+const settingsReducer = (state, action) => {
+  switch (action.type) {
+    case 'update':
+      settings[action.setting] = action.value;
+      localStorage.setItem('settings', JSON.stringify(settings));
+      return settings;
+    default:
+      throw new Error();
+  }
+};
+
 export const SettingsStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer((state, action) => {
-    switch (action.type) {
-      case 'UPDATE_SETTINGS':
-        settings[action.setting] = action.value;
-        localStorage.setItem('settings', JSON.stringify(settings));
-        return settings;
-      default:
-        throw new Error();
-    }
-  }, settings);
+  const settings = getSettings();
+  const [state, dispatch] = useReducer(settingsReducer, settings);
 
   return (
     <SettingsContext.Provider value={{ state, dispatch }}>
