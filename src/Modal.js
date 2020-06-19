@@ -20,22 +20,18 @@ const Menu = (props) => {
 
   if (typeof items !== 'undefined') {
     const tabs = items.map((item) => {
-      const theme =
-        isDarkMode === 'true'
-          ? 'text-white'
-          : 'text-blue-500 border-l border-r';
-      const baseLiClassName = `mr-1 inline-block p-5 cursor-pointer ${theme}`;
-      let liClassName = `${baseLiClassName} text-blue-500`;
+      const theme = isDarkMode === 'true' ? 'text-white' : 'text-blue-500';
+      let baseLiClassName = `mr-1 inline-block p-5 cursor-pointer ${theme}`;
 
       if (view === item.id) {
-        liClassName = `${baseLiClassName} font-semibold`;
+        baseLiClassName = `${baseLiClassName} border-l border-r font-semibold`;
       }
 
       return (
         <li
           key={item.id}
           id={item.id}
-          className={liClassName}
+          className={baseLiClassName}
           onClick={onClick}
         >
           {item.name}
