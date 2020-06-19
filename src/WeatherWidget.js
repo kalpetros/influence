@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
+import { Weather } from './Weather';
 
 import { formatTemperature } from './utils';
 
@@ -57,19 +57,10 @@ export const WeatherWidget = (props) => {
         <i className={`wi wi-owm-${id}`}></i>
       </h1>
       <h1 className="text-5xl">{temperature}</h1>
-      <h1 className="text-xl">
-        {data.name}
-        <FontAwesomeIcon
-          icon="info-circle"
-          size="sm"
-          className="ml-2 cursor-pointer"
-          onClick={onClick}
-        />
+      <h1>
+        <span className="mr-2 text-xl">{data.name}</span>
+        <Weather />
       </h1>
     </div>
   );
-};
-
-WeatherWidget.propTypes = {
-  onClick: PropTypes.func.isRequired,
 };

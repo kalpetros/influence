@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -61,7 +61,7 @@ const Menu = (props) => {
 
   return (
     <div className={`${menuClassName} p-5`}>
-      <div className="text-blue-500 font-semibold">{title}</div>
+      <div className="text-left text-blue-500 font-semibold">{title}</div>
       <div className="text-right">
         <FontAwesomeIcon
           icon="times"
@@ -91,14 +91,15 @@ Menu.defaultProps = {
 };
 
 export const Modal = (props) => {
+  const [isVisible, setIsVisible] = useState(false);
   const {
+    icon: icon,
+    iconSize: iconSize,
     title: title,
     name: name,
     view: view,
     menuItems: menuItems,
-    isVisible: isVisible,
     onClick: onClick,
-    onClose: onClose,
     children: children,
   } = props;
   const context = useContext(SettingsContext);
@@ -115,28 +116,46 @@ export const Modal = (props) => {
 
   className = `${className} ${visibilityClassName}`;
 
+  const handleToggle = () => {
+    setIsVisible((s) => (s ? false : true));
+  };
+
   return (
-    <div className={className}>
-      <Menu
-        isDarkMode={isDarkMode}
-        title={title}
-        view={view}
-        items={menuItems}
-        onClick={onClick}
-        onClose={onClose}
+    <>
+      <FontAwesomeIcon
+        icon={icon}
+        size={iconSize}
+        className="cursor-pointer"
+        onClick={handleToggle}
       />
-      {children}
-    </div>
+      <div className={className}>
+        <Menu
+          isDarkMode={isDarkMode}
+          title={title}
+          view={view}
+          items={menuItems}
+          onClick={onClick}
+          onClose={handleToggle}
+        />
+        {children}
+      </div>
+    </>
   );
 };
 
 Modal.propTypes = {
+  icon: PropTypes.string.isRequired,
+  iconSize: PropTypes.string,
   title: PropTypes.string,
   name: PropTypes.string.isRequired,
   view: PropTypes.string,
   menuItems: PropTypes.array,
-  isVisible: PropTypes.bool.isRequired,
   onClick: PropTypes.func,
-  onClose: PropTypes.func.isRequired,
   children: PropTypes.object.isRequired,
+};
+
+Modal.defaultProps = {
+  icon: 'bars',
+  iconSize: 'sm',
+  name: 'Modal',
 };

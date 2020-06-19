@@ -75,13 +75,8 @@ export const Weather = (props) => {
   windSpeed = formatWind(windSpeed);
 
   return (
-    <Modal
-      title="Weather"
-      name="weather"
-      isVisible={isVisible}
-      onClose={onClose}
-    >
-      <div className="overflow-auto p-5">
+    <Modal icon="info-circle" iconSize="lg" title="Weather" name="weather">
+      <div className="text-left overflow-auto p-5">
         <div>
           <h1 className="text-md text-gray-700 uppercase">Current weather</h1>
         </div>
@@ -111,9 +106,4 @@ export const Weather = (props) => {
       </div>
     </Modal>
   );
-};
-
-Weather.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };

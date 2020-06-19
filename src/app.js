@@ -2,9 +2,6 @@ import React, { useState, useEffect } from 'react';
 import ReactDOM from 'react-dom';
 
 import { Layout } from './Layout';
-import { Browsing } from './Browsing';
-import { Settings } from './Settings';
-import { Weather } from './Weather';
 import { Top } from './Top';
 import { TodoWidget } from './TodoWidget';
 import { Bottom } from './Bottom';
@@ -50,34 +47,12 @@ library.add(
 );
 
 const App = () => {
-  const [browsingIsVisible, setBrowsingIsVisible] = useState(false);
-  const [settingsAreVisible, setSettingsAreVisible] = useState(false);
-  const [weatherIsVisible, setWeatherIsVisible] = useState(false);
-
-  const handleBrowsingClick = () => {
-    setBrowsingIsVisible((p) => (p ? false : true));
-  };
-
-  const handleSettingsClick = () => {
-    setSettingsAreVisible((p) => (p ? false : true));
-  };
-
-  const handleWeatherClick = () => {
-    setWeatherIsVisible((p) => (p ? false : true));
-  };
-
   return (
     <SettingsStateProvider>
-      <Browsing isVisible={browsingIsVisible} onClose={handleBrowsingClick} />
-      <Settings isVisible={settingsAreVisible} onClose={handleSettingsClick} />
-      <Weather isVisible={weatherIsVisible} onClose={handleWeatherClick} />
       <Layout>
-        <Top
-          onBrowsingClick={handleBrowsingClick}
-          onSettingsClick={handleSettingsClick}
-        />
+        <Top />
         <TodoWidget />
-        <Bottom onWeatherClick={handleWeatherClick} />
+        <Bottom />
       </Layout>
     </SettingsStateProvider>
   );

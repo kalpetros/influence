@@ -10,13 +10,15 @@ export const Settings = (props) => {
   const { dispatch } = context;
   const { state: settings } = context;
   const isDarkMode = settings.darkMode;
+
   let toggleClassName =
     'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
-
   let toggleClassNameSelected =
     'bg-blue-500 font-semibold text-white py-2 px-4 rounded';
   let textClassName =
-    isDarkMode === 'true' ? 'text-lg text-blue-500' : 'text-lg text-gray-500';
+    isDarkMode === 'true'
+      ? 'text-left text-lg text-blue-500'
+      : 'text-left text-lg text-gray-500';
 
   const handleChangeSettings = (e) => {
     const setting = e.currentTarget.dataset.setting;
@@ -25,12 +27,7 @@ export const Settings = (props) => {
   };
 
   return (
-    <Modal
-      title="Settings"
-      name="settings"
-      isVisible={isVisible}
-      onClose={onClose}
-    >
+    <Modal icon="cog" iconSize="2x" title="Settings" name="settings">
       <div className="overflow-auto p-5">
         <div>
           <div className="grid grid-cols-2 items-center p-5 mb-2">

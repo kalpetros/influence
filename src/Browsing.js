@@ -11,7 +11,6 @@ import { Todo } from './Todo';
 
 export const Browsing = (props) => {
   const [view, setView] = useState('topVisited');
-  const { isVisible: isVisible, onClose: onClose } = props;
 
   const handleClick = (e) => {
     setView(e.currentTarget.id);
@@ -61,19 +60,14 @@ export const Browsing = (props) => {
 
   return (
     <Modal
+      icon="bars"
+      iconSize="2x"
       name="browsing"
       view={view}
       menuItems={menuItems}
-      isVisible={isVisible}
       onClick={handleClick}
-      onClose={onClose}
     >
       {page}
     </Modal>
   );
-};
-
-Browsing.propTypes = {
-  isVisible: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired,
 };

@@ -1,6 +1,7 @@
 import React, { createContext, useReducer } from 'react';
 import { getSettings } from './utils';
 
+const settings = getSettings();
 export const SettingsContext = createContext(settings);
 
 const settingsReducer = (state, action) => {
@@ -15,7 +16,6 @@ const settingsReducer = (state, action) => {
 };
 
 export const SettingsStateProvider = ({ children }) => {
-  const settings = getSettings();
   const [state, dispatch] = useReducer(settingsReducer, settings);
 
   return (
