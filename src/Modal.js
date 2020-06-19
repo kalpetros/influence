@@ -102,9 +102,8 @@ export const Modal = (props) => {
     onClick: onClick,
     children: children,
   } = props;
-  const context = useContext(SettingsContext);
-  const { state: settings } = context;
-  const isDarkMode = settings.darkMode;
+  const { state } = useContext(SettingsContext);
+  const isDarkMode = state.darkMode;
   const theme = isDarkMode === 'true' ? 'bg-black' : 'bg-white';
 
   let className = `grid max-content-rows fixed rounded-lg shadow-lg z-50 overflow-hidden ${name} ${theme}`;

@@ -9,9 +9,8 @@ import { SettingsContext } from './store';
 
 export const Weather = () => {
   const [data, setData] = useState();
-  const context = useContext(SettingsContext);
-  const { state: settings } = context;
-  const isDarkMode = settings.darkMode;
+  const { state } = useContext(SettingsContext);
+  const isDarkMode = state.darkMode;
   const className = isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700';
 
   useEffect(() => {

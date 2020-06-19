@@ -4,10 +4,8 @@ import { Modal } from './Modal';
 import { SettingsContext } from './store';
 
 export const Settings = () => {
-  const context = useContext(SettingsContext);
-  const { dispatch } = context;
-  const { state: settings } = context;
-  const isDarkMode = settings.darkMode;
+  const { state, dispatch } = useContext(SettingsContext);
+  const isDarkMode = state.darkMode;
 
   let toggleClassName =
     'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
@@ -33,7 +31,7 @@ export const Settings = () => {
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
-                  settings.time === '12'
+                  state.time === '12'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -45,7 +43,7 @@ export const Settings = () => {
               </button>
               <button
                 className={
-                  settings.time === '24'
+                  state.time === '24'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -64,7 +62,7 @@ export const Settings = () => {
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
-                  settings.temperature === 'celsius'
+                  state.temperature === 'celsius'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -76,7 +74,7 @@ export const Settings = () => {
               </button>
               <button
                 className={
-                  settings.temperature === 'fahrenheit'
+                  state.temperature === 'fahrenheit'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -93,7 +91,7 @@ export const Settings = () => {
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
-                  settings.pressure === 'pascal'
+                  state.pressure === 'pascal'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -105,7 +103,7 @@ export const Settings = () => {
               </button>
               <button
                 className={
-                  settings.pressure === 'mbar'
+                  state.pressure === 'mbar'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -122,7 +120,7 @@ export const Settings = () => {
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
-                  settings.wind === 'ms'
+                  state.wind === 'ms'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -134,7 +132,7 @@ export const Settings = () => {
               </button>
               <button
                 className={
-                  settings.wind === 'beaufort'
+                  state.wind === 'beaufort'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -151,7 +149,7 @@ export const Settings = () => {
             <div className="grid grid-flow-col gap-2 justify-end">
               <button
                 className={
-                  settings.darkMode === 'true'
+                  state.darkMode === 'true'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
@@ -163,7 +161,7 @@ export const Settings = () => {
               </button>
               <button
                 className={
-                  settings.darkMode === 'false'
+                  state.darkMode === 'false'
                     ? toggleClassNameSelected
                     : toggleClassName
                 }
