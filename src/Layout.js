@@ -1,11 +1,14 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import background from './assets/background.jpg';
+import bg1 from './assets/1.jpg';
+import bg2 from './assets/2.jpg';
+import bg3 from './assets/3.jpg';
+import bg4 from './assets/6.jpg';
 
 export const Layout = ({ children }) => {
   const style = {
-    background: `url(${background})`,
+    background: `url(${bg4})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
   };

@@ -20,11 +20,16 @@ const Menu = (props) => {
 
   if (typeof items !== 'undefined') {
     const tabs = items.map((item) => {
-      const theme = isDarkMode === 'true' ? 'text-white' : 'text-blue-500';
-      let baseLiClassName = `mr-1 inline-block p-5 cursor-pointer ${theme}`;
+      const theme =
+        isDarkMode === 'true'
+          ? 'text-white'
+          : 'text-blue-500 border-l border-r';
+      let baseLiClassName = `mr-1 inline-block p-5 cursor-pointer`;
 
       if (view === item.id) {
-        baseLiClassName = `${baseLiClassName} border-l border-r font-semibold`;
+        baseLiClassName = `${baseLiClassName} ${theme} font-semibold`;
+      } else {
+        baseLiClassName = `${baseLiClassName} text-blue-500`;
       }
 
       return (

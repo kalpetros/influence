@@ -125,14 +125,10 @@ export const Center = () => {
     .map((todo, index) => {
       let titleClass = 'text-2xl text-gray-700';
 
-      if (todo.status === 'done') {
-        titleClass = 'text-2xl text-gray-700 line-through';
-      }
-
       return (
         <li
           key={`todo-${index}`}
-          className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer text-gray-700"
+          className="grid grid-flow-col items-center py-5 pr-5 border-b border-gray-700 block cursor-pointer"
         >
           <div
             className={titleClass}
