@@ -5,7 +5,7 @@ import { Datepicker } from './Datepicker';
 import { DB } from './utils';
 import { getGreeting } from './utils';
 
-export const Center = () => {
+export const TodoWidget = () => {
   const dateNow = moment().toISOString();
   const [data, setData] = useState([]);
   const [todo, setTodo] = useState('');

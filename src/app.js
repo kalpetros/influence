@@ -6,7 +6,7 @@ import { Browsing } from './Browsing';
 import { Settings } from './Settings';
 import { Weather } from './Weather';
 import { Top } from './Top';
-import { Center } from './Center';
+import { TodoWidget } from './TodoWidget';
 import { Bottom } from './Bottom';
 import { SettingsStateProvider } from './store';
 
@@ -76,7 +76,7 @@ const App = () => {
           onBrowsingClick={handleBrowsingClick}
           onSettingsClick={handleSettingsClick}
         />
-        <Center />
+        <TodoWidget />
         <Bottom onWeatherClick={handleWeatherClick} />
       </Layout>
     </SettingsStateProvider>
