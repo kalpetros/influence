@@ -7,6 +7,7 @@ import { Bookmarks } from './Bookmarks';
 import { History } from './History';
 import { TopVisited } from './TopVisited';
 import { Downloads } from './Downloads';
+import { Todo } from './Todo';
 
 export const Browsing = (props) => {
   const [view, setView] = useState('topVisited');
@@ -27,6 +28,8 @@ export const Browsing = (props) => {
       <History />
     ) : view === 'downloads' ? (
       <Downloads />
+    ) : view === 'todo' ? (
+      <Todo />
     ) : null;
 
   const menuItems = [
@@ -49,6 +52,10 @@ export const Browsing = (props) => {
     {
       id: 'downloads',
       name: 'Downloads',
+    },
+    {
+      id: 'todo',
+      name: 'Todo',
     },
   ];
 
