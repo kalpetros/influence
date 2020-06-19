@@ -12,7 +12,7 @@ const Information = (props) => {
     totalBytes: totalBytes,
     estimatedEndTime: estimatedEndTime,
     id: id,
-    state: state,
+    state: downloadState,
     filename: filename,
     url: url,
     paused: paused,
@@ -38,7 +38,7 @@ const Information = (props) => {
   let statusIcon = null;
   let information = null;
 
-  if (state === 'complete') {
+  if (downloadState === 'complete') {
     textClassName = isDarkMode === 'true' ? 'text-blue-300' : 'text-gray-500';
     statusIcon = <FontAwesomeIcon icon="check" className="text-blue-500" />;
 
@@ -47,14 +47,14 @@ const Information = (props) => {
         Open
       </button>
     );
-  } else if (state === 'interrupted') {
+  } else if (downloadState === 'interrupted') {
     textClassName = isDarkMode === 'true' ? 'text-blue-300' : 'text-gray-500';
     statusIcon = (
       <FontAwesomeIcon icon="exclamation-triangle" className="text-red-500" />
     );
 
     information = null;
-  } else if (state === 'in_progress') {
+  } else if (downloadState === 'in_progress') {
     statusIcon = (
       <FontAwesomeIcon icon="spinner" className="text-blue-500" spin />
     );
