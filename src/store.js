@@ -34,8 +34,8 @@ const themes = [
   {
     background: bg1,
     todoItemColor: 'gray-700',
-    greetingTextColor: 'white',
-    inputTextColor: 'white',
+    greetingTextColor: 'black',
+    inputTextColor: 'black',
     buttonColor: 'blue-500',
     settingsIconColor: 'black',
     menuIconColor: 'black',
