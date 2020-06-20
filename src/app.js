@@ -6,6 +6,7 @@ import { Top } from './Top';
 import { TodoWidget } from './TodoWidget';
 import { Bottom } from './Bottom';
 import { SettingsStateProvider } from './store';
+import { ThemeStateProvider } from './store';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -49,11 +50,13 @@ library.add(
 const App = () => {
   return (
     <SettingsStateProvider>
-      <Layout>
-        <Top />
-        <TodoWidget />
-        <Bottom />
-      </Layout>
+      <ThemeStateProvider>
+        <Layout>
+          <Top />
+          <TodoWidget />
+          <Bottom />
+        </Layout>
+      </ThemeStateProvider>
     </SettingsStateProvider>
   );
 };

@@ -23,8 +23,8 @@
 
 .settings {
   top: 5rem;
-  width: 50rem;
-  height: 50rem;
+  max-width: 50rem;
+  max-height: 50rem;
 }
 
 .settings--visible {
@@ -38,9 +38,9 @@
 }
 
 .weather {
-  top: 5rem;
-  width: 50rem;
-  height: 50rem;
+  bottom: 5rem;
+  max-width: 50rem;
+  max-height: 50rem;
 }
 
 .weather--visible {

@@ -1,14 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
 
-import bg1 from './assets/1.jpg';
-import bg2 from './assets/2.jpg';
-import bg3 from './assets/3.jpg';
-import bg4 from './assets/6.jpg';
+import { ThemeContext } from './store';
 
 export const Layout = ({ children }) => {
+  const { state, dispatch } = useContext(ThemeContext);
+  console.log(state);
+
   const style = {
-    background: `url(${bg4})`,
+    // background: `url(${bg4})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
   };
