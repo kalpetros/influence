@@ -1,8 +1,6 @@
 ![](logo.png)
 
-**Minimal Chrome new tab page replacement featuring a to-do list, weather information and tools to enchance your browsing experience.**
-
-_Influence is a minimal dashboard that replaces chrome's built in new tab page with a to-do list, weather information and useful browsing tools._
+**Minimal Chrome new tab page replacement featuring a to-do list, weather information and tools to enhance your browsing experience.**
 
 ![](influence.png)
 
