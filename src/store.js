@@ -1,4 +1,5 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
+import moment from 'moment';
 import { getSettings } from './utils';
 
 import bg1 from './assets/1.jpg';
@@ -81,14 +82,14 @@ const themes = [
   },
 ];
 
-const theme = themes[2];
+const theme = themes[0];
 
 export const ThemeContext = createContext(theme);
 
 const themeReducer = (state, action) => {
   switch (action.type) {
     case 'update':
-      return theme;
+      return action.value;
     default:
       throw new Error();
   }
@@ -97,9 +98,19 @@ const themeReducer = (state, action) => {
 export const ThemeStateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, theme);
 
+  useEffect(() => {
+    const date = moment();
+    let day = date.day();
+
+    if (day > 3) {
+      day = day - 4;
+      dispatch({ type: 'update', value: themes[day] });
+    } else {
+      dispatch({ type: 'update', value: themes[day] });
+    }
+  }, []);
+
   return (
-    <ThemeContext.Provider value={{ state, dispatch }}>
-      {children}
-    </ThemeContext.Provider>
+    <ThemeContext.Provider value={{ state }}>{children}</ThemeContext.Provider>
   );
 };

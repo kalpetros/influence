@@ -7,9 +7,10 @@ export const Layout = ({ children }) => {
   const { state } = useContext(ThemeContext);
 
   const style = {
-    background: `url(${state.background})`,
+    backgroundImage: `url(${state.background})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
+    transition: 'background 1s ease-in',
   };
 
   return (
