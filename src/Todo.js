@@ -10,7 +10,7 @@ export const Todo = () => {
   const isDarkMode = settings.darkMode;
   const theme =
     isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700 border-b';
-  const className = `p-5 block cursor-pointer ${theme}`;
+  const className = `grid grid-flow-col gap-2 p-5 items-center ${theme}`;
 
   useEffect(() => {
     fetchInit();
@@ -59,10 +59,13 @@ export const Todo = () => {
       return todo.status === 'done';
     })
     .map((todo, index) => {
+      const date = moment(todo.date).format('DD/MM/yyyy');
+
       return (
-        <li key={`browsing-todo-${index}`} className={className}>
-          {todo.title}
-        </li>
+        <div key={`browsing-todo-${index}`} className={className}>
+          <div>{todo.title}</div>
+          <div className="text-right">{date}</div>
+        </div>
       );
     });
 
