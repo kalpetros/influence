@@ -95,6 +95,7 @@ export const Modal = (props) => {
   const {
     icon: icon,
     iconSize: iconSize,
+    iconColor: iconColor,
     title: title,
     name: name,
     view: view,
@@ -102,8 +103,8 @@ export const Modal = (props) => {
     onClick: onClick,
     children: children,
   } = props;
-  const { state } = useContext(SettingsContext);
-  const isDarkMode = state.darkMode;
+  const { state: settings } = useContext(SettingsContext);
+  const isDarkMode = settings.darkMode;
   const theme = isDarkMode === 'true' ? 'bg-black' : 'bg-white';
 
   let className = `grid max-content-rows fixed rounded-lg shadow-lg z-50 overflow-hidden ${name} ${theme}`;
@@ -124,7 +125,7 @@ export const Modal = (props) => {
       <FontAwesomeIcon
         icon={icon}
         size={iconSize}
-        className="cursor-pointer"
+        className={`cursor-pointer text-${iconColor}`}
         onClick={handleToggle}
       />
       <div className={className}>
@@ -145,6 +146,7 @@ export const Modal = (props) => {
 Modal.propTypes = {
   icon: PropTypes.string.isRequired,
   iconSize: PropTypes.string,
+  iconColor: PropTypes.string,
   title: PropTypes.string,
   name: PropTypes.string.isRequired,
   view: PropTypes.string,
@@ -156,5 +158,6 @@ Modal.propTypes = {
 Modal.defaultProps = {
   icon: 'bars',
   iconSize: 'sm',
+  iconColor: 'black',
   name: 'Modal',
 };

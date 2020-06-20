@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 
 import { Weather } from './Weather';
 
 import { formatTemperature } from './utils';
+import { ThemeContext } from './store';
 
 export const WeatherWidget = (props) => {
   const [data, setData] = useState();
-  const onClick = props.onClick;
+  const { state: theme } = useContext(ThemeContext);
 
   useEffect(() => {
     getUserPosition();
@@ -44,7 +45,11 @@ export const WeatherWidget = (props) => {
   const error = () => {};
 
   if (typeof data === 'undefined') {
-    return <div className="text-right">Getting weather...</div>;
+    return (
+      <div className={`text-right text-${theme.weatherWidgetColor}`}>
+        Getting weather...
+      </div>
+    );
   }
 
   const id = data.weather[0].id;
@@ -52,7 +57,7 @@ export const WeatherWidget = (props) => {
   temperature = formatTemperature(temperature);
 
   return (
-    <div className="text-right">
+    <div className={`text-right text-${theme.weatherWidgetColor}`}>
       <h1 className="text-lg">
         <i className={`wi wi-owm-${id}`}></i>
       </h1>

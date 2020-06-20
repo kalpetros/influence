@@ -3,8 +3,8 @@ import { SettingsContext } from './store';
 
 export const RecentBookmarks = () => {
   const [data, setData] = useState([]);
-  const { state } = useContext(SettingsContext);
-  const isDarkMode = state.darkMode;
+  const { state: settings } = useContext(SettingsContext);
+  const isDarkMode = settings.darkMode;
   const theme =
     isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700 border-b';
   const className = `p-5 block cursor-pointer ${theme}`;

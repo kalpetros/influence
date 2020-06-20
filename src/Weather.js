@@ -5,12 +5,14 @@ import { Modal } from './Modal';
 import { formatTemperature } from './utils';
 import { formatPressure } from './utils';
 import { formatWind } from './utils';
-import { SettingsContext } from './store';
+import { SettingsContext, ThemeContext } from './store';
 
 export const Weather = () => {
   const [data, setData] = useState();
-  const { state } = useContext(SettingsContext);
-  const isDarkMode = state.darkMode;
+  const { state: settings } = useContext(SettingsContext);
+  const { state: theme } = useContext(ThemeContext);
+
+  const isDarkMode = settings.darkMode;
   const className = isDarkMode === 'true' ? 'text-blue-500' : 'text-gray-700';
 
   useEffect(() => {
@@ -72,7 +74,13 @@ export const Weather = () => {
   windSpeed = formatWind(windSpeed);
 
   return (
-    <Modal icon="info-circle" iconSize="lg" title="Weather" name="weather">
+    <Modal
+      icon="info-circle"
+      iconSize="lg"
+      iconColor={theme.weatherIconColor}
+      itle="Weather"
+      name="weather"
+    >
       <div className="text-left overflow-auto p-5">
         <div>
           <h1 className="text-md text-gray-700 uppercase">Current weather</h1>

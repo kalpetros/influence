@@ -4,12 +4,17 @@ import moment from 'moment';
 
 export const Datepicker = (props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { isData: isData, date: date, todo: todo, onChange: onChange } = props;
+  const {
+    isData: isData,
+    date: date,
+    todo: todo,
+    buttonColor: buttonColor,
+    onChange: onChange,
+  } = props;
   const dateNow = moment().toISOString();
   const dateDiff = moment(date).diff(dateNow, 'days');
   let dateFormatted = moment(dateNow).to(moment(date));
-  let buttonClassName =
-    'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';
+  let buttonClassName = `bg-transparent hover:bg-blue-500 text-${buttonColor} font-semibold hover:text-white py-2 px-4 border border-${buttonColor} hover:border-transparent rounded`;
 
   if (dateDiff === 0) {
     dateFormatted = 'Today';
@@ -84,5 +89,10 @@ Datepicker.propTypes = {
   isData: PropTypes.bool,
   date: PropTypes.string.isRequired,
   todo: PropTypes.object,
+  buttonColor: PropTypes.string,
   onChange: PropTypes.func.isRequired,
+};
+
+Datepicker.defaultProps = {
+  buttonColor: 'blue-500',
 };

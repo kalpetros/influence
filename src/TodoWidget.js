@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import moment from 'moment';
 
 import { Datepicker } from './Datepicker';
 import { DB } from './utils';
 import { getGreeting } from './utils';
+import { ThemeContext } from './store';
 
 export const TodoWidget = () => {
   const dateNow = moment().toISOString();
+  const { state: theme } = useContext(ThemeContext);
   const [data, setData] = useState([]);
   const [todo, setTodo] = useState('');
   const [date, setDate] = useState(dateNow);
+  const inputClassName = `appearance-none text-2xl bg-transparent h-20 w-full text-${theme.inputTextColor} leading-tight focus:outline-none`;
 
   useEffect(() => {
     fetchInit();
@@ -104,7 +107,7 @@ export const TodoWidget = () => {
       });
   };
 
-  const todos = data
+  const items = data
     .sort((a, b) => {
       const aIsBeforeB = moment(a.date).isBefore(b.date);
       const bIsBeforeA = moment(b.date).isBefore(a.date);
@@ -123,7 +126,7 @@ export const TodoWidget = () => {
       return todo.status === 'todo';
     })
     .map((todo, index) => {
-      let titleClass = 'text-2xl text-gray-700';
+      let titleClass = `text-2xl text-${theme.todoItemColor}`;
 
       return (
         <li
@@ -152,11 +155,13 @@ export const TodoWidget = () => {
   return (
     <div className="grid max-content-rows-2 h-full w-8/12 m-auto overflow-hidden">
       <div>
-        <h1 className="text-5xl">{getGreeting()}</h1>
+        <h1 className={`text-5xl text-${theme.greetingTextColor}`}>
+          {getGreeting()}
+        </h1>
         <div className="grid grid-flow-col items-center border-b border-gray-500">
           <div>
             <input
-              className="appearance-none text-2xl bg-transparent h-20 w-full text-gray-700 leading-tight focus:outline-none"
+              className={inputClassName}
               type="text"
               placeholder="What do you want to do?"
               value={todo}
@@ -165,12 +170,16 @@ export const TodoWidget = () => {
             />
           </div>
           <div className="grid justify-end pr-5">
-            <Datepicker date={date} onChange={handleDateChange} />
+            <Datepicker
+              date={date}
+              buttonColor={theme.buttonColor}
+              onChange={handleDateChange}
+            />
           </div>
         </div>
       </div>
       <div className="mt-10 overflow-auto">
-        <ul>{todos}</ul>
+        <ul>{items}</ul>
       </div>
     </div>
   );

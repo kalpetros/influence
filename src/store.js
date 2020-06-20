@@ -30,52 +30,58 @@ export const SettingsStateProvider = ({ children }) => {
   );
 };
 
-const theme = {
-  one: {
+const themes = [
+  {
     background: bg1,
-    todoItem: 'text-gray-700',
-    inputText: 'text-white',
-    buttonBorder: 'border-blue-500',
-    buttonText: 'text-blue-500',
-    settingsIcon: 'text-black',
-    menuIcon: 'text-black',
-    timeWidget: 'text-black',
-    weatherWidget: 'text-black',
+    todoItemColor: 'gray-700',
+    greetingTextColor: 'white',
+    inputTextColor: 'white',
+    buttonColor: 'blue-500',
+    settingsIconColor: 'black',
+    menuIconColor: 'black',
+    weatherIconColor: 'black',
+    timeWidgetColor: 'black',
+    weatherWidgetColor: 'black',
   },
-  two: {
+  {
     background: bg2,
-    todoItem: 'text-white',
-    inputText: 'text-white',
-    buttonBorder: 'border-white',
-    buttonText: 'text-white',
-    settingsIcon: 'text-white',
-    menuIcon: 'text-white',
-    timeWidget: 'text-white',
-    weatherWidget: 'text-white',
+    todoItemColor: 'white',
+    greetingTextColor: 'white',
+    inputTextColor: 'white',
+    buttonColor: 'white',
+    settingsIconColor: 'white',
+    menuIconColor: 'white',
+    weatherIconColor: 'white',
+    timeWidgetColor: 'white',
+    weatherWidgetColor: 'white',
   },
-  three: {
+  {
     background: bg3,
-    todoItem: 'text-white',
-    inputText: 'text-white',
-    buttonBorder: 'border-blue-500',
-    buttonText: 'text-blue-500',
-    settingsIcon: 'text-black',
-    menuIcon: 'text-black',
-    timeWidget: 'text-white',
-    weatherWidget: 'text-white',
+    todoItemColor: 'white',
+    greetingTextColor: 'black',
+    inputTextColor: 'white',
+    buttonColor: 'blue-500',
+    settingsIconColor: 'black',
+    menuIconColor: 'black',
+    weatherIconColor: 'white',
+    timeWidgetColor: 'white',
+    weatherWidgetColor: 'white',
   },
-  four: {
+  {
     background: bg4,
-    todoItem: 'text-gray-700',
-    inputText: 'text-gray-700',
-    buttonBorder: 'border-blue-500',
-    buttonText: 'text-blue-500',
-    settingsIcon: 'text-black',
-    menuIcon: 'text-black',
-    timeWidget: 'text-black',
-    weatherWidget: 'text-black',
+    todoItemColor: 'gray-700',
+    greetingTextColor: 'white',
+    inputTextColor: 'gray-700',
+    buttonColor: 'blue-500',
+    settingsIconColor: 'black',
+    menuIconColor: 'black',
+    weatherIconColor: 'black',
+    timeWidgetColor: 'black',
+    weatherWidgetColor: 'black',
   },
-};
+];
+
+const theme = themes[2];
 
 export const ThemeContext = createContext(theme);
 

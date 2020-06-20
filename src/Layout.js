@@ -4,11 +4,10 @@ import PropTypes from 'prop-types';
 import { ThemeContext } from './store';
 
 export const Layout = ({ children }) => {
-  const { state, dispatch } = useContext(ThemeContext);
-  console.log(state);
+  const { state } = useContext(ThemeContext);
 
   const style = {
-    // background: `url(${bg4})`,
+    background: `url(${state.background})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
   };

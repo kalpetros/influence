@@ -23,8 +23,8 @@ const Information = (props) => {
     onPauseClick: onPauseClick,
     onResumeClick: onResumeClick,
   } = props;
-  const { state } = useContext(SettingsContext);
-  const isDarkMode = state.darkMode;
+  const { state: settings } = useContext(SettingsContext);
+  const isDarkMode = settings.darkMode;
   const theme = isDarkMode === 'true' ? null : 'border-b';
   const buttonClassName =
     'bg-transparent hover:bg-blue-500 text-blue-500 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded';

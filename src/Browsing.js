@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { Modal } from './Modal';
 import { RecentBookmarks } from './RecentBookmarks';
@@ -7,9 +7,11 @@ import { History } from './History';
 import { TopVisited } from './TopVisited';
 import { Downloads } from './Downloads';
 import { Todo } from './Todo';
+import { ThemeContext } from './store';
 
 export const Browsing = () => {
   const [view, setView] = useState('topVisited');
+  const { state: theme } = useContext(ThemeContext);
 
   const handleClick = (e) => {
     setView(e.currentTarget.id);
@@ -61,6 +63,7 @@ export const Browsing = () => {
     <Modal
       icon="bars"
       iconSize="2x"
+      iconColor={theme.menuIconColor}
       name="browsing"
       view={view}
       menuItems={menuItems}

@@ -1,16 +1,16 @@
 ![](logo.png)
 
-**Replace Chrome's new tab page with an elegant material design dashboard.**
+**Minimal Chrome new tab page replacement featuring a to-do list, weather information and tools to enchance your browsing experience.**
 
-*Influence is a minimal dashboard featuring Google's material design that replaces chrome's built in new tab page with beautiful backgrounds and a plethora of useful tools.*
+_Influence is a minimal dashboard that replaces chrome's built in new tab page with a to-do list, weather information and useful browsing tools._
 
-![](influence.jpg)
+![](influence.png)
 
 ## Install
 
-You can get the latest release by cloning / downloading this repo* or install it straight from the [Chrome Web Store](https://chrome.google.com/webstore/detail/influence/ehbacbnlkpdfkmgcmkpkaoeaoijpcihi?utm_source=chrome-ntp-icon) (recommended).
+You can get the latest release by cloning / downloading this repo\* or install it straight from the [Chrome Web Store](https://chrome.google.com/webstore/detail/influence/ehbacbnlkpdfkmgcmkpkaoeaoijpcihi?utm_source=chrome-ntp-icon) (recommended).
 
-*Follow the steps [here](https://developer.chrome.com/extensions/getstarted#unpacked) to install it.
+\*Follow the steps [here](https://developer.chrome.com/extensions/getstarted#unpacked) to install it.
 
 ## Contributing
 
