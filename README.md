@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/kalpetros/influence.svg?branch=master)](https://travis-ci.com/kalpetros/influence)
+
 ![](logo.png)
 
 **Minimal Chrome new tab page replacement featuring a to-do list, weather information and tools to enhance your browsing experience.**
