@@ -91,10 +91,10 @@ export function formatTime(obj) {
 
 export const formatTemperature = (temperature) => {
   const settings = getSettings();
-  temperature = Math.round(parseFloat(temperature), 0);
+  temperature = Math.round(parseFloat(temperature), 1);
 
   if (settings.temperature === 'fahrenheit') {
-    temperature = temperature * 1.8 + 32;
+    temperature = Math.round(temperature * 1.8 + 32, 0);
     return (
       <>
         {temperature} <i className="wi wi-fahrenheit"></i>
