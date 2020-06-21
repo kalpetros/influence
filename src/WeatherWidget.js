@@ -27,7 +27,7 @@ export const WeatherWidget = (props) => {
   };
 
   const success = (position) => {
-    const appId = 'e005960b25bcbd7522cef238087e6141';
+    const appId = '';
     const { latitude: latitude, longitude: longitude } = position.coords;
     const units = 'metric';
 
