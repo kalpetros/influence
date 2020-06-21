@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test temperature formatting 1`] = `
+Array [
+  "25",
+  " ",
+  <i
+    className="wi wi-celsius"
+  />,
+]
+`;

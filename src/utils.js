@@ -2,7 +2,7 @@ import React from 'react';
 import moment from 'moment';
 
 // Convert wind speed from m/s to beaufort scale
-function toBeaufort(wind) {
+export function toBeaufort(wind) {
   let beaufort = 0;
   if (wind < 0.3) {
     beaufort = 0;
