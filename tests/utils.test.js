@@ -2,14 +2,14 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import moment from 'moment';
 
-import { toBeaufort } from '../utils';
-import { formatBytes } from '../utils';
-import { getSettings } from '../utils';
-import { getGreeting } from '../utils';
-import { formatTime } from '../utils';
-import { formatTemperature } from '../utils';
-import { formatPressure } from '../utils';
-import { formatWind } from '../utils';
+import { toBeaufort } from '../src/utils';
+import { formatBytes } from '../src/utils';
+import { getSettings } from '../src/utils';
+import { getGreeting } from '../src/utils';
+import { formatTime } from '../src/utils';
+import { formatTemperature } from '../src/utils';
+import { formatPressure } from '../src/utils';
+import { formatWind } from '../src/utils';
 
 test('Test m/s to beaufort convertion', () => {
   const msUnit = 10;
