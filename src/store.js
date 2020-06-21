@@ -13,9 +13,10 @@ export const SettingsContext = createContext(settings);
 const settingsReducer = (state, action) => {
   switch (action.type) {
     case 'UPDATE':
-      settings[action.setting] = action.value;
-      localStorage.setItem('settings', JSON.stringify(settings));
-      return settings;
+      const newState = Object.assign({}, state);
+      newState[action.setting] = action.value;
+      localStorage.setItem('settings', JSON.stringify(newState));
+      return newState;
     default:
       throw new Error();
   }
@@ -106,7 +107,7 @@ export const ThemeStateProvider = ({ children }) => {
   const [state, dispatch] = useReducer(themeReducer, theme);
 
   useEffect(() => {
-    dispatch({ type: 'UPDATE', value: themes[day] });
+    dispatch({ type: 'UPDATE' });
   }, []);
 
   return (

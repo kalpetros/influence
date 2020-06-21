@@ -4,10 +4,12 @@ import axios from 'axios';
 import { Weather } from './Weather';
 
 import { formatTemperature } from './utils';
+import { SettingsContext } from './store';
 import { ThemeContext } from './store';
 
 export const WeatherWidget = (props) => {
   const [data, setData] = useState();
+  const { state: settings } = useContext(SettingsContext);
   const { state: theme } = useContext(ThemeContext);
 
   useEffect(() => {
