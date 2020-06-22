@@ -2,6 +2,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 import moment from 'moment';
 import { getSettings } from './utils';
 
+import bg0 from './assets/0.jpg';
 import bg1 from './assets/1.jpg';
 import bg2 from './assets/2.jpg';
 import bg3 from './assets/3.jpg';
@@ -83,9 +84,20 @@ const themes = [
   },
 ];
 
-const theme = themes[0];
+const defaultTheme = {
+  background: bg0,
+  todoItemColor: 'gray-700',
+  greetingTextColor: 'black',
+  inputTextColor: 'gray-700',
+  buttonColor: 'blue-500',
+  settingsIconColor: 'black',
+  menuIconColor: 'black',
+  weatherIconColor: 'black',
+  timeWidgetColor: 'black',
+  weatherWidgetColor: 'black',
+};
 
-export const ThemeContext = createContext(theme);
+export const ThemeContext = createContext(defaultTheme);
 
 const themeReducer = (state, action) => {
   switch (action.type) {
@@ -104,7 +116,7 @@ const themeReducer = (state, action) => {
 };
 
 export const ThemeStateProvider = ({ children }) => {
-  const [state, dispatch] = useReducer(themeReducer, theme);
+  const [state, dispatch] = useReducer(themeReducer, defaultTheme);
 
   useEffect(() => {
     dispatch({ type: 'UPDATE' });
