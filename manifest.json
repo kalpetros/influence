@@ -1,9 +1,9 @@
 {
   "manifest_version": 2,
   "name": "Influence",
-  "description": "Replace your new tab page with an elegant material design dashboard.",
-  "version": "2",
-  "author": "kalpetros",
+  "description": "Minimal Chrome new tab page replacement featuring a to-do list, weather information and tools to enhance your browsing experience.",
+  "version": "2.1",
+  "author": "Petros Kalogiannakis",
   "icons": {
     "16": "src/assets/icons/16.png",
     "32": "src/assets/icons/32.png",

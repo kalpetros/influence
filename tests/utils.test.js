@@ -47,7 +47,7 @@ test('Test settings number of keys', () => {
 
 test('Test Greeting output', () => {
   const greeting = getGreeting();
-  expect(greeting).toBe('Good evening,');
+  expect(greeting).toMatch(/Good morning|Good afternoon|Good evening/);
 });
 
 test('Test time formatting', () => {
