@@ -19,6 +19,16 @@ export const TodoWidget = () => {
   }, []);
 
   const fetchInit = () => {
+    DB.open()
+      .then((response) => {
+        fetchKeys();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
+  const fetchKeys = () => {
     DB.getKeys()
       .then((response) => {
         fetchData(response);

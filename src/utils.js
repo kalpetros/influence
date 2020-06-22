@@ -135,7 +135,7 @@ export const formatWind = (wind) => {
 
 export const DB = {
   name: 'InfluenceDB',
-  storeName: 'todos',
+  storeName: 'todo',
   version: 1,
   open: () => {
     return new Promise((resolve, reject) => {
@@ -145,6 +145,8 @@ export const DB = {
 
       request.onsuccess = (e) => {
         db = e.target.result;
+
+        resolve('success');
 
         db.onsuccess = (e) => {
           resolve('success');
@@ -166,6 +168,8 @@ export const DB = {
         });
 
         store.createIndex('date', 'date', { unique: false });
+
+        resolve('success');
       };
     });
   },
