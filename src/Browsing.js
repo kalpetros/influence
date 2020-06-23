@@ -61,7 +61,7 @@ export const Browsing = () => {
 
   return (
     <Modal
-      icon="bars"
+      icon="th"
       iconSize="2x"
       iconColor={theme.menuIconColor}
       name="browsing"
