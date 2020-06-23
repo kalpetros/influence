@@ -15,7 +15,6 @@ import {
   faHistory,
   faList,
   faDownload,
-  faBars,
   faCog,
   faTimes,
   faFolder,
@@ -26,6 +25,7 @@ import {
   faInfoCircle,
   faSpinner,
   faPause,
+  faTh,
 } from '@fortawesome/free-solid-svg-icons';
 
 library.add(
@@ -34,7 +34,6 @@ library.add(
   faHistory,
   faList,
   faDownload,
-  faBars,
   faCog,
   faTimes,
   faFolder,
@@ -44,7 +43,8 @@ library.add(
   faChevronLeft,
   faInfoCircle,
   faSpinner,
-  faPause
+  faPause,
+  faTh
 );
 
 const App = () => {
