@@ -14,8 +14,6 @@ const Menu = (props) => {
     onClose: onClose,
   } = props;
   const theme = isDarkMode === 'true' ? 'bg-black' : 'bg-white border-b';
-  const iconTheme =
-    isDarkMode === 'true' ? 'text-blue-500 cursor-pointer' : 'cursor-pointer';
   const menuClassName = `grid grid-flow-col ${theme}`;
 
   if (typeof items !== 'undefined') {
@@ -51,7 +49,7 @@ const Menu = (props) => {
           <FontAwesomeIcon
             icon="times"
             size="lg"
-            className={iconTheme}
+            className="text-blue-500 cursor-pointer"
             onClick={onClose}
           />
         </div>
@@ -66,7 +64,7 @@ const Menu = (props) => {
         <FontAwesomeIcon
           icon="times"
           size="lg"
-          className={iconTheme}
+          className="text-blue-500 cursor-pointer"
           onClick={onClose}
         />
       </div>

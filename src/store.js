@@ -6,7 +6,10 @@ import bg0 from './assets/0.jpg';
 import bg1 from './assets/1.jpg';
 import bg2 from './assets/2.jpg';
 import bg3 from './assets/3.jpg';
-import bg4 from './assets/6.jpg';
+import bg4 from './assets/4.jpg';
+import bg5 from './assets/5.jpg';
+import bg6 from './assets/6.jpg';
+import bg7 from './assets/7.jpg';
 
 const settings = getSettings();
 export const SettingsContext = createContext(settings);
@@ -82,18 +85,54 @@ const themes = [
     timeWidgetColor: 'black',
     weatherWidgetColor: 'black',
   },
+  {
+    background: bg5,
+    todoItemColor: 'gray-400',
+    greetingTextColor: 'gray-400',
+    inputTextColor: 'white',
+    buttonColor: 'black',
+    settingsIconColor: 'black',
+    menuIconColor: 'black',
+    weatherIconColor: 'black',
+    timeWidgetColor: 'black',
+    weatherWidgetColor: 'black',
+  },
+  {
+    background: bg6,
+    todoItemColor: 'white',
+    greetingTextColor: 'white',
+    inputTextColor: 'white',
+    buttonColor: 'blue-500',
+    settingsIconColor: 'white',
+    menuIconColor: 'white',
+    weatherIconColor: 'white',
+    timeWidgetColor: 'white',
+    weatherWidgetColor: 'white',
+  },
+  {
+    background: bg7,
+    todoItemColor: 'white',
+    greetingTextColor: 'white',
+    inputTextColor: 'white',
+    buttonColor: 'blue-500',
+    settingsIconColor: 'white',
+    menuIconColor: 'white',
+    weatherIconColor: 'white',
+    timeWidgetColor: 'white',
+    weatherWidgetColor: 'white',
+  },
 ];
 
 const defaultTheme = {
   background: bg0,
   todoItemColor: 'gray-700',
-  greetingTextColor: 'black',
+  greetingTextColor: 'white',
   inputTextColor: 'gray-700',
   buttonColor: 'blue-500',
-  settingsIconColor: 'black',
-  menuIconColor: 'black',
-  weatherIconColor: 'black',
-  timeWidgetColor: 'black',
+  settingsIconColor: 'white',
+  menuIconColor: 'white',
+  weatherIconColor: 'white',
+  timeWidgetColor: 'white',
   weatherWidgetColor: 'black',
 };
 
@@ -105,11 +144,7 @@ const themeReducer = (state, action) => {
       const date = moment();
       let day = date.day();
 
-      if (day > 3) {
-        day = day - 4;
-      }
-
-      return themes[day];
+      return themes[day - 1];
     default:
       throw new Error();
   }

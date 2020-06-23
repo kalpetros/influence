@@ -10,7 +10,6 @@ export const Layout = ({ children }) => {
     backgroundImage: `url(${state.background})`,
     backgroundSize: 'cover',
     backgroundRepeat: 'no-repeat',
-    transition: 'background 1s ease-in',
   };
 
   return (
